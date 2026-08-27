@@ -395,50 +395,6 @@
       cursor: pointer; transition: background .15s, border-color .15s, color .15s;
     }
 
-    /* === 汇报模式按钮（在 deckbar 分享按钮左边） === */
-    .pres-btn {
-      display: flex; align-items: center; gap: 5px;
-      height: 34px; padding: 0 10px; border-radius: 8px;
-      background: var(--card2); color: var(--ink2);
-      border: 1px solid var(--line); cursor: pointer;
-      font: 600 11px/1 "Chakra Petch", "Inter", sans-serif;
-      letter-spacing: .04em; transition: background .15s, color .15s, border-color .15s;
-    }
-    .pres-btn:hover { border-color: var(--amber); color: var(--amber); }
-    .pres-btn.on { background: var(--amber); color: #fff; border-color: var(--amber); }
-    .pres-btn svg { width: 14px; height: 14px; }
-
-    /* === 汇报模式下的浮动 tag + note（默认隐藏，开关打开后显示） === */
-    .pres-tag, .pres-note { display: none; }
-    body.pres-mode .pres-tag,
-    body.pres-mode .pres-note { display: block; }
-    .pres-tag {
-      position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
-      z-index: 39;
-      background: var(--amber); color: #fff;
-      font: 700 11px/1 "Chakra Petch", "Inter", sans-serif;
-      letter-spacing: .12em;
-      padding: 8px 16px; border-radius: 4px;
-      box-shadow: 0 4px 12px -2px rgba(0, 0, 0, .15);
-    }
-    .pres-note {
-      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
-      z-index: 39; max-width: 80vw; width: max-content;
-      background: #111; color: #fff;
-      font: 500 13px/1.5 "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
-      padding: 10px 18px; border-radius: 6px;
-      box-shadow: 0 6px 20px -4px rgba(0, 0, 0, .25);
-    }
-    .pres-note::before {
-      content: "📌 汇报要点"; display: block;
-      font: 700 10px/1 "Chakra Petch", sans-serif;
-      letter-spacing: .18em; color: var(--amber-bright);
-      margin-bottom: 4px;
-    }
-    @media (max-width: 600px) {
-      .pres-btn { padding: 0 8px; font-size: 10px; }
-      .pres-note { bottom: 78px; font-size: 12px; max-width: 88vw; }
-    }
     .share-btn:hover { background: var(--amber); border-color: var(--amber); color: #fff; }
     .share-btn:active { transform: scale(.95); }
     .share-btn svg { width: 16px; height: 16px; }
@@ -715,10 +671,6 @@
   <div class="deckbar">
     <div class="brand"><i></i><span>AUTOCAVA · CAVI 报告</span></div>
     <div class="deckbar-right">
-      <button class="pres-btn" id="pres-btn" aria-label="汇报模式">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3zM3 11h18v4H3zM3 19h18v2H3z"/></svg>
-        汇报模式
-      </button>
       <button class="share-btn" id="share-btn" aria-label="分享">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
       </button>
@@ -728,7 +680,7 @@
   <main class="stage" id="stage">
 
     <!-- ============ S1 · Portada ============ -->
-    <section class="slide cover" data-pres-tag="维度 1/10 · 市场定位 + 价格锚点" data-pres-note="封面页 · 领导第一眼看到：墨西哥销冠轿车 + 起售 309,990 MXN">
+    <section class="slide cover">
       <div class="col text">
         <div class="kicker">购车报告 01 · 2026 · 紧凑型轿车</div>
 
@@ -764,7 +716,7 @@
     </section>
 
     <!-- ============ S2 · Posición de mercado ============ -->
-    <section class="slide" data-pres-tag="维度 2/10 · 销量背书 + 渠道覆盖" data-pres-note="数据背书：月销 7,486 辆 + 280+ 经销商 + #1 优步车型">
+    <section class="slide">
       <div class="col text">
         <div class="kicker">02 · 市场地位</div>
         <h2>墨西哥 7 年销冠轿车</h2>
@@ -798,7 +750,7 @@
     </section>
 
     <!-- ============ S3 · 价格与融资 ============ -->
-    <section class="slide figL" data-pres-tag="维度 3/10 · 价格梯度 + 融资方案" data-pres-note="6 个版本覆盖 30.9-40.7 万 MXN，月供 5,899-6,244 MXN（36-48 期）">
+    <section class="slide figL">
       <div class="figpanel" role="img" aria-label="Rango de precios por versión">
         <span class="figtag">FIG.03 — VERSIONES &amp; FINANCIAMIENTO</span>
         <div class="fig-inner">
@@ -838,7 +790,7 @@
     </section>
 
     <!-- ============ S4 · 竞品对比 ============ -->
-    <section class="slide" data-pres-tag="维度 4/10 · 竞品对比 + 综合评分" data-pres-note="CAVI 4.6/5 综合评分：Versa 92 · K3 88 · Virtus 86 · Mazda2 84">
+    <section class="slide">
       <div class="col text">
         <div class="kicker">04 · 竞品对比</div>
         <h2>大众 Virtus、起亚 K3、马自达 2：横向对比如何？</h2>
@@ -873,7 +825,7 @@
     </section>
 
     <!-- ============ S5 · 核心优势 ============ -->
-    <section class="slide figL" data-pres-tag="维度 5/10 · 4 大核心卖点" data-pres-note="油耗 18.81 km/L · 482L 后备厢 · 6 安全气囊 · 3 年/10 万 km 质保">
+    <section class="slide figL">
       <div class="figpanel" role="img" aria-label="Versa Advance CVT — vista frontal">
         <span class="figtag">FIG.05 — FORTALEZAS</span>
         <div class="fig-inner">
@@ -907,7 +859,7 @@
     </section>
 
     <!-- ============ S6 · Debilidades ============ -->
-    <section class="slide" data-pres-tag="维度 6/10 · 诚实展示短板" data-pres-note="高速胎噪 + CarPlay 未确认 + 硬塑料内饰 + 1.6L 118 马力 高速偏弱">
+    <section class="slide">
       <div class="figpanel" role="img" aria-label="噪音 carretera y CarPlay no confirmado">
         <span class="figtag">FIG.06 — PUNTOS DÉBILES</span>
         <div class="fig-inner">
@@ -941,7 +893,7 @@
     </section>
 
     <!-- ============ S7 · 哪类人应该买？ ============ -->
-    <section class="slide figL" data-pres-tag="维度 7/10 · 4 类典型买家" data-pres-note="家庭首辆 / 网约车 / 城市通勤 / 预算上限 — 同一车型不同版本">
+    <section class="slide figL">
       <div class="figpanel" role="img" aria-label="Perfiles de comprador recomendados">
         <span class="figtag">FIG.07 — PERFIL DE COMPRADOR</span>
         <div class="fig-inner">
@@ -972,7 +924,7 @@
     </section>
 
     <!-- ============ S8 · 避坑指南 (dealership traps) ============ -->
-    <section class="slide" data-pres-tag="维度 8/10 · 4 个签约陷阱" data-pres-note="加价 / 手续费 / 捆绑保险 / 交期 — 经销商不会主动说">
+    <section class="slide">
       <div class="figpanel" role="img" aria-label="Trampas comunes en el contrato de compra">
         <span class="figtag">FIG.08 — ANTES DE FIRMAR</span>
         <div class="fig-inner">
@@ -1005,7 +957,7 @@
     </section>
 
     <!-- ============ S9 · Costo total + mantenimiento ============ -->
-    <section class="slide figL" data-pres-tag="维度 9/10 · 5 年持有成本" data-pres-note="≈$28,500 MXN/年（比一杯咖啡/天便宜），5 年 ≈$142,500 MXN">
+    <section class="slide figL">
       <div class="figpanel" role="img" aria-label="年度成本 y plan de mantenimiento">
         <span class="figtag">FIG.09 — 年度用车成本</span>
         <div class="fig-inner">
@@ -1043,7 +995,7 @@
     </section>
 
     <!-- ============ S10 · Contacto / siguiente paso ============ -->
-    <section class="slide" data-pres-tag="维度 10/10 · 5 步购车流程" data-pres-note="预审 → WhatsApp 询价 → 试驾 → 签约验车 → 交付上牌">
+    <section class="slide">
       <div class="col text">
         <div class="kicker">10 · CAVI 购车顾问</div>
         <h2>去 4S 店之前，我们在 WhatsApp 帮你搞定一切</h2>
@@ -1469,31 +1421,6 @@
       }
       const shareBtn = document.getElementById('share-btn');
       shareBtn && shareBtn.addEventListener('click', openShareModal);
-      // ============ 6. 汇报模式（中文版独有） ============
-      // 浮动 tag + note 元素，跟随当前 slide 更新内容
-      const presTag = document.createElement('div');
-      presTag.className = 'pres-tag';
-      document.body.appendChild(presTag);
-
-      const presNote = document.createElement('div');
-      presNote.className = 'pres-note';
-      document.body.appendChild(presNote);
-
-      function updatePres() {
-        const idx = current();
-        const s = slides[idx];
-        if (!s) return;
-        presTag.textContent = s.dataset.presTag || '';
-        presNote.textContent = s.dataset.presNote || '';
-      }
-
-      const presBtn = document.getElementById('pres-btn');
-      presBtn && presBtn.addEventListener('click', function() {
-        const on = document.body.classList.toggle('pres-mode');
-        presBtn.classList.toggle('on', on);
-        if (on) updatePres();
-      });
-    })();
   </script>
 </body>
 </html>
