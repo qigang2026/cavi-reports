@@ -223,9 +223,9 @@ PM 已确认 pc-v1.html 实际数据都来自以下 **4 个已存在**的系统�
 | `button_text` | string | **系统** |
 | `url` | url | **系统** |
 
-#### 段 03 · CORE SELLING POINTS
+#### 段 03 · VENTAJAS CLAVE
 
-> block-eyebrow: `03 · CORE SELLING POINTS`
+> block-eyebrow: `03 · VENTAJAS CLAVE`
 
 **`key_specs`**（3-4 条核心数据，**系统**给）+ **`insight` 段落**（**AI**润色 30-100 字）
 
@@ -263,9 +263,9 @@ cavi_dimensions:
 
 **`cavi_meta`**：`review_count` / `monthly_sales` / `rank_text`（**系统**）
 
-#### 段 05 · COST
+#### 段 05 · COSTO DE USO
 
-> block-eyebrow: `05 · COST`
+> block-eyebrow: `05 · COSTO DE USO`
 
 ```yaml
 annual_cost:
@@ -289,9 +289,9 @@ annual_cost:
 | `assumptions.annual_km` | int | **系统** |
 | `saving_tips[]` | list | **AI**（不涉数字）|
 
-#### 段 06 · PROTECTION
+#### 段 06 · GARANTÍA Y SERVICIO
 
-> block-eyebrow: `06 · PROTECTION`
+> block-eyebrow: `06 · GARANTÍA Y SERVICIO`
 
 | Key | 类型 | 来源 |
 |-----|------|------|
@@ -304,9 +304,9 @@ annual_cost:
 | `service_network.description` | text | **系统** |
 | `support_features[]` | list | **系统** |
 
-#### 段 07 · COMPETITORS
+#### 段 07 · COMPETENCIA
 
-> block-eyebrow: `07 · COMPETITORS`
+> block-eyebrow: `07 · COMPETENCIA`
 
 **结构固定 4 条**：1 条 `tag=SELF`（本车）+ 3 条竞品（`ALTERNATIVA` / `PREMIUM`）
 
@@ -526,11 +526,11 @@ sources:
 ```python
 SPANISH_EYEBROWS = {
     '02': '02 · PRECIO Y FINANCIAMIENTO',
-    '03': '03 · CORE SELLING POINTS',
+    '03': '03 · VENTAJAS CLAVE',
     '04': '04 · CAVI · RESEÑAS',
-    '05': '05 · COST',
-    '06': '06 · PROTECTION',
-    '07': '07 · COMPETITORS',
+    '05': '05 · COSTO DE USO',
+    '06': '06 · GARANTÍA Y SERVICIO',
+    '07': '07 · COMPETENCIA',
     '08': '08 · SIGUIENTE PASO',
 }
 ```

@@ -210,13 +210,13 @@ next_cards:
 
 ---
 
-## 段 03：核心卖点（CORE SELLING POINTS）
+## 段 03：核心卖点（VENTAJAS CLAVE）
 
-> Frontmatter `block-eyebrow`: `03 · CORE SELLING POINTS`
+> Frontmatter `block-eyebrow`: `03 · VENTAJAS CLAVE`
 > Frontmatter `block-title`: `Lo que destaca`
 
 ```
-## 03 · CORE SELLING POINTS
+## 03 · VENTAJAS CLAVE
 
 > Lo que destaca
 
@@ -305,13 +305,13 @@ next_cards:
 
 ---
 
-## 段 05：用车成本（COST）
+## 段 05：用车成本（COSTO DE USO）
 
-> Frontmatter `block-eyebrow`: `05 · COST`
+> Frontmatter `block-eyebrow`: `05 · COSTO DE USO`
 > Frontmatter `block-title`: `Costo anual`
 
 ```
-## 05 · COST
+## 05 · COSTO DE USO
 
 > Costo anual
 
@@ -349,13 +349,13 @@ next_cards:
 
 ---
 
-## 段 06：购车保障与服务覆盖（PROTECTION）
+## 段 06：购车保障与服务覆盖（GARANTÍA Y SERVICIO）
 
-> Frontmatter `block-eyebrow`: `06 · PROTECTION`
+> Frontmatter `block-eyebrow`: `06 · GARANTÍA Y SERVICIO`
 > Frontmatter `block-title`: `Cobertura post-compra`
 
 ```
-## 06 · PROTECTION
+## 06 · GARANTÍA Y SERVICIO
 
 > Cobertura post-compra
 
@@ -394,13 +394,13 @@ next_cards:
 
 ---
 
-## 段 07：主要竞品怎么选（COMPETITORS）
+## 段 07：主要竞品怎么选（COMPETENCIA）
 
-> Frontmatter `block-eyebrow`: `07 · COMPETITORS`
+> Frontmatter `block-eyebrow`: `07 · COMPETENCIA`
 > Frontmatter `block-title`: `¿Qué comparar?`
 
 ```
-## 07 · COMPETITORS
+## 07 · COMPETENCIA
 
 > ¿Qué comparar?
 
