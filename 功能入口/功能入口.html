@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AUTOCAVA - 车系管理</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue",
+                 "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    font-size: 14px;
+    color: #303133;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { text-decoration: none; color: inherit; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+  input, select { font-family: inherit; outline: none; }
+
+  /* ===== 整体布局 ===== */
+  .app { display: flex; min-height: 100vh; background: #fff; }
+
+  /* ===== 左侧栏 ===== */
+  .sidebar {
+    width: 225px;
+    background: #314256;
+    color: #BECBDB;
+    flex-shrink: 0;
+  }
+  .logo {
+    height: 110px;
+    background: #2B2F3A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 16px 12px;
+  }
+  .logo-text {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 900;
+    font-style: italic;
+    color: #fff;
+    line-height: 1;
+    text-align: right;
+    font-size: 26px;
+    letter-spacing: -1px;
+    position: relative;
+    z-index: 1;
+  }
+  .logo-text .l1 { display: block; letter-spacing: 1px; }
+  .logo-text .l2 { display: block; letter-spacing: 1px; }
+  .logo-circle {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    background: #B0DC3A;
+    border-radius: 50%;
+    border: 2px solid #314256;
+    box-shadow: inset 0 -3px 0 rgba(0,0,0,0.15);
+  }
+  .logo-circle::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 2px solid #314256;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #D4E962 0%, #B0DC3A 60%, #95C42A 100%);
+  }
+  .logo-circle::before {
+    content: "◀";
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #B0DC3A;
+    font-size: 16px;
+    z-index: 2;
+  }
+
+  .menu { padding: 4px 0; }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 44px;
+    padding: 0 20px;
+    color: #BECBDB;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .menu-item:hover { background: #2A3548; color: #fff; }
+  .menu-item .icon { width: 18px; height: 18px; opacity: 0.85; flex-shrink: 0; }
+  .menu-item .arrow { margin-left: auto; font-size: 10px; opacity: 0.55; }
+
+  .menu-item.active {
+    color: #fff;
+    background: #2A3548;
+  }
+  .menu-item.active .icon { opacity: 1; color: #fff; }
+
+  .submenu {
+    background: #2A3548;
+    padding: 4px 0;
+  }
+  .submenu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 40px;
+    padding: 0 20px 0 48px;
+    color: #BECBDB;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .submenu-item:hover { color: #fff; }
+  .submenu-item .icon { width: 16px; height: 16px; opacity: 0.7; flex-shrink: 0; }
+  .submenu-item.active {
+    color: #419EFE;
+    background: #35414F;
+  }
+  .submenu-item.active .icon { opacity: 1; color: #419EFE; }
+
+  /* ===== 主区域 ===== */
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #fff; }
+
+  .header {
+    height: 55px;
+    background: #fff;
+    border-bottom: 1px solid #EBEEF5;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 16px;
+  }
+  .hamburger {
+    width: 22px; height: 14px;
+    display: inline-flex; flex-direction: column; justify-content: space-between;
+    cursor: pointer; padding: 0;
+  }
+  .hamburger span {
+    height: 2px; background: #5A6675; border-radius: 1px;
+  }
+  .breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    color: #909399; font-size: 13px;
+  }
+  .breadcrumb .home { color: #419EFE; display: inline-flex; }
+  .breadcrumb .sep { color: #C0C4CC; }
+  .breadcrumb .cur { color: #303133; }
+
+  .header-right {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 16px;
+    color: #5A6675;
+  }
+  .header-right .icon-btn {
+    width: 22px; height: 22px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #5A6675; cursor: pointer;
+  }
+  .header-right .icon-btn svg { width: 18px; height: 18px; }
+  .header-right .text-btn {
+    font-size: 14px; color: #5A6675; cursor: pointer; font-weight: 600;
+  }
+  .header-right .text-btn.ai { color: #419EFE; font-weight: 700; }
+  .header-right .text-btn.ty { font-family: serif; }
+  .header-right .text-btn.ax { background: #5A6675; color: #fff; width: 18px; height: 18px; font-size: 10px; border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; }
+  .header-right .user {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer; padding-left: 12px;
+    border-left: 1px solid #EBEEF5; height: 32px;
+  }
+  .header-right .avatar {
+    width: 32px; height: 32px; border-radius: 4px;
+    background: linear-gradient(135deg, #B4D88E 0%, #7DB45A 50%, #4A8F3A 100%);
+    overflow: hidden;
+    position: relative;
+  }
+  .header-right .avatar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 80%, rgba(135,180,90,0.6) 0%, transparent 50%),
+      linear-gradient(180deg, transparent 60%, #4A8F3A 100%);
+  }
+
+  /* ===== 内容区 ===== */
+  .content { flex: 1; background: #fff; }
+
+  .tabs {
+    display: flex; align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #EBEEF5;
+    padding: 0 20px;
+    height: 44px;
+  }
+  .tab {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 44px;
+    padding: 0 16px;
+    color: #606266;
+    font-size: 13px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-right: 4px;
+    position: relative;
+  }
+  .tab .x { color: #C0C4CC; font-size: 14px; }
+  .tab:hover { color: #419EFE; }
+  .tab.active {
+    color: #fff;
+    background: #67C23A;
+    font-weight: 500;
+  }
+  .tab.active::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 2px;
+    background: #67C23A;
+  }
+  .tab.active .x { color: rgba(255,255,255,0.85); }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex; align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: #fff;
+  }
+  .input, .select {
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid #DCDFE6;
+    border-radius: 3px;
+    background: #fff;
+    color: #606266;
+    font-size: 13px;
+    min-width: 160px;
+  }
+  .input.id { min-width: 200px; }
+  .input.name { min-width: 280px; }
+  .select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='%23999'><path d='M6 8L0 0h12z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    padding-right: 28px;
+    min-width: 130px;
+  }
+  .input::placeholder { color: #C0C4CC; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    height: 32px;
+    padding: 0 14px;
+    border-radius: 3px;
+    font-size: 13px;
+    color: #fff;
+    border: none;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  .btn:hover { opacity: 0.88; }
+  .btn-blue   { background: #419EFE; }
+  .btn-green  { background: #67C23A; }
+  .btn-orange { background: #E6A23C; }
+  .btn svg { width: 12px; height: 12px; }
+
+  /* 批量行 */
+  .batch {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 20px 14px;
+    background: #fff;
+  }
+  .batch .btn { height: 28px; font-size: 12px; padding: 0 12px; }
+
+  /* 表格 */
+  .table-wrap { background: #fff; padding: 0 20px 20px; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  col.col-country { width: 11%; }
+  col.col-type    { width: 10%; }
+  col.col-price   { width: 16%; }
+  col.col-thumb   { width: 9%;  }
+  col.col-status  { width: 10%; }
+  col.col-time    { width: 16%; }
+  col.col-ops     { width: 28%; }
+  thead th {
+    text-align: left;
+    padding: 14px 8px;
+    font-size: 13px;
+    color: #909399;
+    font-weight: 500;
+    background: #fff;
+    border-bottom: 1px solid #EBEEF5;
+  }
+  thead th.col-thumb, thead th.col-status { text-align: center; }
+  tbody td {
+    padding: 14px 8px;
+    border-bottom: 1px solid #F0F2F5;
+    color: #303133;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  tbody td.col-thumb, tbody td.col-status { text-align: center; }
+  tbody tr:hover { background: #FAFAFC; }
+  .car-thumb {
+    width: 64px; height: 36px;
+    background: #F5F7FA;
+    border-radius: 3px;
+    display: inline-flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .car-thumb svg { width: 100%; height: 100%; }
+  .badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 22px;
+    padding: 0 12px;
+    border-radius: 11px;
+    font-size: 12px;
+    background: #EDF8E8;
+    color: #67C23A;
+    border: 1px solid #C2E7B0;
+  }
+  .time { color: #606266; }
+
+  /* 操作列 */
+  .ops {
+    display: inline-flex; align-items: center; gap: 8px;
+    flex-wrap: nowrap;
+  }
+  .op {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    color: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    white-space: nowrap;
+  }
+  .op svg { width: 12px; height: 12px; }
+  .op-blue   { background: #419EFE; }
+  .op-orange { background: #E6A23C; }
+  .op-report { background: #14B8A6; }
+  .op-report:hover { background: #0FA294; }
+
+  /* 分页 */
+  .pagination {
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 8px;
+    padding: 16px 20px 20px;
+    color: #606266; font-size: 12px;
+  }
+  .page-btn {
+    min-width: 28px; height: 28px;
+    padding: 0 8px;
+    border: 1px solid #DCDFE6; border-radius: 3px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #606266; background: #fff; cursor: pointer;
+  }
+  .page-btn.active { color: #419EFE; border-color: #419EFE; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ========== 左侧栏 ========== -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-text">
+        <span class="l1">AUT</span>
+        <span class="l2">CAVA</span>
+      </div>
+      <div class="logo-circle"></div>
+    </div>
+    <nav class="menu">
+      <div class="menu-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <ellipse cx="12" cy="6" rx="9" ry="3"/>
+          <path d="M3 6v6c0 1.66 4.03 3 9 3s9-1.34 9-3V6"/>
+          <path d="M3 12v6c0 1.66 4.03 3 9 3s9-1.34 9-3v-6"/>
+        </svg>
+        金融订单 <span class="arrow">▼</span>
+      </div>
+      <div class="menu-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="2" y="4" width="20" height="14" rx="1.5"/>
+          <path d="M8 21h8M12 18v3"/>
+        </svg>
+        网站管理 <span class="arrow">▼</span>
+      </div>
+      <div class="menu-item active">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M3 17h18M5 17l1.5-5h11L19 17M7 12l1-4h8l1 4"/>
+          <circle cx="7.5" cy="17.5" r="1.5" fill="currentColor"/>
+          <circle cx="16.5" cy="17.5" r="1.5" fill="currentColor"/>
+        </svg>
+        车型库 <span class="arrow">▲</span>
+      </div>
+      <div class="submenu">
+        <div class="submenu-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+            <circle cx="6" cy="6" r="1" fill="currentColor"/>
+            <circle cx="6" cy="12" r="1" fill="currentColor"/>
+            <circle cx="6" cy="18" r="1" fill="currentColor"/>
+          </svg>
+          车型管理
+        </div>
+        <div class="submenu-item active">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="4" width="18" height="13" rx="1.5"/>
+            <path d="M7 17l-1 3M17 17l1 3M3 11h18"/>
+            <circle cx="7.5" cy="17.5" r="1.5" fill="currentColor"/>
+            <circle cx="16.5" cy="17.5" r="1.5" fill="currentColor"/>
+          </svg>
+          车系管理
+        </div>
+        <div class="submenu-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M3 9l1.5-4h15L21 9v10a1 1 0 0 1-1 1h-3a1 1 0 0 1-1-1v-1H8v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9z"/>
+            <path d="M3 9h18"/>
+          </svg>
+          品牌管理
+        </div>
+        <div class="submenu-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+            <circle cx="6" cy="6" r="1" fill="currentColor"/>
+            <circle cx="6" cy="12" r="1" fill="currentColor"/>
+            <circle cx="6" cy="18" r="1" fill="currentColor"/>
+          </svg>
+          保养管理
+        </div>
+        <div class="submenu-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M3 9l1.5-4h15L21 9v10a1 1 0 0 1-1 1h-3a1 1 0 0 1-1-1v-1H8v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9z"/>
+          </svg>
+          经销商管理
+        </div>
+        <div class="submenu-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 21a8 8 0 0 1 16 0"/>
+          </svg>
+          OEM管理
+        </div>
+        <div class="submenu-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
+          </svg>
+          销量榜数据管理
+        </div>
+        <div class="submenu-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+            <path d="M7 7h.01"/>
+          </svg>
+          车系优惠配置
+        </div>
+      </div>
+      <div class="menu-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7v5l3 2"/>
+        </svg>
+        线索库 <span class="arrow">▼</span>
+      </div>
+      <div class="menu-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 21a8 8 0 0 1 16 0"/>
+        </svg>
+        用户管理 <span class="arrow">▼</span>
+      </div>
+      <div class="menu-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M7 7h10M7 12h10M7 17h6"/>
+        </svg>
+        内容库 <span class="arrow">▼</span>
+      </div>
+      <div class="menu-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        金融产品库 <span class="arrow">▼</span>
+      </div>
+      <div class="menu-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M3 17l6-6 4 4 8-8"/>
+          <path d="M14 7h7v7"/>
+        </svg>
+        推首位管理
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ========== 主区域 ========== -->
+  <div class="main">
+
+    <!-- 顶部 Header -->
+    <header class="header">
+      <span class="hamburger"><span></span><span></span><span></span></span>
+      <div class="breadcrumb">
+        <span class="home">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3z"/></svg>
+        </span>
+        <span>Dashboard</span>
+        <span class="sep">/</span>
+        <span>车型库</span>
+        <span class="sep">/</span>
+        <span class="cur">车系管理</span>
+      </div>
+      <div class="header-right">
+        <span class="icon-btn" title="搜索">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </span>
+        <span class="text-btn ai">AI</span>
+        <span class="icon-btn" title="全屏">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>
+          </svg>
+        </span>
+        <span class="text-btn ty">T</span>
+        <span class="text-btn ax" title="字体">A</span>
+        <span class="user">
+          <span class="avatar"></span>
+          <span style="font-size:13px">叶启刚 <span style="font-size:10px;opacity:0.6">▼</span></span>
+        </span>
+      </div>
+    </header>
+
+    <!-- 内容 -->
+    <div class="content">
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab">Dashboard</div>
+        <div class="tab">车型管理 <span class="x">×</span></div>
+        <div class="tab active">车系管理 <span class="x">×</span></div>
+      </div>
+
+      <!-- 搜索/筛选 -->
+      <div class="toolbar">
+        <input class="input id" placeholder="车系ID" />
+        <input class="input name" placeholder="车系名称" />
+        <select class="select"><option>品牌</option></select>
+        <select class="select"><option>状态</option></select>
+        <button class="btn btn-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          搜索
+        </button>
+        <button class="btn btn-blue">+ 新建车系</button>
+        <button class="btn btn-blue">官网监控配置</button>
+      </div>
+
+      <!-- 批量 -->
+      <div class="batch">
+        <button class="btn btn-green">批量上线</button>
+        <button class="btn btn-orange">批量下线</button>
+      </div>
+
+      <!-- 表格 -->
+      <div class="table-wrap">
+        <table>
+          <colgroup>
+            <col class="col-country" />
+            <col class="col-type" />
+            <col class="col-price" />
+            <col class="col-thumb" />
+            <col class="col-status" />
+            <col class="col-time" />
+            <col class="col-ops" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>原产国编码</th>
+              <th>车身类型</th>
+              <th>价格区间</th>
+              <th class="col-thumb">白底图</th>
+              <th class="col-status">状态</th>
+              <th>更新时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+
+        <div class="pagination">
+          共 8 条
+          <button class="page-btn">‹</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">›</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // 8 行数据, 跟原图一致
+  const data = [
+    ['巴西',     '皮卡',     '¥342,490 - ¥432,990', 'silver-pickup'],
+    ['巴西',     '皮卡',     '¥334,900 - ¥487,900', 'red-pickup'],
+    ['中国',     '皮卡',     '¥299,900 - ¥329,900', 'white-pickup'],
+    ['印度',     '三厢轿车', '¥304,000 - ¥384,800', 'silver-sedan'],
+    ['墨西哥',   '三厢轿车', '¥327,700 - ¥403,800', 'black-sedan'],
+    ['墨西哥',   '三厢轿车', '¥304,900 - ¥477,900', 'silver-sedan2'],
+    ['墨西哥',   '三厢轿车', '¥301,900 - ¥398,900', 'red-sedan'],
+    ['中国',     '三厢轿车', '¥332,800 - ¥390,000', 'red-sedan2'],
+  ];
+
+  // 不同车型的 SVG (简化的车系缩略图)
+  function carSvg(kind) {
+    const palette = {
+      'silver-pickup':  { body:'#9CA3AB', window:'#2B3340', trim:'#7C8492' },
+      'red-pickup':     { body:'#C8281C', window:'#2A1414', trim:'#9A1F18' },
+      'white-pickup':   { body:'#E8E8E8', window:'#3A4050', trim:'#C0C0C0' },
+      'silver-sedan':   { body:'#A8B0BA', window:'#2B3340', trim:'#888F99' },
+      'black-sedan':    { body:'#2A2D33', window:'#0F1115', trim:'#4A4D54' },
+      'silver-sedan2':  { body:'#9AA0AA', window:'#2B3340', trim:'#7A7F89' },
+      'red-sedan':      { body:'#C42820', window:'#2A1414', trim:'#9C1F18' },
+      'red-sedan2':     { body:'#BC2C20', window:'#1F1010', trim:'#941B14' },
+    }[kind] || { body:'#9CA3AB', window:'#2B3340', trim:'#7C8492' };
+
+    const c = palette;
+    const isPickup = kind.includes('pickup');
+
+    if (isPickup) {
+      // 皮卡: 后部是开放货箱
+      return `<svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="40" cy="36" rx="30" ry="2" fill="rgba(0,0,0,0.12)"/>
+        <!-- 后货箱 -->
+        <path d="M4 22 L4 32 L26 32 L26 22 Z" fill="${c.body}"/>
+        <rect x="4" y="22" width="22" height="2" fill="${c.trim}"/>
+        <!-- 车身 -->
+        <path d="M22 30 L26 18 L38 14 L60 14 L70 22 L70 30 L66 30 A4 4 0 0 1 58 30 L24 30 A4 4 0 0 1 18 30 Z" fill="${c.body}"/>
+        <!-- 驾驶舱窗户 -->
+        <path d="M30 17 L40 14 L56 14 L62 18 L62 22 L30 22 Z" fill="${c.window}"/>
+        <!-- 车轮 -->
+        <circle cx="22" cy="30" r="4" fill="#1a1a1a"/>
+        <circle cx="58" cy="30" r="4" fill="#1a1a1a"/>
+        <circle cx="22" cy="30" r="1.5" fill="#999"/>
+        <circle cx="58" cy="30" r="1.5" fill="#999"/>
+        <!-- 头灯/尾灯 -->
+        <rect x="68" y="24" width="2" height="2" fill="#FFE08A"/>
+        <rect x="2" y="24" width="2" height="2" fill="#FF6060"/>
+      </svg>`;
+    } else {
+      // 三厢轿车
+      return `<svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="40" cy="36" rx="30" ry="2" fill="rgba(0,0,0,0.12)"/>
+        <path d="M6 30 L10 22 L20 16 L34 13 L52 13 L62 16 L70 22 L74 30 L66 30 A4 4 0 0 1 58 30 L22 30 A4 4 0 0 1 14 30 Z" fill="${c.body}"/>
+        <!-- 上半车窗 -->
+        <path d="M22 16 L34 13 L52 13 L60 16 L60 21 L22 21 Z" fill="${c.window}"/>
+        <line x1="40" y1="13" x2="40" y2="21" stroke="${c.body}" stroke-width="0.8"/>
+        <!-- 车轮 -->
+        <circle cx="18" cy="30" r="4" fill="#1a1a1a"/>
+        <circle cx="62" cy="30" r="4" fill="#1a1a1a"/>
+        <circle cx="18" cy="30" r="1.5" fill="#999"/>
+        <circle cx="62" cy="30" r="1.5" fill="#999"/>
+        <!-- 灯 -->
+        <rect x="71" y="24" width="3" height="2" fill="#FFE08A"/>
+        <rect x="6" y="24" width="2" height="2" fill="#FF6060"/>
+        <line x1="22" y1="18" x2="58" y2="18" stroke="${c.trim}" stroke-width="0.4"/>
+      </svg>`;
+    }
+  }
+
+  const tbody = document.getElementById('tbody');
+  data.forEach((row, i) => {
+    const [country, type, price, color] = row;
+    const time = i < 3 ? '2026-08-27 01:37' : '2026-08-27 01:35';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${country}</td>
+      <td>${type}</td>
+      <td>${price}</td>
+      <td class="col-thumb"><span class="car-thumb">${carSvg(color)}</span></td>
+      <td class="col-status"><span class="badge">上线</span></td>
+      <td class="time">${time}</td>
+      <td>
+        <div class="ops">
+          <button class="op op-report" title="车辆解读报告">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3h18v18H3z"/>
+              <path d="M7 14l3-3 3 3 5-5"/>
+              <path d="M14 9h4v4"/>
+            </svg>
+            车辆解读报告
+          </button>
+          <button class="op op-blue" title="详情">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            详情
+          </button>
+          <button class="op op-blue" title="编辑">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
+            </svg>
+            编辑
+          </button>
+          <button class="op op-orange" title="下线">下线</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+</script>
+</body>
+</html>

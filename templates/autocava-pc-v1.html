@@ -142,7 +142,7 @@
 
     /* Spec strip (3 core) */
     .spec-strip {
-      background: var(--navy); padding: 24px 0 32px;
+      background: var(--navy); padding: 20px 0 16px;
     }
     .spec-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
@@ -157,7 +157,7 @@
 
     /* Version selector */
     .trim {
-      background: var(--navy); padding: 24px 0 0;
+      background: var(--navy); padding: 20px 0 0;
     }
     .trim-grid {
       display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
@@ -181,7 +181,7 @@
     }
 
     /* Comparison bar */
-    .compare-bar { background: var(--navy); padding: 24px 0 56px; }
+    .compare-bar { background: var(--navy); padding: 24px 0 20px; }
     .compare {
       background: var(--navy-2); border: 1px solid var(--line); border-radius: 8px;
       padding: 18px 22px;
@@ -401,7 +401,7 @@
     .compete-card .pros b, .compete-card .cons b { font-weight: 700; margin-right: 4px; }
 
     /* Next steps */
-    .next-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .next-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 640px; margin: 0 auto; }
     .next-card {
       background: #fff; border: 1px solid var(--border); border-radius: 8px;
       padding: 32px; text-align: center;
@@ -621,7 +621,7 @@
       <div class="compare">
         <div class="compare-head">
           <span class="tag">VS COMPETENCIA · ¿CÓMO ESTÁ POSICIONADO?</span>
-          <span class="more">Ver análisis completo ›</span>
+          <a href="#compare" class="more">Ver análisis completo ›</a>
         </div>
         <div class="compare-grid">
           <div class="compare-cell">
@@ -1030,14 +1030,6 @@
           <div class="s">280+ distribuidores Nissan en México<br>Recoge y entrega a domicilio sin costo</div>
           <a href="https://www.autocava.com.mx/visit?seriesId=356" class="btn">Reservar horario →</a>
         </div>
-        <div class="next-card">
-          <div class="ic">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 7h6m-6 4h6m-6 4h4M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>
-          </div>
-          <div class="h">Descargar reporte completo</div>
-          <div class="s">PDF 32 páginas · comparativa técnica detallada<br>Envío a tu email en 30 segundos</div>
-          <a href="https://www.autocava.com.mx/cavi" class="btn">Recibir PDF →</a>
-        </div>
       </div>
     </div>
   </section>
@@ -1222,16 +1214,6 @@
               <div class="btn-secondary" id="modal-close3">Cerrar</div>
             </div>`);
           document.getElementById('modal-close3').addEventListener('click', closeModal);
-        } else if (text.includes('PDF')) {
-          openModal(`<h3>Reporte completo PDF</h3><p class="sub">32 páginas · comparativa técnica detallada</p>
-            <div class="row"><span>Formato</span><span>PDF · 8.4 MB</span></div>
-            <div class="row"><span>Entrega</span><span>Email en 30 seg</span></div>
-            <div class="row"><span>Incluye</span><span>Specs, rivales, costos</span></div>
-            <div class="actions">
-              <a href="https://www.autocava.com.mx/cavi" class="btn-primary">Recibir PDF →</a>
-              <div class="btn-secondary" id="modal-close4">Cerrar</div>
-            </div>`);
-          document.getElementById('modal-close4').addEventListener('click', closeModal);
         }
       });
     });

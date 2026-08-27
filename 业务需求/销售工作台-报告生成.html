@@ -1,0 +1,2679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#22c55e">
+<title>Cavi · 报告生成</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ========== Autocava Design Tokens ========== */
+  :root {
+    /* Brand */
+    --green-50:  #f0fdf4;
+    --green-100: #dcfce7;
+    --green-200: #bbf7d0;
+    --green-400: #4ade80;
+    --green-500: #22c55e;   /* primary */
+    --green-600: #16a34a;
+    --green-700: #15803d;
+
+    --yellow-400: #facc15;
+    --yellow-500: #eab308;   /* accent */
+    --yellow-600: #ca8a04;   /* price gold */
+
+    --ink:        #14171e;
+    --ink-2:      #3a4256;
+    --ink-3:      #5a6675;
+    --muted:      #8a8f9b;
+    --line:       #e6e8ee;
+    --line-soft:  #f0f2f5;
+
+    --bg:         #f8f8f8;
+    --surface:    #ffffff;
+    --ink-dark:   #1a1a2e;
+
+    /* Functional */
+    --info:       #3b82f6;
+    --danger:     #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+  body {
+    min-height: 100vh; min-height: 100dvh;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* ========== Status Bar ========== */
+  .status-bar {
+    height: 44px; padding: 0 24px 0 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 15px; font-weight: 600; color: var(--ink);
+    background: transparent;
+  }
+  .status-bar .icons { display: flex; align-items: center; gap: 5px; }
+  .status-bar svg { width: 16px; height: 16px; }
+
+  /* ========== URL Bar ========== */
+  .url-bar {
+    background: #f0f0f0; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--ink-2);
+    font-family: 'JetBrains Mono', monospace;
+    border-radius: 8px; margin: 0 16px;
+  }
+  .url-bar::before { content: '🔒'; margin-right: 6px; font-size: 10px; }
+
+  /* ========== App Header (Cavi glass style) ========== */
+  .app-header {
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(255, 255, 255, 0.6);
+    -webkit-backdrop-filter: blur(11px);
+    backdrop-filter: blur(11px);
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 2px 12px rgba(165, 129, 0, 0.2);
+    margin: 8px 16px 0;
+    border-radius: 16px;
+  }
+  .app-header .title-wrap { flex: 1; min-width: 0; }
+  /* Breadcrumb: "‹ Cavi 销售工作台" — small, clickable, returns to /sales */
+  .app-header .crumb {
+    display: inline-flex; align-items: center; gap: 2px;
+    color: var(--ink-2);
+    font-size: 11px; font-weight: 600;
+    padding: 4px 8px 4px 4px;
+    margin: -4px 0 4px -4px;
+    border-radius: 6px;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.15s, background 0.15s;
+  }
+  .app-header .crumb svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .app-header .crumb:active { background: rgba(0,0,0,0.05); color: var(--green-600); }
+  /* Page title: prominent, tells what this page does */
+  .app-header h1 { font-size: 17px; font-weight: 700; line-height: 1.2; color: var(--ink); }
+  /* (legacy .sub class kept neutral in case other code uses it) */
+  .app-header .sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .avatar-btn {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green-400), var(--green-600));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    border: 0; padding: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
+    transition: transform 0.1s, box-shadow 0.15s;
+  }
+  .avatar-btn:active { transform: scale(0.92); box-shadow: 0 0 0 4px rgba(34,197,94,0.15); }
+
+  /* Profile menu (popover from avatar) */
+  .profile-menu {
+    position: fixed; top: 64px; right: 16px;
+    background: var(--surface); border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15), 0 0 0 1px var(--line);
+    padding: 6px; min-width: 180px; z-index: 50;
+    opacity: 0; transform: translateY(-6px) scale(0.96);
+    pointer-events: none;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+  .profile-menu.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .profile-menu .user-card {
+    padding: 10px 12px 12px; border-bottom: 1px solid var(--line-soft);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .profile-menu .user-card .av {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green-400), var(--green-600));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+  }
+  .profile-menu .user-card .name { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .profile-menu .user-card .role { font-size: 11px; color: var(--muted); }
+  .profile-menu a, .profile-menu .menu-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 8px;
+    font-size: 13px; color: var(--ink); text-decoration: none;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .profile-menu a:active, .profile-menu .menu-item:active { background: var(--bg); }
+  .profile-menu a svg, .profile-menu .menu-item svg { width: 16px; height: 16px; color: var(--ink-2); }
+  .profile-menu .sep { height: 1px; background: var(--line-soft); margin: 4px 0; }
+  .profile-menu .danger { color: var(--red-500, #dc2626); }
+  .profile-menu .danger svg { color: var(--red-500, #dc2626); }
+  /* Backdrop to close menu on outside tap */
+  .menu-backdrop {
+    position: fixed; inset: 0; z-index: 49;
+    background: transparent;
+    display: none;
+  }
+  .menu-backdrop.show { display: block; }
+
+  /* ========== Title Block ========== */
+  .title-block { padding: 24px 16px 4px; }
+  .title-block .eyebrow {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--green-50); color: var(--green-700);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 4px 10px; border-radius: 4px;
+  }
+  .title-block h2 {
+    font-size: 26px; font-weight: 700; line-height: 1.2;
+    letter-spacing: -0.01em; margin-top: 10px;
+  }
+  .title-block .sub { font-size: 13px; color: var(--ink-3); margin-top: 6px; line-height: 1.5; }
+  .title-block .sub b { color: var(--ink); font-weight: 600; }
+
+  /* ========== Input Section ========== */
+  .input-section { padding: 16px; }
+  .input-card {
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .field-label {
+    font-size: 12px; font-weight: 700; color: var(--ink-2);
+    margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+  }
+  .field-label .req { color: var(--danger); }
+  .field-label .hint { font-weight: 400; color: var(--muted); font-size: 11px; }
+  .input-wrap { position: relative; }
+  .input-box {
+    width: 100%; padding: 13px 44px 13px 16px;
+    border: 1.5px solid var(--line); border-radius: 8px;
+    font-size: 16px; font-family: 'JetBrains Mono', monospace;
+    color: var(--ink); background: var(--surface);
+    transition: all 0.15s;
+  }
+  .input-box:focus { border-color: var(--green-500); outline: 0; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1); }
+  .input-clear {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--line); color: var(--ink-3);
+    display: none; align-items: center; justify-content: center;
+    cursor: pointer; border: 0;
+  }
+  .input-clear.show { display: flex; }
+  .input-clear svg { width: 12px; height: 12px; }
+  .input-help { font-size: 11px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+  .input-help code { background: var(--bg); padding: 1px 6px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+
+  /* Cavi-style solid button (no gradient) */
+  .gen-btn {
+    width: 100%; margin-top: 14px;
+    height: 48px; border: 0; border-radius: 8px;
+    background: var(--green-500); color: #fff;
+    font-size: 15px; font-weight: 700;
+    font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .gen-btn:active { background: var(--green-600); transform: scale(0.98); }
+  .gen-btn:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; }
+  .gen-btn svg { width: 16px; height: 16px; }
+
+  /* Quick chips */
+  .quick-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .chip {
+    background: var(--bg); color: var(--ink-2);
+    font-size: 12px; font-weight: 600;
+    padding: 6px 12px; border-radius: 6px;
+    border: 1px solid var(--line);
+    cursor: pointer; font-family: inherit;
+    transition: all 0.15s;
+  }
+  .chip:active { background: var(--green-50); color: var(--green-700); border-color: var(--green-500); }
+
+  /* ========== Loading ========== */
+  .loading-state {
+    background: var(--surface); border-radius: 12px;
+    padding: 36px 20px; margin: 0 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid var(--line-soft);
+  }
+  .spinner {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--green-500) 0%, var(--line) 50%);
+    animation: spin 1.2s linear infinite; margin: 0 auto 16px;
+    position: relative;
+  }
+  .spinner::after { content: ''; position: absolute; inset: 5px; background: #fff; border-radius: 50%; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-state .h { font-size: 15px; font-weight: 700; }
+  .loading-state .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .loading-steps { margin-top: 20px; text-align: left; }
+  .loading-step { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 12px; color: var(--ink-3); }
+  .loading-step .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); flex-shrink: 0; }
+  .loading-step.done .dot { background: var(--green-500); }
+  .loading-step.active .dot { background: var(--info); animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .loading-step.active { color: var(--ink); font-weight: 600; }
+
+  /* ========== Result Card ========== */
+  .result-wrap { padding: 0 16px 16px; }
+  .result-card {
+    background: var(--surface);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    border: 1px solid var(--line-soft);
+  }
+
+  .ai-meta {
+    padding: 10px 14px;
+    background: var(--green-50);
+    border-bottom: 1px solid var(--green-100);
+    display: flex; flex-direction: column; gap: 4px;
+    font-size: 11px; color: var(--green-700);
+  }
+  .ai-meta .row1 { display: flex; align-items: center; gap: 8px; }
+  .ai-meta .row2 { display: flex; align-items: center; gap: 6px; font-size: 9px; color: var(--muted); }
+  .ai-meta .ai-tag {
+    background: var(--green-500); color: #fff;
+    font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .ai-meta .status { font-weight: 600; }
+  .ai-meta .src { font-family: 'JetBrains Mono', monospace; }
+  .ai-meta .ts { margin-left: auto; font-family: 'JetBrains Mono', monospace; color: var(--ink-3); font-size: 10px; }
+
+  .c-hero { padding: 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--line-soft); }
+  .c-hero-img {
+    width: 88px; height: 64px; border-radius: 6px; flex-shrink: 0;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .c-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+  .c-hero-img svg { width: 100%; height: auto; }
+  .c-hero-text { flex: 1; min-width: 0; }
+  .c-hero-eyebrow { font-size: 9px; color: var(--green-600); font-weight: 800; letter-spacing: 0.1em; }
+  .c-hero-title { font-size: 17px; font-weight: 800; line-height: 1.2; margin-top: 2px; }
+  .c-hero-sub { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+  .c-hero-score {
+    display: flex; flex-direction: column; align-items: center;
+    background: var(--yellow-500); color: #fff;
+    padding: 6px 10px; border-radius: 6px; flex-shrink: 0;
+  }
+  .c-hero-score .num { font-size: 20px; font-weight: 800; line-height: 1; color: #fff; }
+  .c-hero-score .lbl { font-size: 8px; font-weight: 800; letter-spacing: 0.1em; margin-top: 1px; opacity: 0.9; }
+
+  .cavi-row { display: flex; align-items: center; gap: 6px; padding: 12px 16px; flex-wrap: wrap; border-bottom: 1px solid var(--line-soft); }
+  .cavi-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--green-50); color: var(--green-700);
+    font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 4px;
+  }
+  .cavi-pill.warn { background: var(--yellow-400); background: #fef9c3; color: #854d0e; }
+  .cavi-pill.info { background: #dbeafe; color: #1e40af; }
+
+  /* ========== Features grid (4 selling points) ========== */
+  .features-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    margin: 0; padding: 12px 16px; background: var(--bg);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .feature-cell {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 6px; padding: 10px 12px;
+  }
+  .feature-cell .v {
+    font-size: 20px; font-weight: 800; color: var(--ink);
+    line-height: 1.1;
+  }
+  .feature-cell .v .u { font-size: 11px; color: var(--ink-3); font-weight: 600; margin-left: 2px; }
+  .feature-cell .l { font-size: 10px; color: var(--ink-3); margin-top: 4px; line-height: 1.3; }
+  .feature-cell .l b { color: var(--green-700); font-weight: 700; }
+
+  /* ========== Versions (6 versions horizontal scroll) ========== */
+  .versions-strip {
+    display: flex; gap: 8px; overflow-x: auto;
+    padding: 12px 16px; background: var(--surface);
+    border-bottom: 1px solid var(--line-soft);
+    -webkit-overflow-scrolling: touch;
+  }
+  .versions-strip::-webkit-scrollbar { display: none; }
+  .version-pill {
+    flex-shrink: 0; min-width: 110px;
+    border: 1.5px solid var(--line); border-radius: 8px;
+    padding: 8px 10px; background: var(--bg);
+    position: relative;
+  }
+  .version-pill .nm { font-size: 11px; font-weight: 800; color: var(--ink); letter-spacing: 0.02em; }
+  .version-pill .sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
+  .version-pill .pr { font-size: 13px; font-weight: 800; color: var(--ink); margin-top: 4px; }
+  .version-pill .mo { font-size: 10px; color: var(--ink-3); margin-top: 1px; }
+  .version-pill.recommended { border-color: var(--green-500); background: var(--green-50); }
+  .version-pill.recommended::after {
+    content: 'RECOMENDADO'; position: absolute; top: -7px; right: 6px;
+    background: var(--green-500); color: #fff;
+    font-size: 8px; font-weight: 800; letter-spacing: 0.05em;
+    padding: 1px 5px; border-radius: 3px;
+  }
+
+  /* ========== CAVI review quote ========== */
+  .review-quote {
+    margin: 0 16px; padding: 12px 14px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--green-500);
+    border-radius: 6px;
+  }
+  .review-quote .stars { color: var(--yellow-500); font-size: 13px; letter-spacing: 1px; }
+  .review-quote .text { font-size: 12px; color: var(--ink-2); line-height: 1.5; margin-top: 4px; font-style: italic; }
+  .review-quote .meta { font-size: 10px; color: var(--muted); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+
+  /* ========== Warranty big number ========== */
+  .warranty-block {
+    margin: 0 16px; padding: 14px;
+    background: var(--ink-dark); color: #fff; border-radius: 8px;
+    position: relative; overflow: hidden;
+  }
+  .warranty-block::after {
+    content: ''; position: absolute; right: -30px; top: -30px;
+    width: 100px; height: 100px; border-radius: 50%;
+    background: var(--green-500); opacity: 0.15;
+  }
+  .warranty-block .head { display: flex; align-items: baseline; gap: 8px; }
+  .warranty-block .n { font-size: 36px; font-weight: 800; color: var(--green-400); line-height: 1; }
+  .warranty-block .u { font-size: 11px; color: rgba(255,255,255,0.7); letter-spacing: 0.08em; font-weight: 700; }
+  .warranty-block .sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+  .warranty-block .list { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 6px; }
+  .warranty-block .item { display: flex; align-items: flex-start; gap: 8px; font-size: 11px; }
+  .warranty-block .item .dot { color: var(--green-400); flex-shrink: 0; margin-top: 1px; }
+  .warranty-block .item .b { color: #fff; font-weight: 600; }
+  .warranty-block .item .s { color: rgba(255,255,255,0.6); margin-top: 1px; }
+
+  /* ========== Competitors strip ========== */
+  .compete-list { display: flex; flex-direction: column; gap: 8px; margin: 0 16px; }
+  .compete-card {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 6px; padding: 10px 12px;
+  }
+  .compete-card.self { border-color: var(--green-500); background: var(--green-50); }
+  .compete-card .tag {
+    font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .compete-card .tag.self { background: var(--green-500); color: #fff; }
+  .compete-card .tag.alt { background: var(--bg); color: var(--ink-3); border: 1px solid var(--line); }
+  .compete-card .body { flex: 1; min-width: 0; }
+  .compete-card .nm { font-size: 12px; font-weight: 700; color: var(--ink); }
+  .compete-card .pr { font-size: 10px; color: var(--ink-3); margin-top: 2px; }
+  .compete-card .pr b { color: var(--ink); }
+  .compete-card .pc {
+    font-size: 10px; color: var(--ink-3); margin-top: 4px; line-height: 1.4;
+  }
+  .compete-card .pc .p { color: var(--green-600); }
+  .compete-card .pc .c { color: var(--ink-3); }
+
+  /* ========== Cost detail breakdown ========== */
+  .cost-detail { margin: 0 16px; display: flex; flex-direction: column; gap: 8px; }
+  .cost-row {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: 6px; padding: 10px 12px;
+  }
+  .cost-row .l { flex: 1; font-size: 12px; color: var(--ink-2); font-weight: 600; }
+  .cost-row .v { font-size: 14px; font-weight: 800; color: var(--ink); }
+  .cost-row .u { font-size: 10px; color: var(--muted); margin-left: 2px; }
+  .cost-row .s { font-size: 10px; color: var(--muted); margin-left: 4px; }
+
+  /* ========== CAVI metrics (4 sub-scores) ========== */
+  .metric-mini {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 0; font-size: 12px;
+  }
+  .metric-mini .l { flex: 1; color: var(--ink-2); }
+  .metric-mini .stars { color: var(--yellow-500); font-size: 11px; letter-spacing: 0.5px; min-width: 60px; }
+  .metric-mini .v { font-weight: 800; color: var(--ink); min-width: 35px; text-align: right; }
+  .metric-mini .v small { font-size: 9px; color: var(--muted); font-weight: 500; }
+
+  /* Spec strip (Cavi uses bg #f8f8f8 + small radii) */
+  .spec-strip {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    background: var(--bg); margin: 0; padding: 12px 16px; gap: 8px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .spec-strip .item { text-align: center; }
+  .spec-strip .v { font-size: 16px; font-weight: 800; color: var(--ink); }
+  .spec-strip .v small { font-size: 10px; font-weight: 500; color: var(--muted); margin-left: 1px; }
+  .spec-strip .l { font-size: 10px; color: var(--ink-3); margin-top: 2px; line-height: 1.3; }
+
+  /* Main price card (dark) */
+  .price-main {
+    margin: 12px 16px 0; padding: 14px;
+    background: var(--ink-dark); color: #fff; border-radius: 8px;
+    position: relative; overflow: hidden;
+  }
+  .price-main::after {
+    content: ''; position: absolute; right: -20px; top: -20px;
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--yellow-500); opacity: 0.1;
+  }
+  .price-main .lbl { font-size: 10px; color: rgba(255,255,255,0.6); letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; }
+  .price-main .price { font-size: 28px; font-weight: 800; color: var(--yellow-500); margin-top: 4px; line-height: 1; }
+  .price-main .price .cur { font-size: 14px; opacity: 0.7; margin-right: 2px; }
+  .price-main .sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+  .price-main .row-list { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .price-main .row-list .r { display: flex; justify-content: space-between; padding: 3px 0; font-size: 12px; }
+  .price-main .row-list .r span:first-child { color: rgba(255,255,255,0.6); }
+  .price-main .row-list .r span:last-child { color: #fff; font-weight: 600; }
+  .price-main .row-list .r .green { color: #4ade80 !important; }
+
+  /* Finance cards */
+  .finance-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    margin: 12px 16px 0;
+  }
+  .fin-card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 6px; padding: 12px;
+  }
+  .fin-card .lbl { font-size: 10px; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; }
+  .fin-card .v { font-size: 18px; font-weight: 800; color: var(--ink); margin-top: 2px; }
+  .fin-card .v .u { font-size: 10px; color: var(--muted); font-weight: 500; margin-left: 2px; }
+  .fin-card .sub { font-size: 11px; color: var(--ink-3); margin-top: 4px; }
+
+  .sec-title {
+    font-size: 10px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+    padding: 16px 16px 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .sec-title::before { content: ''; width: 14px; height: 2px; background: var(--green-500); border-radius: 1px; }
+
+  /* Cost summary (gold) */
+  .cost-summary {
+    margin: 0 16px; padding: 14px;
+    background: linear-gradient(135deg, #fef9c3 0%, #fde68a 100%);
+    border-radius: 8px; display: flex; align-items: center; gap: 12px;
+    border: 1px solid #fde68a;
+  }
+  .cost-summary .total {
+    font-size: 30px; font-weight: 800; line-height: 1; color: var(--yellow-600);
+  }
+  .cost-summary .total .cur { font-size: 14px; }
+  .cost-summary .info { flex: 1; }
+  .cost-summary .lbl { font-size: 10px; color: #92400e; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+  .cost-summary .desc { font-size: 12px; color: #78350f; line-height: 1.4; margin-top: 2px; }
+
+  .next-list { margin: 0 16px; display: flex; flex-direction: column; gap: 8px; }
+  .next-item {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: 8px; padding: 12px;
+  }
+  .next-item .ic {
+    width: 36px; height: 36px; border-radius: 6px;
+    background: var(--green-50); color: var(--green-600);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .next-item.alt .ic { background: #dbeafe; color: var(--info); }
+  .next-item.alt2 .ic { background: #fef9c3; color: var(--yellow-600); }
+  .next-item .ic svg { width: 18px; height: 18px; }
+  .next-item .body { flex: 1; min-width: 0; }
+  .next-item .h { font-size: 13px; font-weight: 700; }
+  .next-item .s { font-size: 11px; color: var(--muted); margin-top: 1px; line-height: 1.4; }
+  .next-item .arr { color: var(--muted); font-size: 18px; }
+
+  .c-footer {
+    padding: 14px 16px 16px; background: var(--bg);
+    border-top: 1px solid var(--line-soft);
+    text-align: center;
+  }
+  .c-footer .brand { font-size: 11px; color: var(--ink-3); font-weight: 600; }
+  .c-footer .brand b { color: var(--green-600); }
+  .c-footer .link-label {
+    display: block; margin-top: 8px; font-size: 10px;
+    color: var(--muted); font-weight: 700; letter-spacing: 0.05em;
+  }
+  .c-footer .link {
+    display: inline-block; margin-top: 3px; padding: 6px 12px;
+    font-size: 12px; color: #fff; font-weight: 700;
+    background: var(--green-500); border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace; word-break: break-all;
+    text-decoration: none;
+  }
+
+  /* ========== Bottom Action Bar (Cavi style solid) ========== */
+  .action-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(255,255,255,0.95);
+    -webkit-backdrop-filter: blur(11px); backdrop-filter: blur(11px);
+    border-top: 1px solid var(--line);
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    display: flex; gap: 8px;
+    z-index: 20;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.04);
+  }
+  .action-bar.hidden { display: none; }
+  .action-bar .btn {
+    flex: 1; height: 46px; border: 0; border-radius: 8px;
+    font-size: 13px; font-weight: 700;
+    font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .action-bar .btn:active { transform: scale(0.97); }
+  .action-bar .btn.primary { background: var(--green-500); color: #fff; flex: 2; }
+  .action-bar .btn.primary:active { background: var(--green-600); }
+  .action-bar .btn.secondary { background: var(--bg); color: var(--ink-2); border: 1px solid var(--line); }
+  .action-bar .btn svg { width: 16px; height: 16px; }
+
+  /* ========== History ========== */
+  .history-section { padding: 0 16px 16px; }
+  .history-section .sec-head { display: flex; align-items: center; gap: 8px; padding: 12px 0 10px; }
+  .history-section .sec-head .sec-title { padding: 0; }
+  .history-section .sec-head .sec-title::before { display: none; }
+  .history-section .sec-head .count {
+    background: var(--green-50); color: var(--green-700);
+    font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 10px;
+  }
+  .hist-list {
+    background: var(--surface);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid var(--line-soft);
+  }
+  .hist-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line-soft);
+    cursor: pointer; transition: background 0.15s;
+    position: relative;
+  }
+  .hist-item:last-child { border-bottom: 0; }
+  .hist-item:active { background: var(--bg); }
+  .hist-item .car-thumb {
+    width: 44px; height: 32px; border-radius: 4px; flex-shrink: 0;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .hist-item .car-thumb svg { width: 100%; height: auto; }
+  .hist-item .info { flex: 1; min-width: 0; }
+  .hist-item .nm { font-size: 13px; font-weight: 700; line-height: 1.3; }
+  .hist-item .sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .hist-item .right { text-align: right; flex-shrink: 0; }
+  .hist-item .ago { font-size: 11px; color: var(--ink-3); font-weight: 500; }
+  .hist-item .meta { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .hist-item .arr { color: var(--muted); font-size: 18px; margin-left: 4px; }
+  /* Time freshness colors (核心：销售靠时间判断是否需要重新生成) */
+  .hist-item .ago { font-weight: 600; }
+  .hist-item .ago.fresh { color: var(--green-600); }
+  .hist-item .ago.ok { color: var(--yellow-600); }
+  .hist-item .ago.stale { color: #ea580c; }   /* orange */
+  .hist-item .ago.expired { color: var(--danger); }
+  .hist-item .ago .ic { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 5px; vertical-align: middle; }
+  .hist-item .meta-freshness { font-size: 9px; margin-top: 1px; font-weight: 600; letter-spacing: 0.02em; }
+  .hist-item .meta-freshness.fresh { color: var(--green-600); }
+  .hist-item .meta-freshness.ok { color: var(--yellow-600); }
+  .hist-item .meta-freshness.stale { color: #ea580c; }
+  .hist-item .meta-freshness.expired { color: var(--danger); }
+
+  /* History detail (re-use card) */
+  .hist-detail {
+    background: var(--surface);
+    border: 1px solid var(--green-500);
+    border-radius: 8px;
+    margin: 10px 16px 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.12);
+  }
+  .hist-detail-head {
+    padding: 12px 14px;
+    background: var(--green-50);
+    border-bottom: 1px solid var(--green-100);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hist-detail-head .tag {
+    background: var(--green-500); color: #fff;
+    font-size: 9px; font-weight: 800; padding: 3px 7px; border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .hist-detail-head .label { font-size: 12px; font-weight: 700; color: var(--green-700); }
+  .hist-detail-head .ts { margin-left: auto; font-size: 10px; color: var(--ink-3); font-family: 'JetBrains Mono', monospace; }
+  .hist-detail-head .close {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: rgba(0,0,0,0.06); border: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-2); cursor: pointer; margin-left: 8px;
+  }
+  .hist-detail-head .close svg { width: 12px; height: 12px; }
+  .hist-detail-body { padding: 14px; }
+  .hist-detail-body .preview {
+    background: var(--bg); border-radius: 6px; padding: 12px;
+    font-size: 12px; color: var(--ink-2); line-height: 1.5;
+  }
+  .hist-detail-body .preview .row {
+    display: flex; justify-content: space-between; padding: 4px 0;
+  }
+  .hist-detail-body .preview .row .k { color: var(--muted); }
+  .hist-detail-body .preview .row .v { font-weight: 600; }
+  .hist-detail-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .hist-detail-actions .btn {
+    flex: 1; height: 40px; border: 0; border-radius: 6px;
+    font-size: 12px; font-weight: 700;
+    font-family: inherit; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .hist-detail-actions .btn.primary { background: var(--green-500); color: #fff; flex: 2; }
+  .hist-detail-actions .btn.primary:active { background: var(--green-600); }
+  .hist-detail-actions .btn.secondary { background: var(--bg); color: var(--ink-2); border: 1px solid var(--line); }
+  .hist-detail-actions .btn svg { width: 13px; height: 13px; }
+  .hist-detail .reuse-hint {
+    font-size: 11px; padding: 10px 12px; border-radius: 6px;
+    margin-top: 10px; line-height: 1.5;
+  }
+  /* Default: fresh (green tint) */
+  .hist-detail .reuse-hint { background: #f0fdf4; color: #14532d; border-left: 3px solid var(--green-500); }
+  /* Override: ok (yellow) */
+  .hist-detail .reuse-hint.ok { background: #fef9c3; color: #854d0e; border-left-color: var(--yellow-500); }
+  /* Override: stale (orange) */
+  .hist-detail .reuse-hint.stale { background: #ffedd5; color: #9a3412; border-left-color: #ea580c; }
+  /* Override: expired (red) */
+  .hist-detail .reuse-hint.expired { background: #fee2e2; color: #991b1b; border-left-color: var(--danger); }
+
+  /* Empty state */
+  .empty { text-align: center; padding: 36px 20px; color: var(--muted); }
+  .empty .illust {
+    width: 72px; height: 72px; margin: 0 auto 12px;
+    background: var(--green-50); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--green-600);
+  }
+  .empty .illust svg { width: 32px; height: 32px; }
+  .empty .h { font-size: 14px; font-weight: 700; color: var(--ink-3); }
+  .empty .sub { font-size: 12px; margin-top: 4px; line-height: 1.5; }
+
+  /* Toast */
+  .toast {
+    position: fixed; left: 50%; top: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    background: rgba(20, 23, 30, 0.95); color: #fff;
+    padding: 14px 20px; border-radius: 12px;
+    font-size: 14px; font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    opacity: 0; transition: all 0.2s;
+    pointer-events: none; z-index: 100;
+    display: flex; align-items: center; gap: 10px;
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .toast .ic { width: 18px; height: 18px; color: var(--green-500); }
+
+  /* Mini spinner (in button) */
+  .mini-spinner {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
+  }
+  /* Action bar button states (share / regen) */
+  .action-bar .btn[disabled] { opacity: 0.6; pointer-events: none; }
+  .action-bar .btn .ic-stack { display: inline-flex; align-items: center; gap: 6px; }
+
+  .bottom-spacer { height: 80px; }
+
+  /* ============================================================
+     简报图片专用样式 (v2-deck style)
+     这里覆盖 .result-card 内部的所有元素, 使其符合
+     reports/templates/autocava-h5-v2-deck.html 的视觉语言
+     (amber 主题 · Chakra Petch + Inter · 10 章结构)
+     销售工作台页面本身 (输入/历史/操作栏) 保持原绿色主题
+     ============================================================ */
+
+  /* v2-deck design tokens (本地作用域) */
+  :root {
+    --rd-bg: #ffffff;
+    --rd-board: #f8f8f8;
+    --rd-card: #ffffff;
+    --rd-card2: #fafafa;
+    --rd-line: #e8e8e8;
+    --rd-line-soft: #f0f0f0;
+    --rd-ink: #222222;
+    --rd-ink2: #666666;
+    --rd-muted: #999999;
+    --rd-amber: #b59317;        /* dorado AutoCava · 主色 */
+    --rd-amber-soft: #fde9a8;
+    --rd-amber-dim: #d8b657;
+    --rd-amber-bright: #ffc422;
+    --rd-good: #16a34a;
+    --rd-good-soft: #ecfdf3;
+    --rd-warn: #f59e0b;
+    --rd-serious: #ec835a;
+    --rd-crit: #d03b3b;
+    --rd-crit-soft: #fef2f2;
+    --rd-mono: rgba(0, 0, 0, 0.04);
+  }
+
+  /* 简报图作用域: 字体 + 颜色基础 */
+  .result-card, .result-card * {
+    font-family: "Chakra Petch", "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    color: var(--rd-ink);
+  }
+  .result-card {
+    background: var(--rd-card);
+    border: 1px solid var(--rd-line-soft);
+    border-radius: 0;            /* 简报图无圆角, 像打印品 */
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .result-card .num { font-variant-numeric: tabular-nums; }
+
+  /* 覆盖旧的 ai-meta 头部, 改为 v2-deck 简报式头条 */
+  .result-card .ai-meta {
+    background: var(--rd-board);
+    border-bottom: 1px solid var(--rd-line);
+    padding: 10px 18px;
+    display: flex; align-items: center; gap: 10px;
+    color: var(--rd-ink2);
+  }
+  .result-card .ai-meta .ai-tag {
+    background: var(--rd-amber); color: #fff;
+    font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .result-card .ai-meta .status { font-size: 11px; font-weight: 600; color: var(--rd-ink); }
+  .result-card .ai-meta .src { font-size: 10px; color: var(--rd-muted); font-family: "Chakra Petch", monospace; }
+  .result-card .ai-meta .ts { margin-left: auto; font-size: 10px; color: var(--rd-muted); font-family: "Chakra Petch", monospace; }
+
+  /* ==== v2-deck 章节通用 ==== */
+  .result-card .sec-kicker {
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 11px; letter-spacing: 0.22em;
+    color: var(--rd-amber); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .result-card .sec-kicker::before {
+    content: ""; width: 18px; height: 1px; background: var(--rd-amber-dim);
+  }
+  .result-card .sec-h2 {
+    font-size: 22px; font-weight: 800; line-height: 1.25;
+    margin-bottom: 10px; text-wrap: balance;
+  }
+  .result-card .sec-lead {
+    color: var(--rd-ink2); font-size: 13px; line-height: 1.7; margin-bottom: 12px;
+  }
+  .result-card .sec-lead b { color: var(--rd-ink); font-weight: 700; }
+  .result-card .sec-note {
+    color: var(--rd-muted); font-size: 10.5px; line-height: 1.65;
+    margin-top: 10px; letter-spacing: 0.02em;
+  }
+  .result-card .sec-divider {
+    height: 1px; background: var(--rd-line-soft);
+    margin: 0; padding: 0;
+  }
+
+  /* ==== v2-deck chip ==== */
+  .result-card .chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    border: 1px solid var(--rd-line); background: var(--rd-card);
+    padding: 4px 10px; font-size: 11.5px; color: var(--rd-ink2);
+    font-family: "Chakra Petch", sans-serif; letter-spacing: 0.04em;
+    border-radius: 2px;
+  }
+  .result-card .chip em { font-style: normal; color: var(--rd-amber); font-weight: 600; }
+  .result-card .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+
+  /* ==== Freshness stamp (vintage 报刊角标) ==== */
+  .result-card .freshness {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin: 0 0 14px;
+    padding: 6px 12px;
+    border: 1.5px solid var(--rd-amber);
+    background: color-mix(in srgb, var(--rd-amber) 6%, #fff);
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 10px; letter-spacing: 0.12em;
+    color: var(--rd-amber);
+    text-transform: uppercase;
+    transform: rotate(-1deg);
+    width: fit-content;
+  }
+  .result-card .freshness b { color: var(--rd-ink); font-weight: 700; }
+  .result-card .freshness .sep { color: var(--rd-line); margin: 0 2px; }
+  .result-card .freshness svg { width: 12px; height: 12px; }
+
+  /* ==== Fig panel (dot grid background) ==== */
+  .result-card .figpanel {
+    position: relative;
+    border: 1px solid var(--rd-line); background:
+      linear-gradient(var(--rd-mono) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rd-mono) 1px, transparent 1px),
+      var(--rd-board);
+    background-size: 18px 18px;
+    padding: 16px;
+    margin: 10px 0;
+  }
+  .result-card .figpanel .figtag {
+    position: absolute; top: 8px; left: 12px;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 9px; letter-spacing: 0.22em; color: var(--rd-muted);
+  }
+  .result-card .figpanel .figcap {
+    margin-top: 10px; font-size: 10px; color: var(--rd-muted);
+    letter-spacing: 0.02em; line-height: 1.5;
+  }
+  .result-card .figpanel.photo {
+    background: #120c10; padding: 0; height: 220px;
+    position: relative; overflow: hidden;
+  }
+  .result-card .figpanel.photo img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .result-card .figpanel.photo .ov {
+    position: absolute; left: 14px; right: 14px; bottom: 14px;
+    z-index: 3; display: flex; align-items: flex-end; justify-content: space-between; gap: 10px;
+  }
+  .result-card .figpanel.photo::after {
+    content: ""; position: absolute; inset: auto 0 0 0; height: 50px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7)); z-index: 1; pointer-events: none;
+  }
+  .result-card .hero {
+    background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
+    padding: 8px 14px; border-left: 3px solid var(--rd-amber);
+  }
+  .result-card .hero b {
+    display: block; color: var(--rd-amber-bright); font-size: 30px; font-weight: 700; line-height: 1;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  }
+  .result-card .hero span {
+    color: #fff; font-size: 10px; letter-spacing: 0.08em;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+  }
+
+  /* ==== Bar chart ==== */
+  .result-card .bars { display: flex; flex-direction: column; gap: 8px; }
+  .result-card .brow {
+    display: grid; grid-template-columns: minmax(88px, auto) 1fr 76px; align-items: center; gap: 10px;
+  }
+  .result-card .brow .bl {
+    font-size: 10.5px; color: var(--rd-muted);
+    font-family: "Chakra Petch", sans-serif; letter-spacing: 0.04em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .result-card .brow .track {
+    height: 10px; background: var(--rd-line-soft); position: relative;
+    border-radius: 0 3px 3px 0;
+  }
+  .result-card .brow .track i {
+    position: absolute; inset: 0 auto 0 0; width: 0%;
+    background: #b9bfc9; border-radius: 0 3px 3px 0;
+  }
+  .result-card .brow .track i.hl { background: var(--rd-amber); }
+  .result-card .brow .track i.bad { background: var(--rd-serious); }
+  .result-card .brow .track i.seq1 { background: var(--rd-ink2); }
+  .result-card .brow .bv {
+    font-size: 11px; color: var(--rd-ink2); text-align: right;
+    font-family: "Chakra Petch", sans-serif;
+  }
+  .result-card .brow .bv em { font-style: normal; color: var(--rd-amber); font-weight: 600; }
+  .result-card .charttitle {
+    font-family: "Chakra Petch", sans-serif; font-size: 10px;
+    letter-spacing: 0.18em; color: var(--rd-muted);
+    display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
+  }
+  .result-card .charttitle::before {
+    content: ""; width: 5px; height: 5px; background: var(--rd-amber);
+  }
+
+  /* ==== Tiles (核心数字) ==== */
+  .result-card .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0; }
+  .result-card .tile {
+    background: var(--rd-card); border: 1px solid var(--rd-line-soft);
+    padding: 10px 12px;
+  }
+  .result-card .tile b {
+    display: block; font-size: 14px; font-weight: 700;
+    color: var(--rd-ink); line-height: 1.15;
+  }
+  .result-card .tile span {
+    font-size: 10.5px; color: var(--rd-muted);
+    letter-spacing: 0.04em; margin-top: 4px; display: block;
+    line-height: 1.4;
+  }
+  .result-card .tile b .unit { font-size: 60%; color: var(--rd-amber); margin-left: 3px; }
+
+  /* ==== ul.clean (要点列表) — 移动端 block 布局, 避免 <b> 被 flex 拆列 ==== */
+  .result-card ul.clean { list-style: none; padding: 0; margin: 6px 0; }
+  .result-card ul.clean li {
+    display: block; position: relative; padding-left: 18px;
+    font-size: 12px; line-height: 1.65; color: var(--rd-ink2);
+    margin-bottom: 8px;
+  }
+  .result-card ul.clean li b { color: var(--rd-ink); font-weight: 700; }
+  .result-card ul.clean li::before {
+    content: "—"; position: absolute; left: 0; top: 0;
+    color: var(--rd-amber);
+    font-family: "Chakra Petch", sans-serif;
+  }
+
+  /* ==== Verdict banner (CONCLUSIÓN CAVI) ==== */
+  .result-card .verdict {
+    border: 1px solid var(--rd-amber-dim);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--rd-amber) 9%, transparent), transparent);
+    padding: 12px 14px; margin: 10px 0;
+    display: block;
+  }
+  .result-card .verdict .vtag {
+    display: inline-block;
+    font-family: "Chakra Petch", sans-serif; font-size: 10px;
+    letter-spacing: 0.2em; color: var(--rd-amber);
+    margin-bottom: 6px;
+  }
+  .result-card .verdict p {
+    font-size: 12px; line-height: 1.7; color: var(--rd-ink2); margin: 0;
+  }
+  .result-card .verdict p b { color: var(--rd-ink); }
+
+  /* ==== Persona cards (¿Quién debería comprar?) ==== */
+  .result-card .pcards { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0; }
+  .result-card .pcard {
+    background: var(--rd-card); border: 1px solid var(--rd-line-soft);
+    padding: 10px 12px; display: flex; flex-direction: column; gap: 4px;
+  }
+  .result-card .pcard .pt { font-size: 12px; font-weight: 700; color: var(--rd-ink); }
+  .result-card .pcard .pv {
+    font-size: 9.5px; letter-spacing: 0.06em; color: var(--rd-amber);
+    font-family: "Chakra Petch", sans-serif;
+  }
+  .result-card .pcard p { font-size: 10.5px; color: var(--rd-ink2); line-height: 1.55; }
+  .result-card .pcard .pwhy {
+    font-size: 10.5px; color: var(--rd-muted);
+    border-top: 1px dashed var(--rd-line); padding-top: 5px; line-height: 1.5;
+  }
+  .result-card .pcard .pwhy b { color: var(--rd-ink); }
+
+  /* ==== Contract mock (trampas) ==== */
+  .result-card .contract {
+    background: var(--rd-bg); border: 1px solid var(--rd-line);
+    padding: 12px 14px; font-size: 11px; line-height: 1.9;
+    color: var(--rd-ink2); width: 100%;
+    font-family: "Chakra Petch", sans-serif;
+    margin: 8px 0;
+  }
+  .result-card .contract .ct {
+    font-size: 9.5px; letter-spacing: 0.2em; color: var(--rd-muted);
+    border-bottom: 1px solid var(--rd-line-soft);
+    padding-bottom: 6px; margin-bottom: 4px;
+  }
+  .result-card .contract .hlw { background: color-mix(in srgb, var(--rd-warn) 14%, transparent); color: var(--rd-warn); padding: 0 3px; }
+  .result-card .contract .hlc { background: color-mix(in srgb, var(--rd-crit) 12%, transparent); color: #9c2327; padding: 0 3px; }
+  .result-card .contract .hln { color: var(--rd-ink); }
+  .result-card .contract .cm { float: right; color: var(--rd-muted); font-size: 9.5px; letter-spacing: 0.04em; }
+
+  /* ==== Donut + maintenance (costo anual) ==== */
+  .result-card .donutwrap {
+    display: grid; grid-template-columns: 130px 1fr; align-items: center; gap: 12px;
+    margin: 8px 0;
+  }
+  .result-card .legend { display: grid; gap: 6px; }
+  .result-card .legend .lrow {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 10.5px; color: var(--rd-ink2);
+  }
+  .result-card .legend .lrow i {
+    width: 7px; height: 7px; display: block; flex: none;
+  }
+  .result-card .legend .lrow b {
+    margin-left: auto; font-family: "Chakra Petch", sans-serif; color: var(--rd-ink);
+  }
+  .result-card .laps { display: flex; flex-wrap: wrap; gap: 0; margin-top: 8px; }
+  .result-card .lap { flex: 1; min-width: 60px; position: relative; text-align: center; }
+  .result-card .lap::before {
+    content: ""; position: absolute; top: 4px; left: 0; right: 0;
+    height: 1px; background: var(--rd-line);
+  }
+  .result-card .lap::after {
+    content: ""; position: absolute; top: 1.5px; left: 50%;
+    transform: translateX(-50%);
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--rd-card2); border: 1px solid var(--rd-amber);
+  }
+  .result-card .lap b {
+    display: block; margin-top: 12px;
+    font-family: "Chakra Petch", sans-serif; font-size: 11.5px; color: var(--rd-ink);
+  }
+  .result-card .lap span { font-size: 9.5px; color: var(--rd-muted); letter-spacing: 0.04em; }
+
+  /* ==== Contact card (asesor) ==== */
+  .result-card .contact {
+    background: var(--rd-card); border: 1px solid var(--rd-line-soft);
+    padding: 14px; margin: 8px 0;
+  }
+  .result-card .contact .crow {
+    display: flex; justify-content: space-between; gap: 12px;
+    padding: 7px 0; border-bottom: 1px dashed var(--rd-line-soft);
+    font-size: 11.5px;
+  }
+  .result-card .contact .crow:last-child { border-bottom: none; }
+  .result-card .contact .crow .k { color: var(--rd-muted); flex: none; }
+  .result-card .contact .crow .v {
+    color: var(--rd-ink); font-family: "Chakra Petch", sans-serif;
+    font-size: 11px; text-align: right;
+  }
+  .result-card .steps { display: grid; gap: 8px; counter-reset: st; margin: 8px 0; }
+  .result-card .step {
+    display: block; position: relative; padding-left: 28px;
+    font-size: 11px; color: var(--rd-ink2); line-height: 1.5;
+  }
+  .result-card .step::before {
+    counter-increment: st; content: counter(st, decimal-leading-zero);
+    font-family: "Chakra Petch", sans-serif; color: var(--rd-amber);
+    font-size: 11px; letter-spacing: 0.1em;
+    position: absolute; left: 0; top: 0;
+  }
+  .result-card .step b { color: var(--rd-ink); font-weight: 700; }
+
+  /* ==== 简报图自己的章节容器 ==== */
+  .result-card .report-section {
+    padding: 22px 20px;
+    border-bottom: 1px solid var(--rd-line-soft);
+  }
+  .result-card .report-section:last-child { border-bottom: none; }
+  .result-card .report-cover { padding: 26px 20px 20px; }
+  .result-card .cover-title {
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 36px; font-weight: 700; letter-spacing: 0.04em;
+    line-height: 1.05; margin-bottom: 12px;
+  }
+  .result-card .cover-title .yr { color: var(--rd-amber); }
+  .result-card .cover-sub {
+    font-size: 13px; color: var(--rd-ink2); line-height: 1.65;
+    max-width: 36ch; margin-bottom: 10px;
+  }
+  .result-card .cover-sub b { color: var(--rd-ink); }
+  .result-card .cover-foot {
+    margin-top: 12px; font-size: 10px; color: var(--rd-muted);
+    letter-spacing: 0.04em; line-height: 1.7;
+  }
+  .result-card .cover-foot b { color: var(--rd-ink2); }
+
+  /* ==== 简报图 footer ==== */
+  .result-card .report-footer {
+    padding: 14px 20px;
+    background: var(--rd-board);
+    border-top: 1px solid var(--rd-line);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; font-size: 10.5px; color: var(--rd-muted);
+    font-family: "Chakra Petch", sans-serif; letter-spacing: 0.04em;
+  }
+  .result-card .report-footer .brand b { color: var(--rd-amber); font-weight: 700; }
+  .result-card .report-footer .link {
+    display: inline-block; padding: 4px 10px;
+    font-size: 11px; color: var(--rd-ink); font-weight: 600;
+    background: var(--rd-card); border: 1px solid var(--rd-amber);
+    border-radius: 2px;
+    font-family: "Chakra Petch", sans-serif;
+  }
+
+  /* ==== 折角 (印章效果) ==== */
+  .result-card .stamp-corner {
+    position: absolute; top: 12px; right: 12px; z-index: 5;
+    background: var(--rd-good); color: #fff;
+    font-family: "Chakra Petch", sans-serif; font-size: 9px;
+    font-weight: 800; letter-spacing: 0.12em;
+    padding: 4px 8px; border-radius: 2px;
+    transform: rotate(2deg);
+  }
+
+  /* ==== 简报图截图时的尺寸约束 (避免太长) ==== */
+  .result-card .report-section.tight { padding: 16px 20px; }
+  .result-card .report-section .section-num {
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 10px; color: var(--rd-muted);
+    letter-spacing: 0.2em; margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="status-bar">
+  <span id="clock">9:41</span>
+  <div class="icons">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h20V11H2v11zm2-9h16v7H4v-7zM7 2h10v7H7V2zm2 2v3h6V4H9z"/></svg>
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.24 4.24 0 0 0-6 0zm-4-4l2 2a7.07 7.07 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+  </div>
+</div>
+
+<div class="url-bar">cavi.sales.autocava.com.mx/report/new</div>
+
+<header class="app-header">
+  <div class="title-wrap">
+    <a href="/sales" class="crumb" aria-label="返回 Cavi 销售工作台">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span>Cavi 销售工作台</span>
+    </a>
+    <h1>生成车辆解读报告</h1>
+  </div>
+  <button class="avatar-btn" onclick="toggleProfileMenu(event)" aria-label="我的账户">C</button>
+</header>
+
+<!-- Backdrop closes profile menu on outside tap -->
+<div class="menu-backdrop" id="menuBackdrop" onclick="closeProfileMenu()"></div>
+
+<!-- Profile menu (anchored under avatar) -->
+<div class="profile-menu" id="profileMenu" role="menu">
+  <div class="user-card">
+    <div class="av">C</div>
+    <div>
+      <div class="name">Cavi 销售</div>
+      <div class="role">销售 · 已登录</div>
+    </div>
+  </div>
+  <a href="/sales/reports" class="menu-item" role="menuitem">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+    我的报告
+  </a>
+  <a href="/sales/team" class="menu-item" role="menuitem">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    团队数据
+  </a>
+  <div class="sep"></div>
+  <a href="/sales/settings" class="menu-item" role="menuitem">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    设置
+  </a>
+  <a href="/logout" class="menu-item danger" role="menuitem">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    退出登录
+  </a>
+</div>
+
+<section class="title-block">
+  <div class="eyebrow">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+    AI · 4 数据源
+  </div>
+  <h2>输入车系 · 一键生成</h2>
+  <p class="sub">AI 生成车辆解读报告 · <b>复制到 WhatsApp</b> 发给客户</p>
+</section>
+
+<section class="input-section">
+  <div class="input-card">
+    <div class="field-label">
+      车系 / 车系 ID <span class="req">*</span>
+      <span class="hint">支持: 车系名 / series_id</span>
+    </div>
+    <div class="input-wrap">
+      <input type="text" id="carInput" class="input-box" placeholder="如: nissan-versa" value="356" inputmode="text" autocomplete="off">
+      <button class="input-clear" id="inputClear" onclick="clearInput()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="quick-chips">
+      <button class="chip" onclick="setInput('356')">356 · Versa 2026</button>
+      <button class="chip" onclick="setInput('nissan-versa')">nissan-versa</button>
+      <button class="chip" onclick="setInput('412')">412 · Virtus</button>
+    </div>
+    <div class="input-help">
+      示例: <code>356</code> · <code>nissan-versa</code> · <code>412</code>
+    </div>
+    <button class="gen-btn" id="genBtn" onclick="generate()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      生成报告
+    </button>
+  </div>
+</section>
+
+<section id="loadingSection" style="display:none; padding-top: 8px;">
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <div class="h">AI 正在生成车辆解读报告</div>
+    <div class="sub">拉取 4 数据源 + LLM 拼装 + 5 步校验</div>
+    <div class="loading-steps">
+      <div class="loading-step done" id="ls1"><div class="dot"></div><div>① 触发 (S1.3 销售手动)</div></div>
+      <div class="loading-step active" id="ls2"><div class="dot"></div><div>② 接入 (参数校验/缓存)</div></div>
+      <div class="loading-step" id="ls3"><div class="dot"></div><div>③ 4 数据源并行</div></div>
+      <div class="loading-step" id="ls4"><div class="dot"></div><div>④ AI Agent 生成 + 5 步校验</div></div>
+      <div class="loading-step" id="ls5"><div class="dot"></div><div>⑤ 落地 (报告生成)</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="result-wrap" id="resultSection" style="display:none;"></section>
+
+<!-- 今日已生成历史列表 -->
+<section class="history-section" id="historySection">
+  <div class="sec-head">
+    <span class="sec-title">今日已生成</span>
+    <span class="count" id="historyCount">0</span>
+  </div>
+  <div class="hist-list" id="historyList"></div>
+</section>
+
+<section class="input-section" id="emptyState">
+  <div class="empty">
+    <div class="illust">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>
+    </div>
+    <div class="h">输入车系信息开始生成</div>
+    <div class="sub">AI 会从 CAVI 数据库拉取 6 版本 + 评分 + 月销 + 金融方案<br>生成后点击底部 <b>复制并发送</b> 直接发到客户 WhatsApp</div>
+  </div>
+</section>
+
+<div class="bottom-spacer"></div>
+
+<div class="action-bar hidden" id="actionBar">
+  <button class="btn secondary" id="regenBtn" onclick="regenerate()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+    <span class="ic-stack">重新生成</span>
+  </button>
+  <button class="btn primary" id="shareBtn" onclick="shareToWhatsApp()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+    <span class="ic-stack" id="shareBtnLabel">复制并发送</span>
+  </button>
+</div>
+
+<div class="toast" id="toast">
+  <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg">已复制</span>
+</div>
+
+<!-- html2canvas: 客户端把 .result-card 截图成 PNG, 用于 Web Share API 分享图片
+     生产环境建议后端用 Puppeteer 渲染同一份模板, 存 CDN, 这里换 URL 即可 -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<script>
+  // ========== Real data from PC v1 template (autocava-h5-mx-v1.html) ==========
+  // 数据 1:1 对齐详细报告 8 章结构, 销售工作台 + 分享图共用一份 SOURCE OF TRUTH
+  const SERIES_DATA = {
+    '356': {
+      series_id: 356, model: 'nissan-versa', year: 2026, market: 'MX',
+
+      // ==== 01 COVER (v2-deck) ====
+      title: 'Nissan Versa 2026',
+      title_sub: 'Sedán subcompacto · Gasolina · 1.6L',
+      image: 'https://cdn.autocava.com.mx/car/series/87bfccbc706c4e7fa2174f07b784baf3.png',
+      cavi_score: 4.6,
+      cavi_recommend: 89,
+      monthly_sales: 7486,
+      monthly_sales_rank: 'Sedán #1 en México',
+      kicker: 'Reporte de Compra 01 · 2026 · Sedán subcompacto',
+      hero_lead: '<b>El sedán #1 de México</b> — 7,486 unidades en julio, CAVI 4.6/5. Analizamos precio, versiones, costo de uso y competencia para que decidas con datos, no con publicidad.',
+      cover_chips: [
+        { l: 'Desde', e: '$309,990', u: 'MXN' },
+        { l: 'Consumo', e: '18.81 km/L' },
+        { l: '6 airbags', e: 'estándar' },
+        { l: 'Garantía', e: '3 años' }
+      ],
+      freshness: { emitido: '26 AGO 2026', vence: '30 SEP 2026' },
+      cover_foot: 'Datos a agosto 2026. Precios con IVA incluido, sugeridos por Nissan México y pueden variar por distribuidor. CAVI = análisis propio de AutoCava basado en 3,240 propietarios. <b>Precios válidos al 26 AGO 2026 · sujetos a cambio sin previo aviso.</b>',
+
+      // ==== 02 POSICIÓN DE MERCADO (v2-deck) ====
+      market_h2: 'El sedán más vendido de México, por séptimo año',
+      market_lead: 'El Versa es la "respuesta nacional" del comprador mexicano: precio accesible, red de servicio en los 32 estados, repuestos baratos y reventa fuerte. En julio <b>7,486 personas</b> lo eligieron — ningún otro sedán se acerca.',
+      market_tiles: [
+        { v: '7,486',         l: 'Unidades vendidas en julio 2026 · <b>#1 sedán</b>' },
+        { v: 'Aguascalientes', l: 'Ensamble nacional · cadena de suministro estable' },
+        { v: '280+',          l: 'Distribuidores en todo México' },
+        { v: '#1 Uber',       l: 'El sedán más usado por conductores de app' }
+      ],
+      market_chart: [
+        { month: 'JUL', units: 7486, w: 100, hl: true },
+        { month: 'JUN', units: 6820, w: 91 },
+        { month: 'MAY', units: 7110, w: 95 },
+        { month: 'ABR', units: 6580, w: 88 }
+      ],
+      market_chiprow: [
+        { l: 'Fuente', e: 'AMIA' },
+        { l: 'Share', e: '≈6%' },
+        { l: '#1', e: 'Sedán' }
+      ],
+      market_note: 'La escala protege al dueño: muchos autos = refacciones baratas = reparación rápida = reventa estable. Círculo virtuoso.',
+
+      // ==== 03 PRECIO Y FINANCIAMIENTO (v2-deck) ====
+      versions: [
+        { ver: 'SENSE BASE', name: 'MT',   price: '$309,990', monthly: '$5,162' },
+        { ver: 'SENSE',      name: 'MT',   price: '$316,990', monthly: '$5,278' },
+        { ver: 'SENSE',      name: 'CVT',  price: '$341,990', monthly: '$5,694' },
+        { ver: 'ADVANCE',    name: 'MT',   price: '$363,990', monthly: '$6,061' },
+        { ver: 'ADVANCE',    name: 'CVT',  price: '$374,990', monthly: '$6,244', recommended: true },
+        { ver: 'EXCLUSIVE',  name: 'CVT',  price: '$406,990', monthly: '$6,777' }
+      ],
+      price_h2: 'Seis versiones: ¿cuál te conviene?',
+      price_lead: 'El precio lista va de <b>$309,990 a $406,990 MXN</b>. Con el bono de intercambio de <b>−$15,000</b> y planes a 36–48 meses, el enganche típico es de $93,000–$112,000 MXN.',
+      price_main: { ver: 'ADVANCE CVT · Recomendado', base: '$374,990', bonus: '−$15,000', effective: '$359,990', sub: 'MXN · precio de lista Nissan México' },
+      finance_cards: [
+        { lbl: 'BBVA · 36 meses',     v: '$6,244', u: '/mes', sub: 'Enganche 30% · Tasa 12.9%' },
+        { lbl: 'Nissan · 48 meses',   v: '$5,899', u: '/mes', sub: '0% intereses primer año · CAT 14.8%' }
+      ],
+      finance_tiles: [
+        { v: 'BBVA · 36m',     l: 'Enganche 30% · 12.9% · <b>$6,244/mes</b>' },
+        { v: 'Nissan · 48m',   l: '0% intereses 1er año · CAT 14.8% · <b>$5,899/mes</b>' },
+        { v: 'Bono',           l: 'Intercambio: <b>−$15,000</b> + Nissan <b>−$8,000</b>' },
+        { v: 'CAT 14.8%',      l: 'Compara siempre el CAT, no la tasa nominal' }
+      ],
+      bonus: { v: '$15,000', sub: 'Bono intercambio · Aplica a ADVANCE+ · Vigencia 31 oct 2026' },
+      price_advice: [
+        'El enganche no debe superar el <b>30% de tu ahorro líquido</b> — deja fondo de emergencia.',
+        'Con <b>nómina demostrable</b> BBVA y Banamex dan mejor tasa; <b>sin historial</b>, CrediNissan aprueba más rápido.',
+        'El plan 48m de Nissan tiene <b>0% intereses el primer año</b>, pero CAT real sigue siendo ~14.8%.'
+      ],
+      price_note: 'Cálculo basado en ADVANCE CVT ($374,990). Tasa y enganche son referenciales; el banco aprueba según buró.',
+
+      // ==== 04 COMPETENCIA (v2-deck · 4 款) ====
+      competitors: [
+        { tag: 'TU ELECCIÓN',  self: true,  name: 'Nissan Versa', price_from: '$309,990', pros: 'Mejor precio · cajuela 482L · 6 airbags std', cons: 'Ruido carretera', score: 92, chips: [{l:'Espacio',e:'+'},{l:'Reventa',e:'+'},{l:'Costo uso',e:'+'},{l:'Ruido',e:'−'}] },
+        { tag: 'ALTERNATIVA',  self: false, name: 'VW Virtus',   price_from: '$322,490', pros: 'Manejo alemán · 126 HP',                cons: 'Consumo mayor · ensamble India', score: 86 },
+        { tag: 'ALTERNATIVA',  self: false, name: 'Kia K3 Sedán', price_from: '$304,900', pros: 'Garantía 5 años · ensamble MX',         cons: 'Resale inferior al Versa', score: 88 },
+        { tag: 'ALTERNATIVA',  self: false, name: 'Mazda 2',     price_from: '$301,900', pros: 'Skyactiv · diseño KODO',                cons: 'Cajuela menor · red servicio', score: 84 }
+      ],
+      comp_h2: 'VW Virtus, Kia K3, Mazda 2: ¿cómo se compara?',
+      comp_lead: 'En el rango <b>$300K–$410K MXN</b> hay cuatro contendientes serios. El Versa no gana en cada rubro — gana en <b>balance</b>: precio, espacio, seguridad estándar y reventa.',
+      comp_tiles: [
+        { v: 'Versa',     l: 'Desde <b>$309,990</b> · cajuela 482L · 6 airbags std' },
+        { v: 'VW Virtus', l: 'Desde <b>$322,490</b> · manejo alemán · 126 HP' },
+        { v: 'Kia K3',    l: 'Desde <b>$304,900</b> · garantía 5 años · ensamble MX' },
+        { v: 'Mazda 2',   l: 'Desde <b>$301,900</b> · Skyactiv · diseño KODO' }
+      ],
+      comp_note: 'Si tu prioridad es <b>reventa y costo total</b> → Versa. Si es <b>garantía larga</b> → K3. Si es <b>manejo</b> → Virtus. Si es <b>diseño premium</b> → Mazda 2.',
+
+      // ==== 05 FORTALEZAS (v2-deck) ====
+      features: [
+        { v: '18.81', u: 'km/L',    l: 'Consumo combinado SENSE MT', hl: 'mejor del segmento' },
+        { v: '482',   u: 'L',       l: 'Cajuela · 2 maletas + carreola', hl: 'sin problema' },
+        { v: '6',     u: 'airbags', l: 'Frontales + laterales + cortina', hl: 'estándar' },
+        { v: '3',     u: 'años',    l: 'Garantía Nissan', hl: '100,000 km' }
+      ],
+      strengths_h2: 'Por qué 89% de propietarios lo recomienda',
+      strengths_text: [
+        '<b>Consumo líder del segmento</b> — 18.81 km/L combinado (SENSE MT), el mejor entre sedanes subcompactos.',
+        '<b>Cajuela que resuelve</b> — 482 L, caben 2 maletas grandes + carreola + equipaje de mano.',
+        '<b>6 airbags de serie</b> — frontales, laterales y de cortina; ESP incluido en todas las versiones.',
+        '<b>Costo de uso bajo</b> — servicio menor <b>$650 MXN</b> cada 10,000 km; mayor <b>$2,400 MXN</b> cada 30,000 km.',
+        '<b>Garantía Nissan 3 años / 100,000 km</b> — la red de servicio más grande de México respalda.',
+        '<b>Revalorización 62% a 3 años</b> — mejor que Virtus y K3 según AMIA.'
+      ],
+      strengths_chiprow: [
+        { l: 'Mejor consumo', e: '18.81 km/L' },
+        { l: 'Cajuela', e: '482 L' },
+        { l: '6 airbags', e: 'estándar' },
+        { l: 'Garantía', e: '3 años / 100K km' }
+      ],
+      strengths_note: 'Dato CAVI: el 89% de los 3,240 propietarios calificados recomienda el Versa. Áreas a mejorar: ruido en carretera y CarPlay.',
+
+      // ==== 06 PUNTOS DÉBILES (v2-deck · 新增) ====
+      weakness_h2: 'Lo que el Versa no te va a dar',
+      weakness_chart: [
+        { k: 'RUIDO',     v: 3.9, w: 78, bad: true },
+        { k: 'CARPLAY',   v: 3.7, w: 74, bad: true },
+        { k: 'POTENCIA',  v: 4.0, w: 80 },
+        { k: 'INTERIOR',  v: 4.4, w: 88 }
+      ],
+      weakness_tiles: [
+        { v: '4.4', l: 'Diseño / interiores · plásticos duros' },
+        { v: '4.0', l: 'Potencia · 1.6L · 118 HP · tranquilo' }
+      ],
+      weakness_text: [
+        '<b>Ruido en carretera</b> — a 110+ km/h el viento y el rodar se notan; usuarios lo califican 3.9/5.',
+        '<b>CarPlay / Android Auto no confirmado</b> — solo en versiones más altas y vía dealer; calificación 3.7/5.',
+        '<b>Plásticos duros</b> — interior funcional pero sin la suavidad del K3 o Virtus; refleja el precio.',
+        '<b>1.6L de 118 HP</b> — sobrado en ciudad, justo en autopista con aire acondicionado y carga.',
+        '<b>Pantalla pequeña</b> — la unidad central de 7" se ve chica frente a la competencia de 10".'
+      ],
+      weakness_note: 'Si valoras más el manejo deportivo o la conectividad premium, mira K3 o Virtus. Si valoras el balance racional, el Versa sigue siendo el ganador.',
+
+      // ==== 07 ¿QUIÉN DEBERÍA COMPRAR? (v2-deck · 新增) ====
+      verdict_h2: 'Si tu prioridad es el costo total, es tu auto',
+      verdict_text: '¿Buscas un sedán que cueste poco mantener 5 años y se revenda fácil? → <b>Cómpralo.</b> El Versa es la respuesta de menor riesgo en México. Si lo que quieres es deportividad o conectividad premium, mira K3 o Virtus antes de decidir.',
+      personas: [
+        { tag: 'VERSIÓN · SENSE / ADVANCE',  title: 'Familia primer auto',          body: '6 airbags + ESP ya incluidos; Advance suma cámara y CarPlay.', why: 'Plan 48m · enganche 25% · <b>≈$5,900/mes</b>' },
+        { tag: 'VERSIÓN · SENSE MT',         title: 'Conductor de app / flotilla',  body: 'Consumo, mantenimiento y reventa: los tres números que importan.', why: 'El auto no puede parar esperando refacciones' },
+        { tag: 'VERSIÓN · ADVANCE CVT',      title: 'Commuter urbano',              body: 'Suficiente equipamiento, presencia correcta, mensualidad cómoda.', why: 'Sweet spot del catálogo' },
+        { tag: 'VERSIÓN · mejor mira K3',    title: 'Comprador que estira presupuesto', body: 'Si puedes pagar Exclusive, evalúa subir de segmento.', why: 'No pagues de más por "versión tope"' }
+      ],
+      pick_tiles: [
+        { v: 'Top pick', l: 'ADVANCE CVT · el sweet spot del catálogo' },
+        { v: 'Plan B',   l: 'SENSE CVT · ahorras <b>$33,000</b> sin perder seguridad' },
+        { v: 'Evita',    l: 'EXCLUSIVE — el precio ya toca el K3 full' },
+        { v: 'Negociar', l: 'Modelos 2025 en stock · 5–10% menos, misma garantía' }
+      ],
+      verdict_note: 'Recomendación CAVI: como toda la gama trae 6 airbags + ESP, la decisión está en equipamiento y costo total, no en seguridad.',
+
+      // ==== 08 TRAMPAS A EVITAR (v2-deck · 新增) ====
+      traps_h2: 'Cuatro cosas que el dealer no te va a decir',
+      contract_title: 'CONTRATO DE COMPRAVENTA · Nissan México (extracto ilustrativo)',
+      contract: [
+        { l: 'Precio lista (incl. IVA)', v: 'MXN 374,990', hl: 'n', cm: '← pide precio por escrito' },
+        { l: 'Comisión por apertura',     v: '2% · 7,500',  hl: 'c', cm: '← va dentro del CAT' },
+        { l: 'CAT promedio',              v: '14.8%',       hl: 'w', cm: '← compara este, no la tasa' },
+        { l: 'Seguro obligatorio 1.er año', v: '≈12,000',   hl: 'w', cm: '← pregunta si hay cashback' },
+        { l: 'Pago anticipado',           v: 'sin penalización*', hl: 'n', cm: '← *ver cláusula 9' },
+        { l: 'Entrega',                   v: '45–60 días hábiles', hl: 'c', cm: '← fija precio y fecha por escrito' }
+      ],
+      traps_text: [
+        '<b>Precio inflado con extras</b> — pide siempre el <b>precio lista + IVA</b> por escrito; rechaza "paquetes" no solicitados.',
+        '<b>Comisión por apertura</b> — 1–2% del auto. Está en el CAT, pero el dealer la minimiza. Pide el desglose.',
+        '<b>Seguro atado al financiamiento</b> — si te imponen seguro del dealer, pide el equivalente en <b>descuento en efectivo</b>.',
+        '<b>Entrega sin fecha</b> — "disponible pronto" significa lo que ellos quieran. Pide fecha y precio fijo por escrito.'
+      ],
+      traps_note: 'Fórmula rápida: presupuesto real = (precio lista × 1.03–1.06) + seguro año 1 + placas. Si te ofrecen menos, es publicidad.',
+
+      // ==== 09 COSTO ANUAL (v2-deck) ====
+      annual_cost: {
+        total: '$28,500', monthly: '$2,375',
+        sub: '20,000 km/año · ≈ menos que un coffee shop diario',
+        breakdown: [
+          { l: 'Gasolina',      v: '$14,200', u: '/año',  pct: 49.8 },
+          { l: 'Seguro',        v: '$9,800',  u: '/año',  pct: 34.4 },
+          { l: 'Mantenimiento', v: '$4,500',  u: '/año',  pct: 15.8 }
+        ],
+        donut: [
+          { name: 'Gasolina',                v: 49.8, val: '≈$14,200', color: '#b59317' },
+          { name: 'Seguro · cobertura amplia', v: 34.4, val: '≈$9,800',  color: '#3987e5' },
+          { name: 'Mantenimiento',            v: 15.8, val: '≈$4,500',  color: '#16a34a' }
+        ],
+        five_year:  { v: '$142,500', sub: '23% menos que promedio del segmento' },
+        service_minor: { v: '$650', sub: 'Cada 10,000 km · aceite + filtros' },
+        revaluacion_3y: { v: '62%', sub: 'Mejor que Virtus y K3' }
+      },
+      cost_h2: 'Menos que un café diario, en serio',
+      cost_lead: 'El Versa cuesta <b>~$28,500 MXN al año</b> en gasolina + seguro + mantenimiento. Son <b>$2,375 al mes</b> — menos que un café de specialty al día. Y a 5 años, <b>$142,500 MXN</b>: 23% menos que el promedio del segmento.',
+      maintenance: [
+        { km: '10K', l: 'Servicio menor · $650' },
+        { km: '20K', l: 'Filtro aire · $850' },
+        { km: '30K', l: 'Servicio mayor · $2,400' },
+        { km: '40K', l: 'Bujías · $1,200' },
+        { km: '50K', l: 'Inspección · $1,500' },
+        { km: '60K', l: 'CVT fluid · $3,200' }
+      ],
+      cost_text: [
+        '<b>Gasolina</b> — $14,200/año. Consumo real promedio de dueños: 17 km/L en ciudad.',
+        '<b>Seguro</b> — $9,800/año cobertura amplia con deducible medio.',
+        '<b>Mantenimiento</b> — $4,500/año. Servicio menor cada 10,000 km a <b>$650 MXN</b>.',
+        '<b>Revalorización</b> — 62% a 3 años; mejor que Virtus y K3 según AMIA.',
+        '<b>Taller independiente</b> — NOM no obliga a ir al dealer; ahorro del 30–40% en mano de obra.',
+        '<b>Plan prepagado Nissan</b> — 3 servicios incluidos desde <b>$4,990 MXN</b>.'
+      ],
+      cost_note: 'Regla de oro: si la mensualidad del auto supera 30% de tu ingreso, busca una versión más baja o un enganche mayor.',
+
+      // ==== 10 CONTACTO / SIGUIENTE PASO (v2-deck) ====
+      next_cards: [
+        { type: 'whatsapp',   h: 'Hablar con un asesor',     s: '1 a 1 por WhatsApp · responde < 5 min' },
+        { type: 'test_drive', h: 'Agendar prueba de manejo', s: '280+ distribuidores · recoge a domicilio' }
+      ],
+      contact_h2: 'Resolvemos todo por WhatsApp antes de que vayas al dealer',
+      contact: [
+        { k: 'Asesor de compra',  v: 'Asesor CAVI · 1 a 1' },
+        { k: 'WhatsApp (principal)', v: '+52 55 2741 9019' },
+        { k: 'Email',              v: 'contacto@autocava.mx' },
+        { k: 'Distribuidores',     v: '280+ en todo México' },
+        { k: 'Prueba de manejo',   v: 'Recolección a domicilio disponible' }
+      ],
+      steps: [
+        { b: 'Pre-aprobación',       s: 'confirma monto y tasa en 5 minutos sin afectar buró' },
+        { b: 'Cotiza por WhatsApp',  s: 'asesor te manda precio escrito y opciones' },
+        { b: 'Prueba de manejo',     s: 'a domicilio o en distribuidor, 45 minutos' },
+        { b: 'Firma y verificación', s: 'VIN, kilometraje (<50), neumáticos, pintura' },
+        { b: 'Entrega + placas',     s: 'asesor te acompaña en placas y primer servicio' }
+      ],
+      contact_chiprow: [
+        { l: 'Sin costo',  e: 'pre-aprobación' },
+        { l: 'Recolección', e: 'a domicilio' },
+        { l: '280+',       e: 'distribuidores' }
+      ],
+      contact_note: 'Para pre-aprobación de crédito ten a la mano: INE vigente · comprobante de domicilio · últimos 3 recibos de nómina. CAVI no corre buró hasta que confirmes.',
+
+      // ==== 04 CAVI RESEÑAS (保留, 简报图不再主显示, 但 getPlainText 仍用) ====
+      reviews_count: 3240,
+      reviews_meta: 'Corte julio 2026',
+      cavi_metrics: [
+        { l: 'Espacio / cajuela', stars: 5, v: '4.8' },
+        { l: 'Consumo real',      stars: 5, v: '4.6' },
+        { l: 'Seguridad',         stars: 4, v: '4.5' },
+        { l: 'Ruido carretera',   stars: 3, v: '3.9' }
+      ],
+      top_review: {
+        stars: 5,
+        text: '"Llevo casi un año y consumo 18 km/L aproximadamente. Espacio suficiente para la familia. El mantenimiento es muy económico, servicio menor $650 MXN."',
+        meta: '2024 ADVANCE CVT · 15,000 km · CDMX'
+      },
+
+      // ==== 06 GARANTÍA (保留备用) ====
+      warranty: {
+        years: 3, km: '100,000',
+        sub: 'Garantía total Nissan México',
+        items: [
+          { b: 'Red Nissan en todo México', s: '280+ distribuidores · refacciones originales' },
+          { b: 'Asistencia vial 24/7',        s: 'Grúa · gasolina · cerrajero · 3 años incluidos' },
+          { b: 'Plan mantenimiento prepagado', s: '3 servicios incluidos desde $4,990 MXN' }
+        ]
+      },
+
+      // ==== 03 SPEC STRIP (保留备用) ====
+      spec_strip: [
+        { v: '18.81', u: 'km/L', l: 'Mejor consumo · SENSE MT' },
+        { v: '482', u: 'L', l: 'Cajuela · 2 maletas + carreola' },
+        { v: '7,486', u: 'unidades', l: 'Ventas julio · sedán #1' }
+      ],
+
+      link: 'cavi.report/nissan-versa-2026?ref=L-2026082701'
+    },
+
+    // ====== 412 · VW Virtus ======
+    // 注意: PC v1 详细报告只有 Versa, Virtus 字段基于竞品对比卡 + 公开信息编写
+    // 标记 _unverified 的字段需要后端从 autocava.com.mx 拉真实数据
+    '412': {
+      series_id: 412, model: 'vw-virtus', year: 2026, market: 'MX',
+
+      title: 'VW Virtus 2026',
+      title_sub: 'Sedán compacto · Gasolina · 1.6L MSI',
+      image: 'https://cdn.autocava.com.mx/series/white/0452.png',
+      cavi_score: 4.4,
+      cavi_recommend: 82,
+      monthly_sales: 4210,
+      monthly_sales_rank: 'Sedán #3 en México',
+      kicker: 'Reporte de Compra 02 · 2026 · Sedán compacto',
+      hero_lead: '<b>El sedán "made in Germany"</b> — 4,210 unidades en julio, CAVI 4.4/5. Manejo y ensamble son sus puntos fuertes; reventa y consumo, los débiles. Analizamos precio, versiones y competencia.',
+      cover_chips: [
+        { l: 'Desde', e: '$322,490', u: 'MXN' },
+        { l: 'Consumo', e: '17.5 km/L' },
+        { l: '126 HP', e: '1.6L MSI' },
+        { l: 'Garantía', e: '3 años' }
+      ],
+      freshness: { emitido: '26 AGO 2026', vence: '30 SEP 2026' },
+      cover_foot: 'Datos a agosto 2026. Precios con IVA, sugeridos por VW México y pueden variar por distribuidor. CAVI = análisis propio de AutoCava basado en 1,890 propietarios. <b>Precios válidos al 26 AGO 2026 · sujetos a cambio sin previo aviso.</b>',
+
+      // 02 mercado
+      market_h2: 'El sedán compacto que mejor se maneja en México',
+      market_lead: 'El Virtus se posiciona como <b>la opción "deportiva racional"</b>: 126 HP, DSG de 7 velocidades, suspensión multibrazo. Pero el ensamble en India le pasa factura en percepción y reventa.',
+      market_tiles: [
+        { v: '4,210',     l: 'Unidades vendidas en julio 2026 · <b>Sedán #3</b>' },
+        { v: 'Puebla',    l: 'Ensamble en India · algunos componentes globales' },
+        { v: '180+',      l: 'Distribuidores VW en México' },
+        { v: 'DSG 7 vel', l: 'Caja rápida · líder en manejo' }
+      ],
+      market_chart: [
+        { month: 'JUL', units: 4210, w: 100, hl: true },
+        { month: 'JUN', units: 3850, w: 91 },
+        { month: 'MAY', units: 4120, w: 98 },
+        { month: 'ABR', units: 3680, w: 87 }
+      ],
+      market_chiprow: [
+        { l: 'Fuente', e: 'AMIA' },
+        { l: 'Share', e: '≈3.4%' },
+        { l: '#3', e: 'Sedán' }
+      ],
+      market_note: 'VW tiene menos volumen que Nissan en sedanes → refacciones más caras y red de servicio más limitada.',
+
+      // 03 precio
+      versions: [
+        { ver: 'COMFORTLINE',  name: 'MT',  price: '$322,490', monthly: '$5,375' },
+        { ver: 'COMFORTLINE',  name: 'TIP', price: '$349,900', monthly: '$5,832' },
+        { ver: 'HIGHLINE',     name: 'TIP', price: '$389,900', monthly: '$6,498', recommended: true },
+        { ver: 'HIGHLINE',     name: 'DSG', price: '$412,900', monthly: '$6,881' }
+      ],
+      price_h2: 'Cuatro versiones: ¿cuál te conviene?',
+      price_lead: 'El precio lista va de <b>$322,490 a $412,900 MXN</b>. Con el bono de intercambio de <b>−$12,000</b>, el enganche típico es de $97,000–$124,000 MXN.',
+      price_main: { ver: 'HIGHLINE TIP · Recomendado', base: '$389,900', bonus: '−$12,000', effective: '$377,900', sub: 'MXN · precio de lista VW México' },
+      finance_cards: [
+        { lbl: 'BBVA · 36 meses',  v: '$6,498', u: '/mes', sub: 'Enganche 30% · Tasa 13.5%' },
+        { lbl: 'VW Financial 48m', v: '$5,990', u: '/mes', sub: 'Tasa preferencial · CAT 15.2%' }
+      ],
+      finance_tiles: [
+        { v: 'BBVA · 36m',     l: 'Enganche 30% · 13.5% · <b>$6,498/mes</b>' },
+        { v: 'VW Financial 48m', l: 'Tasa preferencial · CAT 15.2% · <b>$5,990/mes</b>' },
+        { v: 'Bono',           l: 'Intercambio: <b>−$12,000</b>' },
+        { v: 'CAT 15.2%',      l: 'Tasa más alta que Nissan · revisa antes de firmar' }
+      ],
+      bonus: { v: '$12,000', sub: 'Bono intercambio · Vigencia 30 nov 2026' },
+      price_advice: [
+        'El enganche no debe superar el <b>30% de tu ahorro líquido</b> — deja fondo de emergencia.',
+        'Con <b>nómina demostrable</b> VW Financial y BBVA dan mejor tasa; <b>sin historial</b>, CrediVW aprueba más rápido.',
+        'El plan 48m de VW Financial es buena opción si piensas mantener el auto > 3 años.'
+      ],
+      price_note: 'Cálculo basado en HIGHLINE TIP ($389,900). Tasa y enganche son referenciales; el banco aprueba según buró.',
+
+      // 04 competencia
+      competitors: [
+        { tag: 'TU ELECCIÓN',  self: true,  name: 'VW Virtus',     price_from: '$322,490', pros: 'Manejo alemán · 126 HP · DSG',     cons: 'Consumo mayor · ensamble India', score: 86 },
+        { tag: 'ALTERNATIVA',  self: false, name: 'Nissan Versa',  price_from: '$309,990', pros: 'Mejor precio · 6 airbags std',    cons: 'Manejo menos deportivo', score: 92 },
+        { tag: 'ALTERNATIVA',  self: false, name: 'Kia K3 Sedán',  price_from: '$304,900', pros: 'Garantía 5 años · 8 versiones',   cons: 'Resale inferior', score: 88 },
+        { tag: 'ALTERNATIVA',  self: false, name: 'Mazda 2',       price_from: '$301,900', pros: 'Skyactiv · diseño KODO',          cons: 'Cajuela menor', score: 84 }
+      ],
+      comp_h2: 'Nissan Versa, Kia K3, Mazda 2: ¿cómo se compara?',
+      comp_lead: 'En el rango <b>$300K–$410K MXN</b> el Virtus compite por <b>manejo y calidad de ensamble</b>, pero pierde en precio, red de servicio y reventa.',
+      comp_tiles: [
+        { v: 'Virtus',    l: 'Desde <b>$322,490</b> · manejo alemán · 126 HP' },
+        { v: 'Versa',     l: 'Desde <b>$309,990</b> · cajuela 482L · 6 airbags' },
+        { v: 'Kia K3',    l: 'Desde <b>$304,900</b> · garantía 5 años · ensamble MX' },
+        { v: 'Mazda 2',   l: 'Desde <b>$301,900</b> · Skyactiv · diseño KODO' }
+      ],
+      comp_note: 'Si tu prioridad es <b>manejo y deportividad</b> → Virtus. Si es <b>reventa y costo</b> → Versa. Si es <b>garantía</b> → K3.',
+
+      // 05 fortalezas
+      features: [
+        { v: '126',  u: 'HP',     l: 'Motor 1.6L MSI', hl: 'mejor manejo del segmento' },
+        { v: '521',  u: 'L',      l: 'Cajuela más grande', hl: 'del segmento' },
+        { v: '6',    u: 'airbags', l: 'Frontales + laterales + cortina', hl: 'estándar' },
+        { v: '3',    u: 'años',   l: 'Garantía VW', hl: '100,000 km' }
+      ],
+      strengths_h2: 'Por qué 82% de propietarios lo recomienda',
+      strengths_text: [
+        '<b>Manejo y estabilidad</b> — 126 HP + DSG 7 vel, el mejor comportamiento dinámico del segmento.',
+        '<b>Cajuela más grande</b> — 521 L, supera al Versa y al K3.',
+        '<b>6 airbags de serie</b> — ESP + control de tracción en todas las versiones.',
+        '<b>Acabados interiores</b> — plásticos suaves, mejor percepción de calidad que Nissan.',
+        '<b>Garantía VW 3 años / 100,000 km</b> — similar a Nissan pero con red más pequeña.',
+        '<b>Multibrazo trasero</b> — suspensión más confortable en baches que el eje de torsión del Versa.'
+      ],
+      strengths_chiprow: [
+        { l: 'Mejor manejo', e: '126 HP' },
+        { l: 'Cajuela', e: '521 L' },
+        { l: 'DSG 7 vel', e: 'rápida' },
+        { l: 'Garantía', e: '3 años / 100K km' }
+      ],
+      strengths_note: 'Dato CAVI: el 82% de los 1,890 propietarios calificados recomienda el Virtus. Áreas a mejorar: consumo y reventa.',
+
+      // 06 puntos débiles
+      weakness_h2: 'Lo que el Virtus no te va a dar',
+      weakness_chart: [
+        { k: 'CONSUMO',    v: 3.8, w: 76, bad: true },
+        { k: 'RESALE',     v: 3.6, w: 72, bad: true },
+        { k: 'PRECIO',     v: 3.5, w: 70, bad: true },
+        { k: 'CALIDAD P.', v: 3.7, w: 74, bad: true }
+      ],
+      weakness_tiles: [
+        { v: '55%', l: 'Revalorización a 3 años · inferior al Versa' },
+        { v: '8%',  l: 'Costo total > promedio del segmento' }
+      ],
+      weakness_text: [
+        '<b>Consumo alto</b> — 17.5 km/L en ciudad, peor que Versa (18.81) y K3 (18.2).',
+        '<b>Ensamble en India</b> — algunos usuarios reportan ruiditos en tablero los primeros 6 meses.',
+        '<b>Reventa inferior</b> — 55% a 3 años vs 62% del Versa.',
+        '<b>Red de servicio menor</b> — 180+ distribuidores vs 280+ Nissan.',
+        '<b>Gasolina premium recomendada</b> — suma ~$2,000/año extra en gasolina.'
+      ],
+      weakness_note: 'Si el costo total a 5 años es tu prioridad, mira Versa. Si valoras el manejo sobre todo, Virtus es tu auto.',
+
+      // 07 personas
+      verdict_h2: 'Si te importa el manejo, es tu auto',
+      verdict_text: '¿Buscas un sedán compacto que se sienta <b>alemán</b> en el manejo y los acabados? → <b>Cómpralo.</b> Si lo que quieres es minimizar el costo total de propiedad, mira Versa o K3 antes de decidir.',
+      personas: [
+        { tag: 'VERSIÓN · HIGHLINE DSG',  title: 'Conductor que disfruta manejar', body: '126 HP + DSG 7 vel + multibrazo: el mejor manejo del segmento.', why: 'Si usas el coche en carretera, lo notas' },
+        { tag: 'VERSIÓN · HIGHLINE TIP',  title: 'Familia con presupuesto',        body: 'Equipamiento completo sin pagar el sobreprecio del DSG.', why: 'Plan 48m · enganche 30% · <b>≈$6,498/mes</b>' },
+        { tag: 'VERSIÓN · COMFORTLINE MT', title: 'Comprador racional',             body: 'Lo esencial de VW por el menor precio del catálogo.', why: 'No pagas de más por lo que no necesitas' },
+        { tag: 'VERSIÓN · evalúa también K3', title: 'Quien prioriza garantía',  body: 'K3 da 5 años de garantía por $304,900 — mejor relación.', why: 'Piensa a 5 años, no a 3' }
+      ],
+      pick_tiles: [
+        { v: 'Top pick', l: 'HIGHLINE TIP · mejor relación precio/equipamiento' },
+        { v: 'Plan B',   l: 'HIGHLINE DSG · si manejas mucho en carretera' },
+        { v: 'Evita',    l: 'COMFORTLINE MT · muy básica para su precio' },
+        { v: 'Negociar', l: 'Modelos 2025 en stock · 6–8% menos' }
+      ],
+      verdict_note: 'Recomendación CAVI: el Virtus es para quien prioriza manejo. Si tu prioridad es costo o reventa, hay mejores opciones en el mismo rango.',
+
+      // 08 trampas
+      traps_h2: 'Cuatro cosas que el dealer VW no te va a decir',
+      contract_title: 'CONTRATO DE COMPRAVENTA · VW México (extracto ilustrativo)',
+      contract: [
+        { l: 'Precio lista (incl. IVA)', v: 'MXN 389,900', hl: 'n', cm: '← pide precio por escrito' },
+        { l: 'Comisión por apertura',     v: '2.5% · 9,748', hl: 'c', cm: '← más alta que Nissan' },
+        { l: 'CAT promedio',              v: '15.2%',       hl: 'w', cm: '← CAT real, no la tasa nominal' },
+        { l: 'Gasolina premium obligatoria', v: '≈$2,000/año extra', hl: 'w', cm: '← algunos modelos lo requieren' },
+        { l: 'Pago anticipado',           v: 'sin penalización*', hl: 'n', cm: '← *ver cláusula 9' },
+        { l: 'Entrega',                   v: '60–90 días hábiles', hl: 'c', cm: '← ensamble India, más largo' }
+      ],
+      traps_text: [
+        '<b>Precio inflado con "service pack"</b> — pide siempre el <b>precio lista + IVA</b> por escrito.',
+        '<b>Comisión por apertura más alta</b> — 2.5% vs 2% Nissan. Pide el desglose.',
+        '<b>Gasolina premium "obligatoria"</b> — la mayoría de los Virtus usan magna; verifica el manual.',
+        '<b>Entrega larga</b> — 60–90 días por ensamble en India. Pide fecha y precio fijo por escrito.'
+      ],
+      traps_note: 'Fórmula rápida: presupuesto real = (precio lista × 1.04–1.07) + seguro año 1 + placas. Cat más alto = más intereses.',
+
+      // 09 costo
+      annual_cost: {
+        total: '$32,800', monthly: '$2,733',
+        sub: '20,000 km/año · gasolina premium recomendada',
+        breakdown: [
+          { l: 'Gasolina',      v: '$16,500', u: '/año', pct: 50.3 },
+          { l: 'Seguro',        v: '$10,800', u: '/año', pct: 32.9 },
+          { l: 'Mantenimiento', v: '$5,500',  u: '/año', pct: 16.8 }
+        ],
+        donut: [
+          { name: 'Gasolina (premium)',        v: 50.3, val: '≈$16,500', color: '#b59317' },
+          { name: 'Seguro · cobertura amplia', v: 32.9, val: '≈$10,800', color: '#3987e5' },
+          { name: 'Mantenimiento',             v: 16.8, val: '≈$5,500',  color: '#16a34a' }
+        ],
+        five_year:    { v: '$164,000', sub: '8% más que promedio del segmento' },
+        service_minor:{ v: '$850',     sub: 'Cada 15,000 km · aceite + filtros' },
+        revaluacion_3y:{ v: '55%',     sub: 'Menor que Versa y K3' }
+      },
+      cost_h2: 'Un poco más que un café diario, en serio',
+      cost_lead: 'El Virtus cuesta <b>~$32,800 MXN al año</b> en gasolina + seguro + mantenimiento. Son <b>$2,733 al mes</b>. A 5 años, <b>$164,000 MXN</b>: 8% más que el promedio del segmento.',
+      maintenance: [
+        { km: '15K', l: 'Servicio menor · $850' },
+        { km: '30K', l: 'Filtro aire · $1,100' },
+        { km: '45K', l: 'Servicio mayor · $2,800' },
+        { km: '60K', l: 'Bujías · $1,400' },
+        { km: '75K', l: 'Inspección · $1,800' },
+        { km: '90K', l: 'DSG fluid · $4,200' }
+      ],
+      cost_text: [
+        '<b>Gasolina (premium)</b> — $16,500/año. Consume más que Versa.',
+        '<b>Seguro</b> — $10,800/año cobertura amplia con deducible medio.',
+        '<b>Mantenimiento</b> — $5,500/año. Servicio menor cada 15,000 km a <b>$850 MXN</b>.',
+        '<b>Revalorización</b> — 55% a 3 años; menor que Versa y K3.',
+        '<b>Taller independiente VW</b> — más caro que Nissan; ahorro del 20–30% en mano de obra.',
+        '<b>Plan prepagado VW</b> — 3 servicios incluidos desde <b>$5,990 MXN</b>.'
+      ],
+      cost_note: 'Regla de oro: si la mensualidad del auto supera 30% de tu ingreso, busca una versión más baja o un enganche mayor.',
+
+      // 10 contacto
+      next_cards: [
+        { type: 'whatsapp',   h: 'Hablar con un asesor',     s: '1 a 1 por WhatsApp · responde < 5 min' },
+        { type: 'test_drive', h: 'Agendar prueba de manejo', s: '180+ distribuidores VW en México' }
+      ],
+      contact_h2: 'Resolvemos todo por WhatsApp antes de que vayas al dealer',
+      contact: [
+        { k: 'Asesor de compra',     v: 'Asesor CAVI · 1 a 1' },
+        { k: 'WhatsApp (principal)', v: '+52 55 2741 9019' },
+        { k: 'Email',                v: 'contacto@autocava.mx' },
+        { k: 'Distribuidores',       v: '180+ en todo México' },
+        { k: 'Prueba de manejo',     v: 'Recolección a domicilio disponible' }
+      ],
+      steps: [
+        { b: 'Pre-aprobación',       s: 'confirma monto y tasa en 5 minutos sin afectar buró' },
+        { b: 'Cotiza por WhatsApp',  s: 'asesor te manda precio escrito y opciones' },
+        { b: 'Prueba de manejo',     s: 'a domicilio o en distribuidor VW, 45 minutos' },
+        { b: 'Firma y verificación', s: 'VIN, kilometraje (<50), neumáticos, pintura' },
+        { b: 'Entrega + placas',     s: 'asesor te acompaña en placas y primer servicio' }
+      ],
+      contact_chiprow: [
+        { l: 'Sin costo', e: 'pre-aprobación' },
+        { l: 'Recolección', e: 'a domicilio' },
+        { l: '180+', e: 'distribuidores VW' }
+      ],
+      contact_note: 'Para pre-aprobación de crédito ten a la mano: INE vigente · comprobante de domicilio · últimos 3 recibos de nómina. CAVI no corre buró hasta que confirmes.',
+
+      // legacy 字段 (getPlainText 用)
+      reviews_count: 1890,
+      reviews_meta: 'Corte julio 2026',
+      cavi_metrics: [
+        { l: 'Manejo / estabilidad', stars: 5, v: '4.7' },
+        { l: 'Espacio / cajuela',    stars: 5, v: '4.5' },
+        { l: 'Calidad ensamble',     stars: 4, v: '4.2' },
+        { l: 'Consumo',              stars: 3, v: '3.8' }
+      ],
+      top_review: {
+        stars: 4,
+        text: '"La dirección es muy precisa, el DSG cambia perfecto. Lo único que el ensamble de India genera algunos ruiditos en tablero al inicio, pero nada grave."',
+        meta: '2025 HIGHLINE TIP · 6,800 km · Monterrey'
+      },
+      warranty: {
+        years: 3, km: '100,000',
+        sub: 'Garantía total Volkswagen México',
+        items: [
+          { b: 'Red VW en México',     s: '180+ distribuidores · refacciones originales' },
+          { b: 'Asistencia vial 24/7', s: 'Grúa · cerrajero · 3 años incluidos' },
+          { b: 'Plan mantenimiento',   s: '3 servicios incluidos desde $5,990 MXN' }
+        ]
+      },
+      spec_strip: [
+        { v: '17.5',  u: 'km/L', l: 'Consumo combinado · MT' },
+        { v: '521',   u: 'L',    l: 'Cajuela · segmento líder' },
+        { v: '4,210', u: 'unidades', l: 'Ventas julio' }
+      ],
+      link: 'cavi.report/vw-virtus-2026?ref=L-2026082700'
+    }
+  };
+
+  const DEFAULT_DATA = SERIES_DATA['356'];
+  let currentData = null;
+  let isGenerating = false;
+
+  // ========== History (初始 4 条) ==========
+  const HISTORY = [
+    { id: 'h-2026082701', series_id: 356, carName: 'Nissan Versa 2026', lead: '张明', ago: '3 分钟前', data: SERIES_DATA['356'] },
+    { id: 'h-2026082700', series_id: 412, carName: 'VW Virtus 2026', lead: '王芳', ago: '12 分钟前', data: SERIES_DATA['412'] },
+    { id: 'h-2026082698', series_id: 356, carName: 'Nissan Versa 2026', lead: '李建国', ago: '28 分钟前', data: SERIES_DATA['356'] },
+    { id: 'h-2026082690', series_id: 356, carName: 'Nissan Versa 2026', lead: '张大伟', ago: '1 小时前', data: SERIES_DATA['356'] }
+  ];
+
+  function getSeriesData(input) {
+    const key = (input || '').trim().toLowerCase();
+    if (SERIES_DATA[key]) return SERIES_DATA[key];
+    if (key.includes('virtus') || key === '412') return SERIES_DATA['412'];
+    return DEFAULT_DATA;
+  }
+
+  async function generate() {
+    const input = document.getElementById('carInput').value.trim();
+    if (!input) { showToast('请输入车系信息'); return; }
+    if (isGenerating) return;
+
+    isGenerating = true;
+    document.getElementById('genBtn').disabled = true;
+    const regenBtn = document.getElementById('regenBtn');
+    if (regenBtn) regenBtn.disabled = true;
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('loadingSection').style.display = 'block';
+    document.getElementById('actionBar').classList.add('hidden');
+
+    const steps = ['ls1', 'ls2', 'ls3', 'ls4', 'ls5'];
+    for (let i = 0; i < steps.length; i++) {
+      if (i > 0) {
+        document.getElementById(steps[i-1]).classList.remove('active');
+        document.getElementById(steps[i-1]).classList.add('done');
+      }
+      document.getElementById(steps[i]).classList.add('active');
+      await new Promise(r => setTimeout(r, 600));
+    }
+    document.getElementById('ls5').classList.remove('active');
+    document.getElementById('ls5').classList.add('done');
+    await new Promise(r => setTimeout(r, 200));
+
+    currentData = getSeriesData(input);
+    renderResult(currentData);
+
+    document.getElementById('loadingSection').style.display = 'none';
+    document.getElementById('resultSection').style.display = 'block';
+    document.getElementById('actionBar').classList.remove('hidden');
+    document.getElementById('genBtn').disabled = false;
+    if (regenBtn) regenBtn.disabled = false;
+    isGenerating = false;
+
+    addToHistory(currentData, input);
+    document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // 重新生成: 用当前结果的 series_id 重新跑一次 LLM 流程
+  function regenerate() {
+    if (!currentData || isGenerating) return;
+    document.getElementById('carInput').value = currentData.series_id;
+    updateClearBtn();
+    generate();
+  }
+
+  // ========== History functions ==========
+  function addToHistory(data, input) {
+    const existingIdx = HISTORY.findIndex(h => h.series_id === data.series_id);
+    if (existingIdx >= 0) {
+      const existing = HISTORY.splice(existingIdx, 1)[0];
+      existing.ago = '刚刚';
+      HISTORY.unshift(existing);
+    } else {
+      HISTORY.unshift({
+        id: 'h-' + Date.now(),
+        series_id: data.series_id,
+        carName: data.title,
+        lead: '当前会话',
+        ago: '刚刚',
+        data: data
+      });
+    }
+    renderHistory();
+  }
+
+  function renderHistory() {
+    document.getElementById('historyCount').textContent = HISTORY.length;
+    const html = HISTORY.map((h, idx) => {
+      const f = getFreshness(h.ago);
+      return `
+      <div class="hist-item" data-idx="${idx}">
+        <div class="car-thumb">
+          <svg viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="60" cy="60" rx="44" ry="3" fill="rgba(0,0,0,0.06)"/>
+            <path d="M15 50 L22 30 L40 22 L65 21 L88 22 L102 30 L108 50 L96 50 A6 6 0 0 1 84 50 L34 50 A6 6 0 0 1 22 50 Z" fill="#9aa0aa"/>
+            <path d="M40 24 L36 22 L65 21 L88 22 L96 26 L96 36 L40 36 Z" fill="#2b3340" opacity="0.85"/>
+            <circle cx="30" cy="50" r="7" fill="#1a1a1a"/>
+            <circle cx="92" cy="50" r="7" fill="#1a1a1a"/>
+          </svg>
+        </div>
+        <div class="info">
+          <div class="nm">${h.carName}</div>
+          <div class="sub">📋 ${h.lead} · series_id=${h.series_id}</div>
+        </div>
+        <div class="right">
+          <div class="ago ${f.cls}"><span class="ic"></span>${h.ago}</div>
+          <div class="meta-freshness ${f.cls}">${f.label}</div>
+        </div>
+        <div class="arr">›</div>
+      </div>
+    `;
+    }).join('');
+    document.getElementById('historyList').innerHTML = html;
+    document.querySelectorAll('.hist-item').forEach(el => {
+      el.addEventListener('click', () => showHistoryDetail(parseInt(el.dataset.idx)));
+    });
+  }
+
+  // 根据 ago 字符串判断数据新鲜度
+  function getFreshness(ago) {
+    if (ago === '刚刚') return { cls: 'fresh', label: '数据最新', minutes: 0 };
+    const minMatch = ago.match(/(\d+)\s*分钟/);
+    if (minMatch) {
+      const m = parseInt(minMatch[1]);
+      if (m < 30) return { cls: 'fresh', label: '数据较新', minutes: m };
+      if (m < 60) return { cls: 'ok', label: '建议确认', minutes: m };
+    }
+    const hrMatch = ago.match(/(\d+)\s*小时/);
+    if (hrMatch) {
+      const h = parseInt(hrMatch[1]);
+      if (h < 2) return { cls: 'ok', label: '可能过期', minutes: h * 60 };
+      if (h < 12) return { cls: 'stale', label: '建议重新生成', minutes: h * 60 };
+    }
+    return { cls: 'expired', label: '数据已过期', minutes: 9999 };
+  }
+
+  function showHistoryDetail(idx) {
+    const h = HISTORY[idx];
+    if (!h) return;
+    currentData = h.data;
+
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('actionBar').classList.add('hidden');
+    document.getElementById('emptyState').style.display = 'none';
+
+    const existing = document.getElementById('historyDetail');
+    if (existing) existing.remove();
+
+    const d = h.data;
+    const detail = document.createElement('div');
+    detail.id = 'historyDetail';
+    detail.className = 'hist-detail';
+    detail.innerHTML = `
+      <div class="hist-detail-head">
+        <span class="tag">复用</span>
+        <span class="label">${d.title} 历史报告</span>
+        <span class="ts">${h.ago} 生成</span>
+        <button class="close" onclick="closeHistoryDetail()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="hist-detail-body">
+        <div class="reuse-hint ${getFreshness(h.ago).cls}">
+          🕐 这是 <b>${h.ago}</b> 为 <b>${h.lead}</b> 生成的报告 · ${getFreshness(h.ago).label}。<br>
+          ${getFreshness(h.ago).minutes < 30
+            ? '数据和当前一致，可以直接复制使用。'
+            : '数据可能已过期（价格/库存/评分可能变了），建议点击"重新生成"刷新。'}
+        </div>
+        <div class="preview" style="margin-top: 10px;">
+          <div class="row"><span class="k">车系</span><span class="v">${d.title}</span></div>
+          <div class="row"><span class="k">CAVI 评分</span><span class="v">${d.cavi_score} / 5</span></div>
+          <div class="row"><span class="k">推荐版本</span><span class="v">${d.price_main.ver.replace(' · Recomendado', '').replace(' · 推荐', '')}</span></div>
+          <div class="row"><span class="k">有效价</span><span class="v">${d.price_main.effective} MXN</span></div>
+          <div class="row"><span class="k">BBVA 月供</span><span class="v">${d.finance_cards[0].v}/月</span></div>
+          <div class="row"><span class="k">Nissan 月供</span><span class="v">${d.finance_cards[1].v}/月</span></div>
+          <div class="row"><span class="k">年度总成本</span><span class="v">${d.annual_cost.total} MXN</span></div>
+        </div>
+        <div class="hist-detail-actions">
+          <button class="btn secondary" onclick="regenerateFromHistory('${h.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            重新生成
+          </button>
+          <button class="btn primary" onclick="copyFromHistory('${h.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            复制并发送
+          </button>
+        </div>
+      </div>
+    `;
+    document.getElementById('historySection').after(detail);
+    detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    showToast('已加载历史报告 · 可直接复制');
+  }
+
+  function closeHistoryDetail() {
+    const detail = document.getElementById('historyDetail');
+    if (detail) detail.remove();
+  }
+
+  function copyFromHistory(id) {
+    const h = HISTORY.find(x => x.id === id);
+    if (!h) return;
+    currentData = h.data;
+    shareToWhatsApp();
+  }
+
+  function regenerateFromHistory(id) {
+    const h = HISTORY.find(x => x.id === id);
+    if (!h) return;
+    document.getElementById('carInput').value = h.series_id;
+    closeHistoryDetail();
+    generate();
+  }
+
+  function renderResult(d) {
+    const now = new Date();
+    const ts = now.toISOString().replace('T',' ').slice(0,19);
+
+    // ========== helpers ==========
+    const coverChipsHtml = (d.cover_chips || []).map(c =>
+      `<span class="chip">${c.l} <em>${c.e}</em>${c.u ? ' ' + c.u : ''}</span>`
+    ).join('');
+
+    const marketTilesHtml = (d.market_tiles || []).map(t =>
+      `<div class="tile"><b>${t.v}</b><span>${t.l}</span></div>`
+    ).join('');
+
+    const marketChartHtml = (d.market_chart || []).map(b => `
+      <div class="brow">
+        <span class="bl num">${b.month}</span>
+        <div class="track"><i class="${b.hl ? 'hl' : ''}" style="width:${b.w}%"></i></div>
+        <span class="bv num">${b.units.toLocaleString()}</span>
+      </div>
+    `).join('');
+
+    const marketChiprowHtml = (d.market_chiprow || []).map(c =>
+      `<span class="chip">${c.l} <em>${c.e}</em></span>`
+    ).join('');
+
+    const versionsChartHtml = d.versions.map(v => `
+      <div class="brow">
+        <span class="bl num">${v.ver} ${v.name}</span>
+        <div class="track"><i class="${v.recommended ? 'hl' : ''}" style="width:${Math.round(parseInt(v.price.replace(/[$,]/g,'')) / 500)}%"></i></div>
+        <span class="bv num">${v.recommended ? '<em>' + v.price + '</em>' : v.price}</span>
+      </div>
+    `).join('');
+
+    const financeTilesHtml = (d.finance_tiles || []).map(t =>
+      `<div class="tile"><b>${t.v}</b><span>${t.l}</span></div>`
+    ).join('');
+
+    const priceAdviceHtml = (d.price_advice || []).map(a => `<li>${a}</li>`).join('');
+
+    const competitorsChartHtml = (d.competitors || []).map(c => `
+      <div class="brow">
+        <span class="bl num">${c.name.toUpperCase()}</span>
+        <div class="track"><i class="${c.self ? 'hl' : ''}" style="width:${c.score || 80}%"></i></div>
+        <span class="bv num">${c.self ? '<em>' + c.score + '</em>' : c.score}</span>
+      </div>
+    `).join('');
+
+    const compTilesHtml = (d.comp_tiles || []).map(t =>
+      `<div class="tile"><b>${t.v}</b><span>${t.l}</span></div>`
+    ).join('');
+
+    const strengthsTextHtml = (d.strengths_text || []).map(s => `<li>${s}</li>`).join('');
+    const strengthChiprowHtml = (d.strengths_chiprow || []).map(c =>
+      `<span class="chip">${c.l} <em>${c.e}</em></span>`
+    ).join('');
+
+    const weaknessChartHtml = (d.weakness_chart || []).map(b => `
+      <div class="brow">
+        <span class="bl num">${b.k}</span>
+        <div class="track"><i class="${b.bad ? 'bad' : ''}" style="width:${b.w}%"></i></div>
+        <span class="bv num">${b.v}</span>
+      </div>
+    `).join('');
+
+    const weaknessTilesHtml = (d.weakness_tiles || []).map(t =>
+      `<div class="tile"><b>${t.v}</b><span>${t.l}</span></div>`
+    ).join('');
+
+    const weaknessTextHtml = (d.weakness_text || []).map(s => `<li>${s}</li>`).join('');
+
+    const personasHtml = (d.personas || []).map(p => `
+      <div class="pcard">
+        <span class="pt">${p.title}</span>
+        <span class="pv">${p.tag}</span>
+        <p>${p.body}</p>
+        <span class="pwhy">${p.why}</span>
+      </div>
+    `).join('');
+
+    const pickTilesHtml = (d.pick_tiles || []).map(t =>
+      `<div class="tile"><b>${t.v}</b><span>${t.l}</span></div>`
+    ).join('');
+
+    const contractHtml = (d.contract || []).map(c => `
+      <div>${c.l}: <span class="${c.hl === 'c' ? 'hlc' : c.hl === 'w' ? 'hlw' : 'hln'} num">${c.v}</span> <span class="cm">${c.cm}</span></div>
+    `).join('');
+
+    const trapsTextHtml = (d.traps_text || []).map(s => `<li>${s}</li>`).join('');
+
+    const donutLegendHtml = (d.annual_cost.donut || []).map(c =>
+      `<div class="lrow"><i style="background:${c.color}"></i><span>${c.name}</span><b>${c.val}</b></div>`
+    ).join('');
+
+    const maintenanceHtml = (d.maintenance || []).map(m => `
+      <div class="lap"><b class="num">${m.km}</b><span>${m.l}</span></div>
+    `).join('');
+
+    const costTextHtml = (d.cost_text || []).map(s => `<li>${s}</li>`).join('');
+
+    const contactHtml = (d.contact || []).map(c => `
+      <div class="crow"><span class="k">${c.k}</span><span class="v">${c.v}</span></div>
+    `).join('');
+
+    const stepsHtml = (d.steps || []).map(s => `
+      <div class="step"><b>${s.b}</b> — ${s.s}</div>
+    `).join('');
+
+    const contactChiprowHtml = (d.contact_chiprow || []).map(c =>
+      `<span class="chip">${c.l} <em>${c.e}</em></span>`
+    ).join('');
+
+    // donut SVG (in v2-deck style)
+    const donutData = d.annual_cost.donut || [];
+    const donutR = 60;
+    const donutC = 2 * Math.PI * donutR;
+    let donutOffset = -donutC / 4;
+    let donutCircles = '';
+    donutData.forEach((c, i) => {
+      const frac = c.v / 100;
+      const cir = `<circle cx="100" cy="100" r="${donutR}" fill="none" stroke="${c.color}" stroke-width="22" stroke-dasharray="${frac * donutC - 2} ${donutC - frac * donutC + 2}" stroke-dashoffset="${donutOffset + 2}"></circle>`;
+      donutCircles += cir;
+      donutOffset += frac * donutC;
+    });
+    const donutSvg = `
+      <svg id="dc${d.series_id}" viewBox="0 0 200 200" width="130" height="130" style="flex:none">
+        ${donutCircles}
+        <text x="100" y="96" text-anchor="middle" fill="#1c1a18" font-size="14" font-weight="700" font-family="Chakra Petch, sans-serif">${d.annual_cost.total}</text>
+        <text x="100" y="112" text-anchor="middle" fill="#8a837a" font-size="8" letter-spacing="2" font-family="Chakra Petch, sans-serif">MXN / AÑO</text>
+      </svg>
+    `;
+
+    // ========== 渲染 ==========
+    document.getElementById('resultSection').innerHTML = `
+      <div class="result-card">
+
+        <!-- AI meta (compact header) -->
+        <div class="ai-meta">
+          <span class="ai-tag">AI</span>
+          <span class="status">CAVI · Reporte de Compra</span>
+          <span class="ts">${ts}</span>
+          <span class="src">series_id=${d.series_id}</span>
+        </div>
+
+        <!-- ============ 01 COVER ============ -->
+        <div class="report-section report-cover">
+          <div class="sec-kicker">${d.kicker || 'Reporte de Compra 01 · 2026'}</div>
+
+          <div class="freshness">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Emitido <b>${d.freshness.emitido}</b></span>
+            <span class="sep">·</span>
+            <span>Vence <b>${d.freshness.vence}</b></span>
+          </div>
+
+          <div class="cover-title">${d.title.replace(/\s\d{4}$/, '<br>')} <span class="yr">${d.year}</span></div>
+          <p class="cover-sub">${d.hero_lead}</p>
+
+          <div class="chip-row">${coverChipsHtml}</div>
+
+          <div class="figpanel photo" style="margin-top: 16px;">
+            <img src="${d.image || ''}" alt="${d.title}" loading="lazy" onerror="this.style.display='none'" referrerpolicy="no-referrer">
+            <span class="figtag">FIG.01 — OFFICIAL HERO SHOT</span>
+            <div class="ov">
+              <div class="hero"><b class="num">${d.cavi_score}</b><span>CAVI · Score propietarios</span></div>
+            </div>
+          </div>
+
+          <p class="cover-foot">${d.cover_foot}</p>
+        </div>
+
+        <!-- ============ 02 POSICIÓN DE MERCADO ============ -->
+        <div class="report-section">
+          <div class="sec-kicker">02 · Posición en el mercado</div>
+          <h2 class="sec-h2">${d.market_h2}</h2>
+          <p class="sec-lead">${d.market_lead}</p>
+
+          <div class="tiles">${marketTilesHtml}</div>
+
+          <div class="figpanel">
+            <span class="figtag">FIG.02 — VENTAS MENSUALES</span>
+            <div style="padding-top: 16px;">
+              <div class="hero" style="background:transparent; padding:0; border:none; margin-bottom: 10px;">
+                <b class="num" style="color:var(--rd-amber);">${d.monthly_sales.toLocaleString()}</b>
+                <span style="color:var(--rd-ink2);">Ventas ${d.monthly_sales_rank.replace('Sedán #1 en México','julio 2026 · #1 sedán México').replace('Sedán #3 en México','julio 2026 · #3 sedán México')}</span>
+              </div>
+              <div class="bars">${marketChartHtml}</div>
+              <div class="chip-row">${marketChiprowHtml}</div>
+            </div>
+            <p class="figcap">${d.market_note}</p>
+          </div>
+        </div>
+
+        <!-- ============ 03 PRECIO Y FINANCIAMIENTO ============ -->
+        <div class="report-section">
+          <div class="sec-kicker">03 · Precio y financiamiento</div>
+          <h2 class="sec-h2">${d.price_h2}</h2>
+          <p class="sec-lead">${d.price_lead}</p>
+
+          <div class="tiles">${financeTilesHtml}</div>
+
+          <div class="figpanel">
+            <span class="figtag">FIG.03 — VERSIONES &amp; FINANCIAMIENTO</span>
+            <div style="padding-top: 16px;">
+              <div class="charttitle">PRECIO LISTA · MXN (${d.versions.length} versiones)</div>
+              <div class="bars">${versionsChartHtml}</div>
+              <div class="chip-row" style="margin-top: 10px;">
+                <span class="chip">Bono intercambio <em>${d.price_main.bonus}</em></span>
+                <span class="chip">Vigencia <em>${d.bonus.sub.split('Vigencia ')[1] || 'ver dealer'}</em></span>
+              </div>
+            </div>
+            <p class="figcap">${d.versions.find(v => v.recommended) ? d.versions.find(v => v.recommended).ver + ' ' + d.versions.find(v => v.recommended).name : ''} es la versión recomendada por CAVI: mejor balance entre precio, equipamiento y reventa.</p>
+          </div>
+
+          <ul class="clean">${priceAdviceHtml}</ul>
+          <p class="sec-note">${d.price_note}</p>
+        </div>
+
+        <!-- ============ 04 COMPETENCIA ============ -->
+        <div class="report-section">
+          <div class="sec-kicker">04 · Competencia</div>
+          <h2 class="sec-h2">${d.comp_h2}</h2>
+          <p class="sec-lead">${d.comp_lead}</p>
+
+          <div class="tiles">${compTilesHtml}</div>
+
+          <div class="figpanel">
+            <span class="figtag">FIG.04 — CAVI · COMPARATIVO INTEGRAL</span>
+            <div style="padding-top: 16px;">
+              <div class="charttitle">SCORE INTEGRAL · precio + espacio + seguridad + reventa + costo (100 pts)</div>
+              <div class="bars">${competitorsChartHtml}</div>
+              <div class="chip-row" style="margin-top: 10px;">
+                ${(d.competitors[0].chips || []).map(c => `<span class="chip">${c.l} <em>${c.e}</em></span>`).join('')}
+              </div>
+            </div>
+            <p class="figcap">Puntaje CAVI: ponderación basada en precio (30%) + espacio (20%) + seguridad (20%) + reventa (15%) + costo de uso (15%).</p>
+          </div>
+
+          <p class="sec-note">${d.comp_note}</p>
+        </div>
+
+        <!-- ============ 05 FORTALEZAS ============ -->
+        <div class="report-section">
+          <div class="sec-kicker">05 · Fortalezas</div>
+          <h2 class="sec-h2">${d.strengths_h2}</h2>
+          <ul class="clean">${strengthsTextHtml}</ul>
+
+          <div class="figpanel">
+            <span class="figtag">FIG.05 — FORTALEZAS</span>
+            <div style="padding-top: 16px;">
+              <div class="shot" style="height: 140px; border-radius: 6px; overflow: hidden; position: relative; background: #d9d9d9;">
+                <img src="${d.image || ''}" alt="${d.title}" style="width:100%; height:100%; object-fit:cover;" onerror="this.style.display='none'" referrerpolicy="no-referrer">
+                <span style="position:absolute; top:8px; left:8px; font:600 9px/1 'Chakra Petch', sans-serif; letter-spacing:.18em; color:#fff; background: rgba(15,17,21,.66); border:1px solid rgba(255,255,255,.18); padding:5px 8px; border-radius:4px;">${d.title.toUpperCase()}</span>
+              </div>
+              <div class="chip-row">${strengthChiprowHtml}</div>
+            </div>
+            <p class="figcap">${d.title.split(' ')[0]} no es el más deportivo ni el más lujoso, pero es el que menos sorpresas te da a 5 años.</p>
+          </div>
+
+          <p class="sec-note">${d.strengths_note}</p>
+        </div>
+
+        <!-- ============ 06 PUNTOS DÉBILES ============ -->
+        <div class="report-section">
+          <div class="sec-kicker">06 · Puntos débiles</div>
+          <h2 class="sec-h2">${d.weakness_h2}</h2>
+
+          <div class="figpanel">
+            <span class="figtag">FIG.06 — ÁREAS A MEJORAR</span>
+            <div style="padding-top: 16px;">
+              <div class="charttitle">CALIFICACIÓN CAVI · ÁREAS A MEJORAR (5.0 = mejor)</div>
+              <div class="bars">${weaknessChartHtml}</div>
+              <div class="charttitle" style="margin-top: 12px;">PROMEDIO DEL SEGMENTO</div>
+              <div class="tiles" style="grid-template-columns: 1fr 1fr; gap: 6px;">${weaknessTilesHtml}</div>
+            </div>
+            <p class="figcap">Ruido carretera y conectividad son los dos puntos más repetidos en las ${d.reviews_count.toLocaleString()} reseñas CAVI.</p>
+          </div>
+
+          <ul class="clean">${weaknessTextHtml}</ul>
+          <p class="sec-note">${d.weakness_note}</p>
+        </div>
+
+        <!-- ============ 07 ¿QUIÉN DEBERÍA COMPRAR? ============ -->
+        <div class="report-section">
+          <div class="sec-kicker">07 · ¿Quién debería comprarlo?</div>
+          <h2 class="sec-h2">${d.verdict_h2}</h2>
+
+          <div class="verdict">
+            <span class="vtag">CONCLUSIÓN CAVI</span>
+            <p>${d.verdict_text}</p>
+          </div>
+
+          <div class="figpanel">
+            <span class="figtag">FIG.07 — PERFIL DE COMPRADOR</span>
+            <div style="padding-top: 16px;">
+              <div class="pcards">${personasHtml}</div>
+            </div>
+            <p class="figcap">El mismo auto, diferente versión óptima según el perfil. Antes de cotizar, define para qué lo necesitas.</p>
+          </div>
+
+          <div class="tiles">${pickTilesHtml}</div>
+          <p class="sec-note">${d.verdict_note}</p>
+        </div>
+
+        <!-- ============ 08 TRAMPAS A EVITAR ============ -->
+        <div class="report-section">
+          <div class="sec-kicker">08 · Trampas a evitar</div>
+          <h2 class="sec-h2">${d.traps_h2}</h2>
+
+          <div class="figpanel">
+            <span class="figtag">FIG.08 — ANTES DE FIRMAR</span>
+            <div style="padding-top: 16px;">
+              <div class="contract">
+                <div class="ct">${d.contract_title}</div>
+                <div>&nbsp;</div>
+                ${contractHtml}
+                <div>&nbsp;</div>
+                <div>Recuerda: el precio del anuncio no es lo que pagas. Cada renglón cuenta.</div>
+              </div>
+            </div>
+            <p class="figcap">Extracto ilustrativo. Lee cada renglón antes de firmar — las sorpresas están en los anexos.</p>
+          </div>
+
+          <ul class="clean">${trapsTextHtml}</ul>
+          <p class="sec-note">${d.traps_note}</p>
+        </div>
+
+        <!-- ============ 09 COSTO ANUAL DE USO ============ -->
+        <div class="report-section">
+          <div class="sec-kicker">09 · Costo total de propiedad</div>
+          <h2 class="sec-h2">${d.cost_h2}</h2>
+          <p class="sec-lead">${d.cost_lead}</p>
+
+          <div class="figpanel">
+            <span class="figtag">FIG.09 — COSTO ANUAL DE USO</span>
+            <div style="padding-top: 16px;">
+              <div class="charttitle">COSTO ANUAL · ≈ ${d.annual_cost.total} MXN (20,000 km/año)</div>
+              <div class="donutwrap">
+                ${donutSvg}
+                <div class="legend">${donutLegendHtml}</div>
+              </div>
+              <div class="charttitle" style="margin-top: 12px;">PLAN DE MANTENIMIENTO · cada 10,000 km / 6 meses</div>
+              <div class="laps">${maintenanceHtml}</div>
+            </div>
+            <p class="figcap">Estimado para 20,000 km/año. Costo real varía por ciudad, tipo de servicio y si acudes a dealer o taller independiente.</p>
+          </div>
+
+          <ul class="clean">${costTextHtml}</ul>
+          <p class="sec-note">${d.cost_note}</p>
+        </div>
+
+        <!-- ============ 10 CONTACTO / SIGUIENTE PASO ============ -->
+        <div class="report-section">
+          <div class="sec-kicker">10 · Asesor CAVI</div>
+          <h2 class="sec-h2">${d.contact_h2}</h2>
+
+          <div class="contact">${contactHtml}</div>
+          <p class="sec-note">${d.contact_note}</p>
+
+          <div class="figpanel" style="margin-top: 12px;">
+            <span class="figtag">FIG.10 — ROAD TO KEY · 5 PASOS</span>
+            <div style="padding-top: 16px;">
+              <div class="hero" style="background:transparent; padding:0; border:none; margin-bottom: 12px;">
+                <b class="num" style="color:var(--rd-amber);">5</b>
+                <span style="color:var(--rd-ink2);">Pasos hasta tener tu auto</span>
+              </div>
+              <div class="steps">${stepsHtml}</div>
+              <div class="chip-row">${contactChiprowHtml}</div>
+            </div>
+            <p class="figcap">El asesor CAVI te acompaña en todo el proceso, no solo en la venta.</p>
+          </div>
+        </div>
+
+        <!-- ============ FOOTER ============ -->
+        <div class="report-footer">
+          <div class="brand">Generado por <b>CAVI</b> · AutoCava AI · ${d.reviews_count.toLocaleString()} reseñas</div>
+          <a class="link" href="https://${d.link}" target="_blank" rel="noopener">cavi.report/${d.model}-${d.year} →</a>
+        </div>
+
+      </div>
+    `;
+  }
+
+  function getPlainText(d) {
+    const top = d.versions.find(v => v.recommended) || d.versions[2];
+    return `🚗 *${d.title}* · CAVI ${d.cavi_score}/5
+Emitido ${d.freshness.emitido} · Vence ${d.freshness.vence}
+
+${d.hero_lead.replace(/<[^>]+>/g, '')}
+
+📊 *Por qué importa:*
+• CAVI Score: ${d.cavi_score}/5 · ${d.cavi_recommend}% recomienda (${d.reviews_count.toLocaleString()} reseñas)
+• Ventas: ${d.monthly_sales.toLocaleString()} unidades (${d.monthly_sales_rank})
+
+💰 *Precio y financiamiento (${d.price_main.ver}):*
+• Precio efectivo: ${d.price_main.effective} MXN (con bono ${d.price_main.bonus})
+• ${d.finance_cards[0].lbl}: ${d.finance_cards[0].v}/mes
+• ${d.finance_cards[1].lbl}: ${d.finance_cards[1].v}/mes
+• Bono: +${d.bonus.v}
+
+✅ *Fortalezas:* consumo líder, cajuela 482L, 6 airbags, garantía 3a/100K km
+⚠️ *Puntos débiles:* ruido carretera, CarPlay limitado
+
+🎯 *Veredicto CAVI:*
+${d.verdict_text.replace(/<[^>]+>/g, '')}
+
+📋 *Costo anual de uso:*
+${d.annual_cost.total} MXN/año (${d.annual_cost.monthly}/mes)
+A 5 años: ${d.annual_cost.five_year.v} · ${d.annual_cost.five_year.sub}
+
+⚠️ *Trampas a evitar:*
+• Pide siempre precio lista + IVA por escrito
+• Compara CAT (no tasa nominal)
+• Negocia fecha y precio de entrega por escrito
+
+🚀 *¿Listo para decidir?*
+1️⃣ Hablar con asesor: 1v1 por WhatsApp · < 5 min
+2️⃣ Agendar prueba de manejo: recoge a domicilio
+
+🔗 Ver reporte completo:
+${d.link}
+
+—— *CAVI · AutoCava AI*`;
+  }
+
+  // ========== 短文案 (图片分享时的 caption, 4-5 行) ==========
+  function getShortCaption(d) {
+    const fin = d.finance_cards[0];
+    const top = d.versions.find(v => v.recommended) || d.versions[2];
+    return `🚗 *${d.title}* · CAVI ${d.cavi_score}/5
+
+💰 ${d.price_main.effective} MXN (${top.ver} ${top.name})
+📅 ${fin.v}${fin.u} · 6 airbags · garantía ${d.warranty.years}a/${d.warranty.km}km
+📊 ${d.cavi_recommend}% recomienda · ${d.reviews_count.toLocaleString()} reseñas
+💸 Costo anual ${d.annual_cost.total} (${d.annual_cost.monthly}/mes)
+📅 Vence: ${d.freshness.vence}
+
+🔗 https://${d.link}
+—— CAVI · AutoCava AI`;
+  }
+
+  // ========== 图片捕获 (html2canvas 渲染 result-card) ==========
+  async function captureResultCard() {
+    const card = document.querySelector('.result-card');
+    if (!card) throw new Error('No result card found');
+    if (typeof html2canvas === 'undefined') {
+      throw new Error('html2canvas not loaded');
+    }
+    const canvas = await html2canvas(card, {
+      backgroundColor: '#ffffff',
+      scale: Math.max(window.devicePixelRatio || 1, 2),
+      logging: false,
+      useCORS: true,
+      allowTaint: false,
+      windowWidth: card.scrollWidth,
+      windowHeight: card.scrollHeight
+    });
+    return await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.92));
+  }
+
+  // ========== 主发送入口: 图片 + 短文案 + Web Share API ==========
+  async function shareToWhatsApp() {
+    if (!currentData) return;
+    const data = currentData;
+    const title = `${data.title} · CAVI 解读`;
+    const caption = getShortCaption(data);
+    const shareUrl = 'https://' + data.link;
+
+    const btn = document.getElementById('shareBtn');
+    const labelEl = document.getElementById('shareBtnLabel');
+    const originalLabel = labelEl ? labelEl.textContent : '复制并发送';
+    if (btn) btn.disabled = true;
+    if (labelEl) labelEl.textContent = '准备图片...';
+
+    let blob = null;
+    try {
+      // 1) 尝试 Web Share API + 图片 (移动端 WhatsApp 直接出图)
+      if (navigator.canShare && navigator.share) {
+        try {
+          blob = await captureResultCard();
+          const file = new File([blob], `${data.model}-cavi-report.png`, { type: 'image/png' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title, text: caption });
+            showToast('已发送到 WhatsApp');
+            return;
+          }
+        } catch (e) {
+          if (e.name === 'AbortError') return;  // 用户取消, 不打扰
+          console.warn('Share with image failed:', e);
+        }
+      }
+
+      // 2) Web Share API 纯文本 (Safari 桌面 / 部分 Android)
+      if (navigator.share) {
+        try {
+          await navigator.share({ title, text: caption, url: shareUrl });
+          showToast('已分享');
+          return;
+        } catch (e) {
+          if (e.name === 'AbortError') return;
+        }
+      }
+
+      // 3) 桌面端降级: 复制文案到剪贴板
+      //    如果有图片 blob, 顺便在新标签页打开预览 (便于测试)
+      if (!blob) {
+        try { blob = await captureResultCard(); } catch (e) { /* 图片不重要 */ }
+      }
+      if (blob) {
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+      }
+      copyToClipboard(caption + '\n' + shareUrl, '图片已打开 · 文案已复制 · 粘贴到 WhatsApp');
+    } finally {
+      if (btn) btn.disabled = false;
+      if (labelEl) labelEl.textContent = originalLabel;
+    }
+  }
+
+  function copyPlain() {
+    if (!currentData) return;
+    copyToClipboard(getPlainText(currentData), '已复制完整内容 · 粘贴到 WhatsApp');
+  }
+
+  function copyLink() {
+    if (!currentData) return;
+    const fullLink = 'https://' + currentData.link;
+    copyToClipboard(fullLink, '已复制链接');
+  }
+
+  function copyToClipboard(text, msg) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(
+        () => showToast(msg),
+        () => fallbackCopy(text, msg)
+      );
+    } else {
+      fallbackCopy(text, msg);
+    }
+  }
+
+  function fallbackCopy(text, msg) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:-1000px;left:0;opacity:0;';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { document.execCommand('copy'); showToast(msg); }
+    catch(e) { showToast('复制失败 · 请手动选择'); }
+    document.body.removeChild(ta);
+  }
+
+  let toastTimer;
+  function showToast(msg) {
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toast').classList.add('show');
+    if (navigator.vibrate) navigator.vibrate(10);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => document.getElementById('toast').classList.remove('show'), 1600);
+  }
+
+  function setInput(val) {
+    const input = document.getElementById('carInput');
+    input.value = val;
+    updateClearBtn();
+    input.focus();
+  }
+
+  function clearInput() {
+    document.getElementById('carInput').value = '';
+    updateClearBtn();
+    document.getElementById('carInput').focus();
+  }
+
+  function updateClearBtn() {
+    const v = document.getElementById('carInput').value;
+    document.getElementById('inputClear').classList.toggle('show', v.length > 0);
+  }
+
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  // ========== Profile menu (avatar popover) ==========
+  function toggleProfileMenu(e) {
+    if (e) { e.stopPropagation(); e.preventDefault(); }
+    const menu = document.getElementById('profileMenu');
+    const bd = document.getElementById('menuBackdrop');
+    const isOpen = menu.classList.contains('show');
+    if (isOpen) {
+      closeProfileMenu();
+    } else {
+      menu.classList.add('show');
+      bd.classList.add('show');
+    }
+  }
+  function closeProfileMenu() {
+    const menu = document.getElementById('profileMenu');
+    const bd = document.getElementById('menuBackdrop');
+    if (menu) menu.classList.remove('show');
+    if (bd) bd.classList.remove('show');
+  }
+  // Esc closes the menu
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProfileMenu(); });
+  setInterval(updateClock, 30000);
+
+  document.getElementById('carInput').addEventListener('input', updateClearBtn);
+  document.getElementById('carInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') generate();
+  });
+  updateClearBtn();
+  renderHistory();
+  document.getElementById('carInput').focus();
+</script>
+
+</body>
+</html>

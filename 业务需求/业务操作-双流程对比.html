@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>车辆解读报告 · 业务操作（双流程设计）</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --ink: #1a1d24;
+      --ink-2: #4a5060;
+      --muted: #8a8a82;
+      --line: #ebe7da;
+      --line-soft: #f4f0e4;
+      --primary: #2f6f5e;
+      --primary-soft: #eff6f3;
+      --primary-mid: #b8d5cb;
+      --accent: #c97b3f;
+      --accent-soft: #fbf1e4;
+      --accent-mid: #eccfa6;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      font-size: 15.5px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page { max-width: 1200px; margin: 0 auto; padding: 56px 36px 80px; }
+
+    h1, h2, h3, h4 { margin: 0; color: var(--ink); font-weight: 700; }
+    h1 { font-size: 34px; line-height: 1.25; margin-bottom: 12px; letter-spacing: -0.01em; }
+    h2 { font-size: 24px; line-height: 1.3; margin-bottom: 14px; }
+    h3 { font-size: 18px; line-height: 1.4; margin-bottom: 6px; }
+    p { margin: 0 0 12px 0; color: var(--ink-2); font-size: 15.5px; }
+    p:last-child { margin-bottom: 0; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+    }
+    .lead { font-size: 17px; color: var(--ink-2); max-width: 880px; line-height: 1.7; }
+
+    .section { margin-top: 64px; }
+
+    /* 业务背景 */
+    .why {
+      background: linear-gradient(135deg, #faf7ee 0%, #f5f0e0 100%);
+      border-radius: 18px;
+      padding: 32px 36px;
+      margin-top: 32px;
+    }
+    .why h2 { color: var(--ink); }
+    .why p { font-size: 16px; }
+    .why b { color: var(--ink); font-weight: 700; }
+
+    /* 业务故事 */
+    .story {
+      background: #faf9f4;
+      border-left: 4px solid var(--primary);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 24px 0 20px 0;
+    }
+    .story.b { border-left-color: var(--accent); }
+    .story .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .story.a .tag { background: var(--primary-soft); color: var(--primary); }
+    .story.b .tag { background: var(--accent-soft); color: var(--accent); }
+    .story h3 { font-size: 18px; margin-bottom: 8px; }
+    .story .quote { color: var(--ink-2); font-size: 15px; line-height: 1.75; }
+    .story .quote b { color: var(--ink); font-weight: 600; }
+
+    /* 流程头 */
+    .flow-header { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
+    .flow-num {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 800; flex-shrink: 0;
+    }
+    .flow-num.a { background: var(--primary); color: #fff; }
+    .flow-num.b { background: var(--accent); color: #fff; }
+    .flow-sub { font-size: 15px; color: var(--muted); margin-bottom: 18px; margin-left: 54px; }
+
+    /* 流程图卡片 */
+    .flow-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 28px 24px;
+      margin-top: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .flow-card.a { border-top: 4px solid var(--primary); }
+    .flow-card.b { border-top: 4px solid var(--accent); }
+    .svg-wrap { width: 100%; overflow-x: auto; }
+    .svg-wrap svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+    /* 步骤 */
+    .steps {
+      list-style: none; padding: 0; margin: 28px 0 0 0;
+      counter-reset: step;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 14px;
+      padding: 0 0 22px 0;
+    }
+    .step:last-child { padding-bottom: 0; }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+    }
+    .flow-a .step-num { background: var(--primary); }
+    .flow-b .step-num { background: var(--accent); }
+    .step h4 { font-size: 16px; margin-bottom: 4px; color: var(--ink); }
+    .step p { font-size: 15px; margin: 0; line-height: 1.7; }
+    .step .meta { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .step .meta span {
+      padding: 2px 9px; background: var(--line-soft);
+      border-radius: 6px; font-size: 12px; color: var(--ink-2);
+    }
+
+    /* 对比表 */
+    .table-wrap {
+      background: #fff; border: 1px solid var(--line);
+      border-radius: 14px; overflow: hidden; margin-top: 16px;
+    }
+    table.bench { width: 100%; border-collapse: collapse; font-size: 15px; }
+    .bench th, .bench td {
+      text-align: left; padding: 14px 18px;
+      border-bottom: 1px solid var(--line-soft); vertical-align: top;
+    }
+    .bench th {
+      font-weight: 700; color: var(--muted); font-size: 12px;
+      text-transform: uppercase; letter-spacing: 0.05em; background: #faf9f4;
+    }
+    .bench td:first-child { font-weight: 600; color: var(--ink); width: 18%; }
+    .bench tr:last-child td { border-bottom: none; }
+    .pill-inline {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 6px;
+      font-size: 12px; font-weight: 700;
+    }
+    .pill-inline.green { background: var(--primary-soft); color: var(--primary); }
+    .pill-inline.orange { background: var(--accent-soft); color: var(--accent); }
+    .pill-inline .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+    /* 价值总结 */
+    .value-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px;
+    }
+    .value-card {
+      background: #fff; border: 1px solid var(--line);
+      border-radius: 14px; padding: 22px 24px;
+    }
+    .value-card.a { border-top: 3px solid var(--primary); }
+    .value-card.b { border-top: 3px solid var(--accent); }
+    .value-card h4 {
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
+    }
+    .value-card.a h4 { color: var(--primary); }
+    .value-card.b h4 { color: var(--accent); }
+    .value-card ul {
+      list-style: none; padding: 0; margin: 0;
+    }
+    .value-card li {
+      padding: 6px 0; font-size: 14.5px; color: var(--ink-2);
+      line-height: 1.6;
+    }
+    .value-card li b { color: var(--ink); font-weight: 600; }
+
+    /* 共用环节提示 */
+    .shared {
+      background: #faf9f4;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px 26px;
+      margin-top: 18px;
+    }
+    .shared .h {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    }
+    .shared p { font-size: 15px; margin: 0; }
+    .shared p b { color: var(--ink); }
+
+    .footer {
+      margin-top: 64px; padding-top: 22px;
+      border-top: 1px solid var(--line);
+      font-size: 13px; color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .page { padding: 36px 20px 56px; }
+      h1 { font-size: 26px; }
+      .value-grid { grid-template-columns: 1fr; }
+      .flow-sub { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <span class="eyebrow">车辆解读报告 · 业务操作</span>
+    <h1>用户怎么拿到报告：两条业务流程</h1>
+    <p class="lead">
+      客户看车时的状态不同：<b>有的已经心动，想马上拿到报告</b>；<b>有的还在比价，只想先了解</b>。
+      我们用<b>两条流程</b>分别匹配这两种状态，<b>最终都是销售在工作台生成报告后，自己复制发到客户 WhatsApp</b>。
+    </p>
+
+    <!-- 业务背景 -->
+    <div class="why">
+      <h2>为什么要分两条流程？</h2>
+      <p>
+        用户的<b>决策意愿</b>不一样。<b>心动型</b>客户（已经决定要这款车）希望立即看到详细报告做最后确认；
+        <b>观望型</b>客户（还在比 3-4 款车）只愿意留个手机号，让销售找合适时机再联系。
+      </p>
+      <p>
+        <b>流程 A</b>：心动型客户通过 WhatsApp 快速拿到报告。<br>
+        <b>流程 B</b>：观望型客户先留资，销售主动加 WhatsApp，把报告送过去。
+      </p>
+      <p>
+        <b>两条流程在"生成 + 发送"环节完全一样</b>——都是销售在 Cavi 工作台输入车系、点"生成报告"、等报告生成、然后点"复制并发送"截图给客户。<br>
+        <b>区别只在前面</b>：是谁先动 + 是谁加 WhatsApp 好友。
+      </p>
+    </div>
+
+    <!-- 共用环节：报告生成 + 发送 -->
+    <div class="shared">
+      <div class="h">两个流程共用的"报告生成 + 发送"环节</div>
+      <p>
+        销售在 <b>Cavi 销售工作台</b> 输入车系 → 点"生成报告" → 报告生成 → 工作台出现报告卡 + <b>"复制并发送"</b> 按钮 →
+        销售点按钮 → 系统截图报告 + 复制链接 → 销售在 <b>WhatsApp</b> 把报告发给自己和客户。整个"生成 + 发送"环节在两个流程里<b>完全一样</b>。
+      </p>
+    </div>
+
+    <!-- ============== 流程 A ============== -->
+    <div class="section flow-a">
+      <div class="flow-header">
+        <div class="flow-num a">A</div>
+        <h2>流程 A · 心动的客户快速拿到报告</h2>
+      </div>
+      <div class="flow-sub">适合：已经决定要这款车、想马上看到详细报告做最后确认的用户</div>
+
+      <!-- 业务故事 -->
+      <div class="story a">
+        <span class="tag">客户故事</span>
+        <h3>小李想买一辆 Nissan Versa</h3>
+        <div class="quote">
+          小李在车系页看了 Versa 概述，越看越心动。他点了页面上的 <b>"获取完整报告"</b> 按钮，浏览器跳到 WhatsApp，
+          消息已经<b>自动填好了</b>（"我想看 Versa 的完整报告"）。他点发送，销售小王很快就回应了。
+          双方加了好友。小王在 <b>销售工作台</b> 输入 Versa、点"生成报告"，报告出来后。
+          小王点 <b>"复制并发送"</b>，报告截图 + 链接发到了小李的 WhatsApp。
+          小李点开看，接着问小王"月供能不能再低"，30 分钟内约了第二天的试驾。
+        </div>
+      </div>
+
+      <div class="flow-card a">
+        <div class="svg-wrap">
+          <svg viewBox="0 0 1280 500" xmlns="http://www.w3.org/2000/svg" font-family="'Outfit','PingFang SC',sans-serif">
+            <defs>
+              <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f6f5e"/>
+              </marker>
+            </defs>
+
+            <!-- 泳道 -->
+            <rect x="80" y="40" width="1120" height="420" fill="#fafaf5" rx="10"/>
+            <line x1="80" y1="120" x2="1200" y2="120" stroke="#ebe7da" stroke-dasharray="3,3"/>
+            <line x1="80" y1="210" x2="1200" y2="210" stroke="#ebe7da" stroke-dasharray="3,3"/>
+            <line x1="80" y1="300" x2="1200" y2="300" stroke="#ebe7da" stroke-dasharray="3,3"/>
+            <line x1="80" y1="395" x2="1200" y2="395" stroke="#ebe7da" stroke-dasharray="3,3"/>
+
+            <text x="20" y="80" font-size="13" font-weight="700" fill="#1a1d24">客户</text>
+            <text x="20" y="170" font-size="13" font-weight="700" fill="#1a1d24">车系页</text>
+            <text x="20" y="260" font-size="13" font-weight="700" fill="#1a1d24">WhatsApp</text>
+            <text x="20" y="350" font-size="13" font-weight="700" fill="#1a1d24">销售工作台</text>
+            <text x="20" y="445" font-size="13" font-weight="700" fill="#1a1d24">系统</text>
+
+            <!-- 主线箭头 -->
+            <line x1="220" y1="70" x2="1110" y2="70" stroke="#2f6f5e" stroke-width="2.5" marker-end="url(#arrA)"/>
+
+            <!-- 1 客户：心动 -->
+            <g>
+              <rect x="100" y="50" width="120" height="40" rx="8" fill="#fff" stroke="#2f6f5e" stroke-width="2"/>
+              <text x="160" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1d24">心动客户</text>
+            </g>
+
+            <!-- 2 车系页：报告按钮 -->
+            <g>
+              <rect x="260" y="145" width="180" height="55" rx="8" fill="#b8d5cb" stroke="#2f6f5e" stroke-width="2"/>
+              <text x="350" y="170" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1d24">车系页 · 报告按钮</text>
+              <text x="350" y="188" text-anchor="middle" font-size="11.5" fill="#1a1d24">点 "获取完整报告"</text>
+            </g>
+            <line x1="220" y1="80" x2="300" y2="150" stroke="#2f6f5e" stroke-width="2" marker-end="url(#arrA)"/>
+
+            <!-- 3 跳 WhatsApp -->
+            <g>
+              <rect x="480" y="235" width="180" height="55" rx="8" fill="#b8d5cb" stroke="#2f6f5e" stroke-width="2"/>
+              <text x="570" y="260" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1d24">跳转到 WhatsApp</text>
+              <text x="570" y="278" text-anchor="middle" font-size="11.5" fill="#1a1d24">消息已自动填好</text>
+            </g>
+            <line x1="440" y1="172" x2="490" y2="240" stroke="#2f6f5e" stroke-width="2" marker-end="url(#arrA)"/>
+
+            <!-- 4 销售回应 + 加好友 -->
+            <g>
+              <rect x="700" y="235" width="180" height="55" rx="8" fill="#2f6f5e" stroke="#2f6f5e" stroke-width="2"/>
+              <text x="790" y="260" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">销售回应客户</text>
+              <text x="790" y="278" text-anchor="middle" font-size="11.5" fill="#e8f3ef">加好友 + 一对一聊</text>
+            </g>
+            <line x1="660" y1="262" x2="700" y2="262" stroke="#2f6f5e" stroke-width="2" marker-end="url(#arrA)"/>
+
+            <!-- 5 销售工作台 -->
+            <g>
+              <rect x="700" y="320" width="180" height="55" rx="8" fill="#b8d5cb" stroke="#2f6f5e" stroke-width="2"/>
+              <text x="790" y="345" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1d24">销售工作台</text>
+              <text x="790" y="363" text-anchor="middle" font-size="11.5" fill="#1a1d24">输入车系 + 生成报告</text>
+            </g>
+            <line x1="790" y1="290" x2="790" y2="320" stroke="#2f6f5e" stroke-width="2" marker-end="url(#arrA)"/>
+
+            <!-- 6 生成报告 -->
+            <g>
+              <rect x="1100" y="320" width="160" height="55" rx="8" fill="#eff6f3" stroke="#2f6f5e" stroke-width="2.5"/>
+              <text x="1180" y="345" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1d24">生成报告</text>
+              <text x="1180" y="363" text-anchor="middle" font-size="11.5" fill="#1a1d24">Cavi 后台拉数据</text>
+            </g>
+            <line x1="880" y1="347" x2="1100" y2="347" stroke="#2f6f5e" stroke-width="2" marker-end="url(#arrA)"/>
+
+            <!-- 7 销售点"复制并发送" -->
+            <g>
+              <rect x="1100" y="230" width="180" height="55" rx="8" fill="#2f6f5e" stroke="#2f6f5e" stroke-width="2"/>
+              <text x="1190" y="255" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">销售点"复制并发送"</text>
+              <text x="1190" y="273" text-anchor="middle" font-size="11.5" fill="#e8f3ef">截图 + 链接</text>
+            </g>
+            <line x1="1180" y1="320" x2="1180" y2="285" stroke="#2f6f5e" stroke-width="2" marker-end="url(#arrA)"/>
+
+            <!-- 回到客户：销售在 WhatsApp 发报告 -->
+            <path d="M 1100 257 L 1075 257 L 1075 180 L 600 180 L 600 90" fill="none" stroke="#2f6f5e" stroke-width="2" stroke-dasharray="5,4" opacity="0.5" marker-end="url(#arrA)"/>
+            <text x="850" y="172" text-anchor="middle" font-size="11" fill="#7c7a72">销售在 WA 发报告给客户</text>
+
+            <!-- 客户收报告 -->
+            <g>
+              <rect x="540" y="50" width="120" height="40" rx="8" fill="#fff" stroke="#2f6f5e" stroke-width="2" stroke-dasharray="3,3"/>
+              <text x="600" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="#2f6f5e">客户收到报告</text>
+            </g>
+          </svg>
+        </div>
+
+        <ol class="steps">
+          <li class="step"><span class="step-num">1</span><div><h4>客户在车系页点"获取完整报告"</h4><p>客户已经看了报告概览（心动了），主动点页面上的按钮。</p></div></li>
+          <li class="step"><span class="step-num">2</span><div><h4>浏览器跳到 WhatsApp，消息已自动填好</h4><p>客户的 WhatsApp 自动打开，对话框里已经填好了"我想看 Versa 的完整报告"。客户只需要点发送。</p></div></li>
+          <li class="step"><span class="step-num">3</span><div><h4>销售回应客户 + 互加好友</h4><p>销售收到客户的消息，及时回应客户，互加好友，开始一对一沟通。客户不用等，销售不用追。</p></div></li>
+          <li class="step"><span class="step-num">4</span><div><h4>销售在工作台输入车系 + 点"生成报告"</h4><p>销售在 Cavi 销售工作台输入客户要的车型（Versa），点"生成报告"。</p></div></li>
+          <li class="step"><span class="step-num">5</span><div><h4>生成报告</h4><p>Cavi 后台根据车型最新数据（价格、月供、对比、质保等）实时生成报告。</p></div></li>
+          <li class="step"><span class="step-num">6</span><div><h4>销售点"复制并发送" → 发到客户 WhatsApp</h4><p>报告出来后，工作台底部出现"复制并发送"按钮。销售点一下，<b>系统截图报告 + 复制链接</b>，销售在 WhatsApp 里把报告发给客户。</p></div></li>
+          <li class="step"><span class="step-num">7</span><div><h4>销售继续聊 → 预约试驾 / 优惠</h4><p>客户看完报告有问题，销售在 WhatsApp 里继续聊、约试驾。整条沟通记录会存档到客户档案。</p></div></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============== 流程 B ============== -->
+    <div class="section flow-b">
+      <div class="flow-header">
+        <div class="flow-num b">B</div>
+        <h2>流程 B · 观望的客户 销售主动送报告</h2>
+      </div>
+      <div class="flow-sub">适合：还在比价、只愿意留个手机号让销售找合适时机联系的用户</div>
+
+      <!-- 业务故事 -->
+      <div class="story b">
+        <span class="tag">客户故事</span>
+        <h3>小张在比 3 款车</h3>
+        <div class="quote">
+          小张在车系页看 Versa、Sentra、Mazda 2，还没决定哪款。他在 Versa 页留了个手机号"想领个优惠方案"。
+          系统自动把线索<b>分配</b>给销售小陈，小陈主动加他 WhatsApp 好友，开始沟通。
+          小张通过了好友验证，小陈问清他关心的是 Versa，于是在 <b>销售工作台</b> 输入 Versa、点"生成报告"。
+          报告出来后，小陈点 <b>"复制并发送"</b>，报告发到了小张的 WhatsApp。
+          小张看完报告，又问小陈对比 Sentra 怎么样，小陈又生成了一份 Sentra 报告发过去。3 天后小张约了 Versa 的试驾。
+        </div>
+      </div>
+
+      <div class="flow-card b">
+        <div class="svg-wrap">
+          <svg viewBox="0 0 1280 520" xmlns="http://www.w3.org/2000/svg" font-family="'Outfit','PingFang SC',sans-serif">
+            <defs>
+              <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#c97b3f"/>
+              </marker>
+            </defs>
+
+            <!-- 泳道 -->
+            <rect x="80" y="40" width="1120" height="440" fill="#faf8f2" rx="10"/>
+            <line x1="80" y1="115" x2="1200" y2="115" stroke="#ebe7da" stroke-dasharray="3,3"/>
+            <line x1="80" y1="195" x2="1200" y2="195" stroke="#ebe7da" stroke-dasharray="3,3"/>
+            <line x1="80" y1="275" x2="1200" y2="275" stroke="#ebe7da" stroke-dasharray="3,3"/>
+            <line x1="80" y1="360" x2="1200" y2="360" stroke="#ebe7da" stroke-dasharray="3,3"/>
+            <line x1="80" y1="440" x2="1200" y2="440" stroke="#ebe7da" stroke-dasharray="3,3"/>
+
+            <text x="20" y="78" font-size="13" font-weight="700" fill="#1a1d24">客户</text>
+            <text x="20" y="155" font-size="13" font-weight="700" fill="#1a1d24">车系页/榜单</text>
+            <text x="20" y="235" font-size="13" font-weight="700" fill="#1a1d24">客户档案</text>
+            <text x="20" y="318" font-size="13" font-weight="700" fill="#1a1d24">销售端</text>
+            <text x="20" y="402" font-size="13" font-weight="700" fill="#1a1d24">销售工作台</text>
+            <text x="20" y="475" font-size="13" font-weight="700" fill="#1a1d24">系统</text>
+
+            <!-- 1 客户：观望 -->
+            <g>
+              <rect x="100" y="50" width="160" height="40" rx="8" fill="#fff" stroke="#c97b3f" stroke-width="2"/>
+              <text x="180" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1d24">还在比价的客户</text>
+            </g>
+
+            <!-- 2 留资 -->
+            <g>
+              <rect x="300" y="125" width="180" height="55" rx="8" fill="#eccfa6" stroke="#c97b3f" stroke-width="2"/>
+              <text x="390" y="150" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1d24">留个手机号</text>
+              <text x="390" y="168" text-anchor="middle" font-size="11.5" fill="#1a1d24">领优惠 / 想了解</text>
+            </g>
+            <line x1="240" y1="80" x2="310" y2="130" stroke="#c97b3f" stroke-width="2" marker-end="url(#arrB)"/>
+
+            <!-- 3 客户档案 -->
+            <g>
+              <rect x="520" y="205" width="170" height="55" rx="8" fill="#eccfa6" stroke="#c97b3f" stroke-width="2"/>
+              <text x="605" y="230" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1d24">线索入库</text>
+              <text x="605" y="248" text-anchor="middle" font-size="11.5" fill="#1a1d24">系统自动分配销售</text>
+            </g>
+            <line x1="470" y1="155" x2="530" y2="210" stroke="#c97b3f" stroke-width="2" marker-end="url(#arrB)"/>
+
+            <!-- 4 销售看到线索 -->
+            <g>
+              <rect x="730" y="285" width="170" height="55" rx="8" fill="#eccfa6" stroke="#c97b3f" stroke-width="2"/>
+              <text x="815" y="310" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1d24">销售看到新客户</text>
+              <text x="815" y="328" text-anchor="middle" font-size="11.5" fill="#1a1d24">及时联系</text>
+            </g>
+            <line x1="685" y1="232" x2="740" y2="290" stroke="#c97b3f" stroke-width="2" marker-end="url(#arrB)"/>
+
+            <!-- 5 销售在 WhatsApp 上确认意向车型 -->
+            <g>
+              <rect x="940" y="285" width="180" height="55" rx="8" fill="#c97b3f" stroke="#c97b3f" stroke-width="2"/>
+              <text x="1030" y="310" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">WhatsApp 沟通</text>
+              <text x="1030" y="328" text-anchor="middle" font-size="11.5" fill="#fbf1e4">确认意向车型</text>
+            </g>
+            <line x1="900" y1="312" x2="940" y2="312" stroke="#c97b3f" stroke-width="2" marker-end="url(#arrB)"/>
+
+            <!-- 6 工作台 -->
+            <g>
+              <rect x="730" y="375" width="170" height="55" rx="8" fill="#eccfa6" stroke="#c97b3f" stroke-width="2"/>
+              <text x="815" y="400" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1d24">销售工作台</text>
+              <text x="815" y="418" text-anchor="middle" font-size="11.5" fill="#1a1d24">输入车系 + 生成报告</text>
+            </g>
+            <line x1="1030" y1="340" x2="1030" y2="410" stroke="#c97b3f" stroke-width="2" marker-end="url(#arrB)" stroke-dasharray="3,3" opacity="0.5"/>
+            <line x1="1030" y1="410" x2="900" y2="410" stroke="#c97b3f" stroke-width="2" stroke-dasharray="3,3" opacity="0.5"/>
+
+            <!-- 7 生成报告 -->
+            <g>
+              <rect x="1100" y="375" width="160" height="55" rx="8" fill="#fbf1e4" stroke="#c97b3f" stroke-width="2.5"/>
+              <text x="1180" y="400" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1d24">生成报告</text>
+              <text x="1180" y="418" text-anchor="middle" font-size="11.5" fill="#1a1d24">Cavi 后台拉数据</text>
+            </g>
+            <line x1="900" y1="402" x2="1100" y2="402" stroke="#c97b3f" stroke-width="2" marker-end="url(#arrB)"/>
+
+            <!-- 8 销售点"复制并发送" -->
+            <g>
+              <rect x="1100" y="285" width="180" height="55" rx="8" fill="#c97b3f" stroke="#c97b3f" stroke-width="2"/>
+              <text x="1190" y="310" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">销售点"复制并发送"</text>
+              <text x="1190" y="328" text-anchor="middle" font-size="11.5" fill="#fbf1e4">截图 + 链接</text>
+            </g>
+            <line x1="1180" y1="375" x2="1180" y2="340" stroke="#c97b3f" stroke-width="2" marker-end="url(#arrB)"/>
+
+            <!-- 回到客户：销售在 WhatsApp 发报告 -->
+            <path d="M 1100 312 L 1075 312 L 1075 180 L 600 180 L 600 90" fill="none" stroke="#c97b3f" stroke-width="2" stroke-dasharray="5,4" opacity="0.5" marker-end="url(#arrB)"/>
+            <text x="850" y="172" text-anchor="middle" font-size="11" fill="#7c7a72">销售在 WA 发报告给客户</text>
+
+            <!-- 客户收报告 -->
+            <g>
+              <rect x="540" y="50" width="120" height="40" rx="8" fill="#fff" stroke="#c97b3f" stroke-width="2" stroke-dasharray="3,3"/>
+              <text x="600" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="#c97b3f">客户收到报告</text>
+            </g>
+          </svg>
+        </div>
+
+        <ol class="steps">
+          <li class="step"><span class="step-num">1</span><div><h4>客户在车系页/榜单留个手机号</h4><p>客户还在比价，不急着要报告，但愿意留个手机号领优惠或留个联系方式。</p></div></li>
+          <li class="step"><span class="step-num">2</span><div><h4>线索自动入库 + 分配给销售</h4><p>系统自动把客户线索存到客户档案，按城市/车型/销售负载分配给具体的销售。</p></div></li>
+          <li class="step"><span class="step-num">3</span><div><h4>销售主动加客户 WhatsApp</h4><p>销售看到新线索，主动加客户 WhatsApp 好友（不是等客户来找销售）。</p></div></li>
+          <li class="step"><span class="step-num">4</span><div><h4>销售问清意向车型</h4><p>客户通过好友验证后，在 WhatsApp 里简单聊一下，<b>确认客户关心的是哪款车</b>。</p></div></li>
+          <li class="step"><span class="step-num">5</span><div><h4>销售在工作台输入车系 + 点"生成报告"</h4><p>销售在 Cavi 销售工作台输入客户要的车型（Versa），点"生成报告"。</p></div></li>
+          <li class="step"><span class="step-num">6</span><div><h4>生成报告</h4><p>Cavi 后台根据车型最新数据实时生成报告。</p></div></li>
+          <li class="step"><span class="step-num">7</span><div><h4>销售点"复制并发送" → 发到客户 WhatsApp</h4><p>报告出来后，工作台底部出现"复制并发送"按钮。销售点一下，<b>系统截图报告 + 复制链接</b>，销售在 WhatsApp 里把报告发给客户。</p></div></li>
+          <li class="step"><span class="step-num">8</span><div><h4>销售继续跟进 → 试驾 / 到店 / 成交</h4><p>客户收到报告后，销售继续在 WhatsApp + 电话跟进，直到试驾或成交。</p></div></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- 对比表 -->
+    <div class="section">
+      <h2>两条流程有什么不同？</h2>
+      <p><b>"生成 + 发送"环节完全一样</b>——区别只在前面：谁先动 + 谁加好友 + 触发原因。</p>
+      <div class="table-wrap">
+        <table class="bench">
+          <thead>
+            <tr>
+              <th>对比点</th>
+              <th><span class="pill-inline green"><span class="dot"></span>流程 A · 心动型</span></th>
+              <th><span class="pill-inline orange"><span class="dot"></span>流程 B · 观望型</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>谁先动</td><td>客户主动</td><td>销售主动</td></tr>
+            <tr><td>谁加好友</td><td>客户自己加销售 WhatsApp</td><td>销售主动加客户 WhatsApp</td></tr>
+            <tr><td>多快拿到报告</td><td>快速（及时回应后，同一次对话里）</td><td>及时（销售找合适时机主动发送）</td></tr>
+            <tr><td>报告怎么生成</td><td colspan="2" style="text-align:center;">一样 —— 销售在工作台输入车系 + 点"生成报告"，完成后即可发送</td></tr>
+            <tr><td>报告怎么发</td><td colspan="2" style="text-align:center;">一样 —— 销售点"复制并发送"，把报告发到客户 WhatsApp</td></tr>
+            <tr><td>客户档案记录</td><td>WhatsApp 对话 + 报告浏览</td><td>客户档案 + 跟进记录 + 状态推进</td></tr>
+            <tr><td>适合谁</td><td>决策意愿强、想快点决策</td><td>还在比价、需要销售慢慢带</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 业务价值 -->
+    <div class="section">
+      <h2>两条流程带来的业务价值</h2>
+      <div class="value-grid">
+        <div class="value-card a">
+          <h4>流程 A · 心动的客户转化最快</h4>
+          <ul>
+            <li><b>决策摩擦最小</b>：从心动到拿到报告不需要等待太长时间，不流失在"等报告"的路上</li>
+            <li><b>同会话闭环</b>：客户在同一次对话里拿到报告 + 跟销售聊完，转化率最高</li>
+            <li><b>销售主导发送</b>：销售在拿到客户回应后第一时间发报告，不会漏发</li>
+            <li><b>报告分享 + 二次传播</b>：客户拿到报告后大概率会转发家人/朋友，扩大品牌触达</li>
+          </ul>
+        </div>
+        <div class="value-card b">
+          <h4>流程 B · 观望的客户不浪费</h4>
+          <ul>
+            <li><b>抓住"还没决定"的客户</b>：这些人不留资就走了，留资后销售主动捞回来</li>
+            <li><b>销售找最佳触达时机</b>：可以配合活动、新到车、客户生日等节奏发报告</li>
+            <li><b>长线培育</b>：可以反复跟进，慢慢教育到"想试驾"的程度</li>
+            <li><b>线索统一汇总</b>：所有留资（领券、降价、报告）都进同一个客户档案，销售不丢线索</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <strong>车辆解读报告产品方案 · 业务操作（双流程设计）</strong><br>
+      配套：<code>AUTOCAVA 购车报告需求.md v1.1</code> · <code>产品功能流程 v1.2.1</code>（技术详细版）
+    </div>
+
+  </div>
+</body>
+</html>

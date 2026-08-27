@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#075e54">
+<title>WhatsApp · Vendedor recibe mensaje del cliente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wa-green-dark: #0b141a;
+    --wa-green-bar: #128c7e;
+    --wa-green-bar-2: #075e54;
+    --wa-green-text: #fff;
+    --wa-bg: #efeae2;
+    --wa-bubble-them: #ffffff;
+    --wa-bubble-me: #d9fdd3;
+    --wa-text: #111b21;
+    --wa-text-meta: #667781;
+    --wa-time: #667781;
+    --wa-check: #53bdeb;
+    --wa-link: #027eb5;
+    --wa-radius-bubble: 8px;
+    --wa-shadow: 0 1px 0.4px rgba(11,20,26,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    line-height: 1.35;
+    color: var(--wa-text);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+  body {
+    min-height: 100vh; min-height: 100dvh;
+    background: var(--wa-bg);
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420' viewBox='0 0 420 420'%3E%3Cg fill='%23d4cfc6' fill-opacity='0.16'%3E%3Ccircle cx='30' cy='30' r='1.5'/%3E%3Ccircle cx='95' cy='18' r='1'/%3E%3Ccircle cx='160' cy='42' r='1.5'/%3E%3Ccircle cx='220' cy='28' r='1'/%3E%3Ccircle cx='285' cy='50' r='1.5'/%3E%3Ccircle cx='345' cy='35' r='1'/%3E%3Ccircle cx='395' cy='62' r='1.5'/%3E%3Ccircle cx='50' cy='80' r='1'/%3E%3Ccircle cx='115' cy='95' r='1.5'/%3E%3Ccircle cx='180' cy='78' r='1'/%3E%3Ccircle cx='240' cy='105' r='1.5'/%3E%3Ccircle cx='305' cy='92' r='1'/%3E%3Ccircle cx='370' cy='120' r='1.5'/%3E%3Ccircle cx='20' cy='155' r='1'/%3E%3Ccircle cx='80' cy='140' r='1.5'/%3E%3Ccircle cx='145' cy='165' r='1'/%3E%3Ccircle cx='210' cy='148' r='1.5'/%3E%3Ccircle cx='275' cy='170' r='1'/%3E%3Ccircle cx='340' cy='155' r='1.5'/%3E%3Ccircle cx='400' cy='180' r='1'/%3E%3Ccircle cx='40' cy='215' r='1.5'/%3E%3Ccircle cx='110' cy='230' r='1'/%3E%3Ccircle cx='170' cy='210' r='1.5'/%3E%3Ccircle cx='235' cy='235' r='1'/%3E%3Ccircle cx='300' cy='220' r='1.5'/%3E%3Ccircle cx='365' cy='245' r='1'/%3E%3Ccircle cx='20' cy='275' r='1'/%3E%3Ccircle cx='90' cy='290' r='1.5'/%3E%3Ccircle cx='155' cy='272' r='1'/%3E%3Ccircle cx='220' cy='295' r='1.5'/%3E%3Ccircle cx='285' cy='280' r='1'/%3E%3Ccircle cx='350' cy='305' r='1.5'/%3E%3Ccircle cx='60' cy='340' r='1'/%3E%3Ccircle cx='125' cy='355' r='1.5'/%3E%3Ccircle cx='190' cy='335' r='1'/%3E%3Ccircle cx='255' cy='360' r='1.5'/%3E%3Ccircle cx='320' cy='345' r='1'/%3E%3Ccircle cx='385' cy='370' r='1.5'/%3E%3Ccircle cx='30' cy='395' r='1'/%3E%3Ccircle cx='100' cy='410' r='1.5'/%3E%3Ccircle cx='170' cy='395' r='1'/%3E%3Ccircle cx='240' cy='412' r='1.5'/%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .ios-status {
+    height: 47px; padding: 0 28px 0 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 16px; font-weight: 600; color: #fff;
+    background: var(--wa-green-bar);
+    letter-spacing: -0.01em;
+  }
+  .ios-status .right { display: flex; align-items: center; gap: 6px; }
+  .ios-status svg { display: block; }
+
+  .wa-bar {
+    background: linear-gradient(180deg, var(--wa-green-bar) 0%, var(--wa-green-bar-2) 100%);
+    color: #fff;
+    padding: 8px 8px 9px 6px;
+    display: flex; align-items: center; gap: 4px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+  }
+  .wa-back {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; cursor: pointer;
+  }
+  .wa-back svg { width: 24px; height: 24px; stroke-width: 2.2; }
+
+  .wa-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    font-size: 18px; font-weight: 700;
+  }
+
+  .wa-bar-info { flex: 1; min-width: 0; padding: 0 4px; cursor: pointer; }
+  .wa-bar-name { font-size: 16px; font-weight: 600; line-height: 1.15; }
+  .wa-bar-sub { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+
+  .wa-bar-actions { display: flex; gap: 18px; padding-right: 12px; }
+  .wa-bar-actions .icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; opacity: 0.95; cursor: pointer;
+  }
+  .wa-bar-actions .icon svg { width: 22px; height: 22px; }
+
+  .wa-notice {
+    background: #fff5d7;
+    padding: 8px 16px;
+    font-size: 12.5px; color: #4d4d4d; text-align: center;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .wa-notice svg { width: 13px; height: 13px; color: #4d4d4d; flex-shrink: 0; }
+  .wa-notice b { color: #075e54; font-weight: 600; }
+
+  .wa-body {
+    padding: 6px 8px 0;
+    display: flex; flex-direction: column;
+  }
+
+  .wa-date {
+    align-self: center; background: rgba(255,255,255,0.92);
+    color: #4f4f4f; font-size: 12px; padding: 5px 11px;
+    border-radius: 6px; margin: 10px 0 6px;
+    box-shadow: 0 1px 0.5px rgba(0,0,0,0.05);
+    font-weight: 500;
+  }
+  .wa-system {
+    align-self: center; background: #fff3cd; color: #856404;
+    padding: 6px 12px; border-radius: 6px;
+    font-size: 12px; margin: 4px 0;
+    font-weight: 500;
+  }
+
+  .wa-msg { align-self: flex-start; }
+  .wa-msg.them { align-self: flex-end; align-items: flex-end; }
+
+  .wa-bubble {
+    position: relative;
+    padding: 7px 9px 7px;
+    border-radius: var(--wa-radius-bubble);
+    box-shadow: var(--wa-shadow);
+    font-size: 15px;
+    line-height: 1.38;
+    word-wrap: break-word;
+    color: var(--wa-text);
+  }
+  .wa-msg .wa-bubble {
+    background: var(--wa-bubble-them);
+    border-top-left-radius: 2px;
+  }
+
+  /* Received bubble tail (left side) */
+  .wa-msg .wa-bubble::before,
+  .wa-msg .wa-bubble::after {
+    content: ''; position: absolute;
+    width: 0; height: 0;
+    bottom: 0; left: -7px;
+  }
+  .wa-msg .wa-bubble::before {
+    border: 7px solid transparent;
+    border-bottom-color: #000; opacity: 0.07;
+    left: -8px;
+  }
+  .wa-msg .wa-bubble::after {
+    border: 7px solid transparent;
+    border-bottom-color: #fff;
+    left: -7px;
+  }
+
+  .wa-bubble .meta {
+    float: right;
+    margin: 4px -3px -2px 8px;
+    font-size: 11.5px; color: var(--wa-time);
+    display: inline-flex; align-items: center; gap: 2px;
+    line-height: 1;
+  }
+  .wa-bubble .meta .checks { color: var(--wa-check); }
+  .wa-bubble .meta .checks.read { color: #53bdeb; }
+
+  .wa-bubble p { margin: 0; }
+  .wa-bubble p + p { margin-top: 6px; }
+  .wa-bubble b, .wa-bubble strong { font-weight: 600; }
+
+  /* Reference block from customer */
+  .ref-block {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: rgba(11,20,26,0.05);
+    border-left: 3px solid #008069;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .ref-block .ref-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .ref-block .ref-row + .ref-row { margin-top: 3px; }
+  .ref-block .ref-label {
+    font-size: 11px; color: #667781; font-weight: 600;
+    min-width: 48px; flex-shrink: 0;
+  }
+  .ref-block .ref-value { color: #111b21; font-weight: 500; }
+  .ref-block .ref-value.id {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+    font-weight: 700; color: #008069;
+    font-size: 13.5px; letter-spacing: 0.02em;
+  }
+  .ref-block .ref-value.url {
+    color: #027eb5; word-break: break-all;
+    font-size: 12px;
+  }
+
+  /* Alert badge - new message notification */
+  .new-alert {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    color: #fff; padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 14px; font-weight: 600;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    display: flex; align-items: center; gap: 10px;
+    z-index: 50;
+    animation: pulse-alert 0.6s ease;
+  }
+  .new-alert svg { width: 24px; height: 24px; }
+  @keyframes pulse-alert {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    50% { transform: translate(-50%, -50%) scale(1.05); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+
+  /* Demo intro bar */
+  .intro-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: linear-gradient(90deg, #1d4ed8 0%, #3b82f6 100%);
+    color: #fff; padding: 9px 14px;
+    font-size: 12.5px; font-weight: 500;
+    display: flex; align-items: center; gap: 9px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .intro-bar svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .intro-bar b { font-weight: 700; }
+  .intro-bar .close {
+    margin-left: auto; width: 24px; height: 24px; border-radius: 50%;
+    background: rgba(255,255,255,0.2); border: 0; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .intro-bar .close svg { width: 12px; height: 12px; stroke-width: 2.5; }
+  .body-wrap { padding-top: 38px; }
+  .body-wrap.demo-closed { padding-top: 0; }
+
+  /* Input area */
+  .wa-input-area {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: #f0f2f5;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    display: flex; align-items: center; gap: 8px;
+    z-index: 20;
+  }
+  .wa-icon-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #54656f; cursor: pointer;
+    flex-shrink: 0;
+  }
+  .wa-icon-btn svg { width: 24px; height: 24px; }
+  .wa-input {
+    flex: 1; background: #fff;
+    padding: 9px 14px;
+    border-radius: 22px;
+    color: #8696a0; font-size: 15px;
+    border: 1px solid transparent;
+  }
+  .wa-send {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #008069; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; cursor: pointer;
+    transition: transform 0.15s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  }
+  .wa-send:active { transform: scale(0.92); }
+  .wa-send svg { width: 20px; height: 20px; }
+
+  .home-indicator {
+    position: fixed; bottom: env(safe-area-inset-bottom);
+    left: 50%; transform: translateX(-50%);
+    width: 134px; height: 5px; border-radius: 3px;
+    background: #111b21;
+    opacity: 0.85;
+    z-index: 30;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="intro-bar" id="introBar">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+  </svg>
+  <span><b>Vista del vendedor</b> · Recibe mensaje del cliente Antonio</span>
+  <button class="close" onclick="closeIntro()" aria-label="Cerrar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
+
+<div class="body-wrap" id="bodyWrap">
+
+<!-- iOS Status Bar -->
+<div class="ios-status">
+  <span id="clock">15:08</span>
+  <div class="right">
+    <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor">
+      <rect x="0"  y="7"  width="3" height="4"  rx="0.5"/>
+      <rect x="4.5" y="5"  width="3" height="6"  rx="0.5"/>
+      <rect x="9"  y="2.5" width="3" height="8.5" rx="0.5"/>
+      <rect x="13.5" y="0" width="3" height="11" rx="0.5"/>
+    </svg>
+    <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor">
+      <path d="M8 11l2.5-2.7c-1.4-1.4-3.6-1.4-5 0L8 11zm-4.2-4.4l1.4 1.4c1.9-1.9 4.7-1.9 6.6 0l1.4-1.4c-2.6-2.6-6.8-2.6-9.4 0zM.4 3.4l1.4 1.4C4.6 2 11.4 2 14.2 4.8l1.4-1.4C12.1-.4 4-.4.4 3.4z"/>
+    </svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="none">
+      <rect x="0.5" y="0.5" width="22" height="11" rx="2.5" stroke="currentColor" stroke-opacity="0.5"/>
+      <rect x="2" y="2" width="19" height="8" rx="1.5" fill="currentColor"/>
+      <rect x="24" y="4" width="2" height="4" rx="1" fill="currentColor" fill-opacity="0.5"/>
+    </svg>
+  </div>
+</div>
+
+<!-- WhatsApp Header -->
+<header class="wa-bar">
+  <div class="wa-back" aria-label="Atrás">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+  </div>
+  <div class="wa-avatar" aria-label="Avatar">A</div>
+  <div class="wa-bar-info">
+    <div class="wa-bar-name">Antonio Reyes</div>
+    <div class="wa-bar-sub">en línea</div>
+  </div>
+  <div class="wa-bar-actions">
+    <div class="icon" aria-label="Videollamada">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="23 7 16 12 23 17 23 7"/>
+        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+      </svg>
+    </div>
+    <div class="icon" aria-label="Llamada">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 0 0-1.02.24l-2.2 2.2a15.045 15.045 0 0 1-6.59-6.59l2.2-2.21a.96.96 0 0 0 .25-1A11.36 11.36 0 0 1 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/>
+      </svg>
+    </div>
+    <div class="icon" aria-label="Más opciones">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="5"  r="1.7"/>
+        <circle cx="12" cy="12" r="1.7"/>
+        <circle cx="12" cy="19" r="1.7"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<!-- Encrypted notice -->
+<div class="wa-notice">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+  </svg>
+  <span>Cifrado de extremo a extremo · Chat con <b>Antonio Reyes</b></span>
+</div>
+
+<!-- Chat body -->
+<div class="wa-body">
+
+  <div class="wa-date">27 de agosto de 2026</div>
+
+  <!-- Cliente: mensaje inicial (con ref block desde autocava.com.mx) -->
+  <div class="wa-msg">
+    <div class="wa-bubble">
+      <p>Hola 👋, me interesa este auto. ¿Me pueden enviar el informe completo de compra?</p>
+      <div class="ref-block">
+        <div class="ref-row">
+          <span class="ref-label">🚗 Auto</span>
+          <span class="ref-value">Nissan Versa 2026 ADVANCE CVT+</span>
+        </div>
+        <div class="ref-row">
+          <span class="ref-label">🔖 Ref</span>
+          <span class="ref-value id">#107</span>
+        </div>
+        <div class="ref-row">
+          <span class="ref-label">🔗 URL</span>
+          <span class="ref-value url">autocava.com.mx/auto/series/107</span>
+        </div>
+      </div>
+      <p style="font-size:11.5px; color:#667781; margin-top:6px;">— Enviado desde autocava.com.mx</p>
+      <span class="meta">15:08</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- New message notification popup -->
+<div class="new-alert" id="newAlert">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+  </svg>
+  Nuevo mensaje de Antonio
+</div>
+
+</div>
+
+<!-- Input area -->
+<div class="wa-input-area">
+  <div class="wa-icon-btn" aria-label="Adjuntar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"/>
+      <line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+  </div>
+  <div class="wa-icon-btn" aria-label="Emoji" style="width:36px;height:36px;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+      <line x1="9" y1="9" x2="9.01" y2="9"/>
+      <line x1="15" y1="9" x2="15.01" y2="9"/>
+    </svg>
+  </div>
+  <div class="wa-input">Escribe un mensaje...</div>
+  <div class="wa-send" aria-label="Enviar">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+    </svg>
+  </div>
+</div>
+
+<!-- iOS home indicator -->
+<div class="home-indicator"></div>
+
+<script>
+  // Hide alert after 3s
+  setTimeout(() => {
+    const alert = document.getElementById('newAlert');
+    if (alert) {
+      alert.style.opacity = '0';
+      alert.style.transition = 'opacity 0.3s';
+      setTimeout(() => alert.style.display = 'none', 300);
+    }
+  }, 3000);
+
+  // Live clock
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  // Close intro
+  function closeIntro() {
+    document.getElementById('introBar').style.display = 'none';
+    document.getElementById('bodyWrap').classList.add('demo-closed');
+  }
+</script>
+
+</body>
+</html>

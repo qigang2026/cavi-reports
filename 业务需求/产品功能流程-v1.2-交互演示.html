@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTOCAVA · 产品功能流程 v1.2 — H5 交互演示</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f7f5;
+    --surface: #ffffff;
+    --ink: #14171e;
+    --ink-2: #3a4256;
+    --muted: #7c7a72;
+    --line: #e9e3d6;
+    --line-soft: #f0ebe0;
+    --primary: #67C23A;
+    --primary-soft: #edf8e8;
+    --warn: #E6A23C;
+    --warn-soft: #fdf2dd;
+    --danger: #f43f5e;
+    --info: #419EFE;
+    --info-soft: #e6f1ff;
+    --ink-dark: #314256;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1320px; margin: 0 auto; padding: 40px 24px 80px; }
+  .topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+  .topbar .logo {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--ink-dark); color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px; letter-spacing: 0.5px;
+  }
+  .topbar .title { font-weight: 700; font-size: 15px; color: var(--ink-dark); }
+  .topbar .meta { margin-left: auto; color: var(--muted); font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+
+  .hero { margin-bottom: 40px; }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .hero .lead { color: var(--ink-2); font-size: 16px; max-width: 760px; }
+  .hero .patch {
+    display: inline-block; background: var(--warn-soft); color: #8a5500;
+    padding: 4px 10px; border-radius: 20px; font-size: 11px;
+    font-weight: 700; margin-bottom: 12px; letter-spacing: 0.05em;
+  }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 32px 0 48px; }
+  .stat { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 12px; padding: 18px 20px; }
+  .stat .num { font-family: 'DM Serif Display', serif; font-size: 32px; line-height: 1; color: var(--ink); }
+  .stat .num small { font-size: 18px; color: var(--muted); font-family: 'Outfit', sans-serif; margin-left: 2px; }
+  .stat .lbl { font-size: 12px; color: var(--muted); margin-top: 8px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .stat .delta { font-size: 11px; color: var(--primary); margin-top: 4px; font-weight: 600; }
+  .stat .delta.v12 { color: var(--warn); }
+
+  .main { display: grid; grid-template-columns: 300px 1fr; gap: 32px; align-items: start; }
+
+  .map { position: sticky; top: 24px; }
+  .map h3 { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; font-weight: 600; }
+  .map .stage-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 16px 0 6px; font-weight: 600; }
+  .map .node {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 8px; cursor: pointer;
+    color: var(--ink-2); font-size: 13px; font-weight: 500;
+    transition: all 0.15s; border: 1px solid transparent;
+  }
+  .map .node:hover { background: var(--surface); }
+  .map .node.active { background: var(--surface); border-color: var(--line); color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .map .node .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); flex-shrink: 0; }
+  .map .node.active .dot { background: var(--primary); }
+  .map .node .tag { margin-left: auto; font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; padding: 1px 6px; border-radius: 4px; background: var(--bg); }
+  .map .node.active .tag { background: var(--primary-soft); color: var(--primary); }
+
+  .stage-area { display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: start; }
+
+  .phone {
+    width: 390px; height: 800px;
+    background: #1a1a1a; border-radius: 44px;
+    padding: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.1);
+    position: relative;
+  }
+  .phone::before {
+    content: ''; position: absolute; top: 18px; left: 50%;
+    transform: translateX(-50%); width: 110px; height: 28px;
+    background: #1a1a1a; border-radius: 0 0 16px 16px; z-index: 10;
+  }
+  .phone-screen {
+    width: 100%; height: 100%; background: #fff;
+    border-radius: 32px; overflow: hidden;
+    position: relative; display: flex; flex-direction: column;
+  }
+  .phone-status { height: 44px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 24px 0 28px; font-size: 13px; font-weight: 600; color: var(--ink); flex-shrink: 0; }
+  .phone-status .icons { display: flex; gap: 5px; align-items: center; }
+  .phone-status svg { width: 16px; height: 16px; }
+  .phone-url { background: #f0f0f0; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--ink-2); flex-shrink: 0; border-bottom: 1px solid var(--line-soft); font-family: 'JetBrains Mono', monospace; }
+  .phone-url::before { content: '🔒'; margin-right: 6px; font-size: 10px; }
+  .phone-content { flex: 1; overflow-y: auto; }
+  .phone-content::-webkit-scrollbar { display: none; }
+  .phone-content { scrollbar-width: none; }
+
+  .caption { padding-top: 4px; }
+  .caption .stage-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--primary-soft); color: var(--primary);
+    padding: 4px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .caption .stage-badge.sales { background: #fce7f3; color: #be185d; }
+  .caption h2 { font-family: 'DM Serif Display', serif; font-size: 28px; line-height: 1.2; margin: 12px 0 8px; letter-spacing: -0.005em; }
+  .caption .scene { color: var(--ink-2); font-size: 15px; margin-bottom: 20px; }
+  .caption h4 { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin: 24px 0 12px; font-weight: 600; }
+  .caption ul { list-style: none; }
+  .caption li { position: relative; padding-left: 22px; margin-bottom: 8px; color: var(--ink-2); font-size: 14px; line-height: 1.6; }
+  .caption li::before { content: ''; position: absolute; left: 0; top: 9px; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
+  .caption li.sales::before { background: #be185d; }
+  .caption .kv { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin-top: 8px; }
+  .caption .kv dt { color: var(--muted); font-size: 12px; }
+  .caption .kv dd { font-size: 13px; color: var(--ink-2); font-weight: 500; }
+
+  .nav { display: flex; gap: 8px; margin-top: 32px; }
+  .nav-btn { flex: 1; padding: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .nav-btn:hover { background: var(--bg); }
+  .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .nav-btn.primary { background: var(--ink-dark); color: #fff; border-color: var(--ink-dark); }
+  .nav-btn.primary:hover { background: var(--ink); }
+
+  .screen { padding: 16px 18px; }
+
+  /* Screen 0 - Touchpoint */
+  .banner { background: linear-gradient(135deg, #1a1a1a 0%, #314256 100%); color: #fff; border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+  .banner .tag { color: var(--warn); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; }
+  .banner .h { font-size: 18px; font-weight: 700; line-height: 1.3; margin: 6px 0 12px; }
+  .banner .h small { display: block; font-size: 13px; color: #b3b3b3; font-weight: 500; margin-top: 4px; }
+  .banner .btn { background: var(--primary); color: #1a1a1a; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; display: inline-block; }
+  .section-title { font-size: 13px; color: var(--ink-2); font-weight: 700; margin: 16px 0 10px; display: flex; justify-content: space-between; }
+  .section-title small { color: var(--muted); font-weight: 500; }
+
+  .rank-list { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 12px; overflow: hidden; }
+  .rank-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line-soft); }
+  .rank-item:last-child { border-bottom: 0; }
+  .rank-num { width: 22px; height: 22px; background: var(--bg); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--ink-2); }
+  .rank-item.first .rank-num { background: var(--warn); color: #fff; }
+  .rank-name { flex: 1; font-size: 13px; font-weight: 600; }
+  .rank-cut { color: var(--danger); font-size: 12px; font-weight: 700; }
+  .rank-item .coupon { background: var(--primary-soft); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+
+  /* Screen 1 - Series Page */
+  .series-hero { padding: 12px 0; }
+  .series-h1 { font-size: 22px; font-weight: 800; line-height: 1.2; }
+  .series-sub { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .car-img { background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%); height: 160px; border-radius: 12px; margin: 12px 0; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 12px; position: relative; overflow: hidden; }
+  .car-img svg { width: 80%; height: auto; opacity: 0.7; }
+  .price-row { display: flex; align-items: baseline; gap: 6px; }
+  .price-now { font-size: 24px; font-weight: 800; color: var(--ink); }
+  .price-old { color: var(--muted); text-decoration: line-through; font-size: 13px; }
+  .price-cashback { background: var(--warn-soft); color: var(--warn); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; display: inline-block; margin-top: 6px; }
+  .coupon-cta { background: var(--primary); color: #1a1a1a; padding: 10px; border-radius: 8px; text-align: center; font-size: 13px; font-weight: 700; margin-top: 10px; }
+  .report-module { background: var(--surface); border: 2px dashed var(--primary); border-radius: 12px; padding: 14px; margin-top: 16px; }
+  .report-module .rm-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .report-module .rm-head svg { color: var(--primary); width: 18px; height: 18px; }
+  .report-module .rm-head .lbl { font-size: 11px; color: var(--primary); font-weight: 700; letter-spacing: 0.05em; }
+  .report-module .rm-title { font-size: 14px; font-weight: 700; line-height: 1.4; }
+  .report-module .rm-preview { background: var(--bg); border-radius: 8px; padding: 10px; margin-top: 10px; font-size: 11px; color: var(--ink-2); }
+  .report-module .rm-preview .pm-row { display: flex; justify-content: space-between; padding: 4px 0; }
+  .report-module .rm-preview .pm-row .v { font-weight: 700; }
+  .report-cta { background: var(--ink-dark); color: #fff; padding: 12px; border-radius: 8px; text-align: center; font-size: 14px; font-weight: 700; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .report-cta svg { width: 14px; height: 14px; }
+
+  /* Screen 2 - WhatsApp Jump (user side) */
+  .wa-header { background: #075e54; color: #fff; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+  .wa-avatar { width: 32px; height: 32px; border-radius: 50%; background: #c4c4c4; flex-shrink: 0; }
+  .wa-name { font-size: 13px; font-weight: 700; }
+  .wa-status { font-size: 10px; opacity: 0.8; }
+  .wa-body { padding: 12px; background: #ece5dd; min-height: 400px; display: flex; flex-direction: column; }
+  .wa-bubble { background: #fff; border-radius: 8px; padding: 8px 12px; font-size: 12px; max-width: 85%; margin-bottom: 6px; box-shadow: 0 1px 1px rgba(0,0,0,0.06); }
+  .wa-bubble.them { background: #dcf8c6; align-self: flex-end; margin-left: auto; }
+  .wa-bubble.system { background: #fff3cd; color: #856404; align-self: center; font-size: 11px; }
+  .wa-bubble .time { font-size: 9px; color: var(--muted); margin-top: 2px; text-align: right; }
+  .wa-bubble pre { font-family: 'JetBrains Mono', monospace; font-size: 10px; background: #f0f0f0; padding: 6px 8px; border-radius: 4px; margin-top: 4px; white-space: pre-wrap; word-break: break-all; }
+  .wa-input { background: #fff; border-top: 1px solid #ddd; padding: 8px 12px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .wa-input .in { flex: 1; background: #f0f0f0; padding: 8px 12px; border-radius: 16px; }
+
+  /* Screen 3 - Sales dual window (WhatsApp + Cavi params panel) */
+  .split-screen { display: grid; grid-template-rows: 1fr 1fr; height: 100%; }
+  .split-half { display: flex; flex-direction: column; overflow: hidden; border-bottom: 2px solid #e5e7eb; }
+  .split-half:last-child { border-bottom: 0; }
+  .split-head { background: #1f2937; color: #fff; padding: 6px 12px; font-size: 10px; font-weight: 700; display: flex; align-items: center; gap: 6px; letter-spacing: 0.05em; flex-shrink: 0; }
+  .split-head .dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
+  .split-body { flex: 1; overflow-y: auto; }
+  .param-card { background: #fff; margin: 10px; border-radius: 8px; padding: 10px; border: 1px solid #e5e7eb; }
+  .param-card .ph { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-bottom: 6px; }
+  .param-card pre { font-family: 'JetBrains Mono', monospace; font-size: 10px; background: #f9fafb; padding: 8px; border-radius: 4px; color: #111827; line-height: 1.5; white-space: pre-wrap; word-break: break-all; }
+  .copy-btn { background: #2563eb; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
+  .open-cavi { background: var(--ink-dark); color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin: 10px; }
+  .open-cavi svg { width: 12px; height: 12px; }
+
+  /* Screen 4 - Cavi backend (sales triggers) */
+  .cavi-nav { background: var(--ink-dark); color: #fff; padding: 10px 14px; display: flex; align-items: center; gap: 8px; font-size: 12px; flex-shrink: 0; }
+  .cavi-nav .crumb { opacity: 0.7; }
+  .cavi-nav .crumb.cur { opacity: 1; }
+  .cavi-body { padding: 14px; background: var(--bg); flex: 1; overflow-y: auto; }
+  .cavi-form { background: #fff; border-radius: 10px; padding: 14px; margin-bottom: 12px; border: 1px solid var(--line-soft); }
+  .cavi-form .h { font-size: 13px; font-weight: 700; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+  .cavi-form .h .src { font-size: 10px; color: var(--primary); background: var(--primary-soft); padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+  .kv-row { display: flex; align-items: center; padding: 6px 0; font-size: 12px; border-bottom: 1px dashed var(--line-soft); }
+  .kv-row:last-child { border-bottom: 0; }
+  .kv-row .k { color: var(--muted); width: 90px; }
+  .kv-row .v { flex: 1; font-weight: 600; color: var(--ink); font-family: 'JetBrains Mono', monospace; }
+  .cavi-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .cavi-btn { flex: 1; padding: 10px; border-radius: 6px; font-size: 12px; font-weight: 700; text-align: center; cursor: pointer; }
+  .cavi-btn.primary { background: var(--primary); color: #1a1a1a; }
+  .cavi-btn.ghost { background: var(--bg); color: var(--ink-2); border: 1px solid var(--line); }
+
+  .gen-progress { background: #fff; border-radius: 10px; padding: 14px; margin-bottom: 12px; border: 1px solid var(--line-soft); }
+  .gen-progress .h { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .gen-bar { background: var(--line-soft); height: 8px; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+  .gen-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #84cc16); border-radius: 4px; animation: progress 4s ease-out forwards; }
+  @keyframes progress { from { width: 0%; } to { width: 95%; } }
+  .gen-step-row { display: flex; align-items: center; gap: 8px; font-size: 11px; padding: 4px 0; color: var(--ink-2); }
+  .gen-step-row.done { color: var(--ink); }
+  .gen-step-row .chk { width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; background: var(--primary-soft); color: var(--primary); flex-shrink: 0; }
+  .gen-step-row.done .chk { background: var(--primary); color: #fff; }
+  .gen-step-row.active .chk { background: var(--info-soft); color: var(--info); }
+  .gen-step-row.pending { color: var(--muted); }
+  .gen-step-row.pending .chk { background: var(--bg); color: var(--muted); }
+
+  /* Screen 5 - Done + send */
+  .success-card { background: var(--primary-soft); border: 1px solid var(--primary); border-radius: 12px; padding: 16px; margin: 12px 0; text-align: center; }
+  .success-card .ic { width: 48px; height: 48px; margin: 0 auto 8px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .success-card .ic svg { width: 24px; height: 24px; }
+  .success-card .h { font-size: 14px; font-weight: 700; color: #14532d; }
+  .success-card .sub { font-size: 12px; color: #166534; margin-top: 4px; }
+
+  /* Screen 6 - Report H5 */
+  .seg-eyebrow { font-size: 10px; color: var(--primary); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 16px 0 4px; }
+  .seg-title { font-size: 18px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
+  .seg-sub { color: var(--ink-2); font-size: 12px; line-height: 1.5; }
+  .price-card { background: var(--ink-dark); color: #fff; border-radius: 12px; padding: 16px; margin: 12px 0; }
+  .price-card .ver { font-size: 11px; color: #b3b3b3; letter-spacing: 0.05em; }
+  .price-card .amt { font-size: 28px; font-weight: 800; margin: 4px 0; }
+  .price-card .amt small { font-size: 12px; font-weight: 500; color: #b3b3b3; margin-left: 4px; }
+  .price-card .save { background: rgba(103,194,58,0.2); color: #a3de7b; padding: 4px 8px; border-radius: 4px; font-size: 11px; display: inline-block; margin-top: 6px; }
+  .finance-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .finance-mini .card { background: rgba(255,255,255,0.08); padding: 8px; border-radius: 6px; font-size: 11px; }
+  .finance-mini .lbl { color: #b3b3b3; font-size: 10px; }
+  .finance-mini .v { font-size: 13px; font-weight: 700; margin-top: 2px; }
+  .cta-bar { background: var(--primary-soft); color: var(--primary); padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; text-align: center; margin: 12px 0; }
+  .next-cards { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+  .next-card { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.15s; }
+  .next-card:hover { border-color: var(--primary); }
+  .next-card .ic { width: 36px; height: 36px; border-radius: 8px; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .next-card .ic svg { width: 18px; height: 18px; }
+  .next-card .h { font-size: 13px; font-weight: 700; }
+  .next-card .s { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .next-card .arr { margin-left: auto; color: var(--muted); }
+
+  /* Screen 7 - Short Lead Form */
+  .form-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-top: 12px; }
+  .form-h { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .form-sub { font-size: 12px; color: var(--ink-2); margin-bottom: 16px; }
+  .form-echo { background: var(--bg); border-radius: 8px; padding: 10px; margin-bottom: 16px; display: flex; gap: 10px; align-items: center; }
+  .form-echo .img { width: 50px; height: 36px; background: linear-gradient(135deg, #ddd, #ccc); border-radius: 4px; flex-shrink: 0; }
+  .form-echo .info .nm { font-weight: 700; font-size: 12px; }
+  .form-echo .info .dt { color: var(--muted); font-size: 11px; margin-top: 2px; }
+  .form-field { margin-bottom: 12px; }
+  .form-field .lbl { font-size: 11px; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; display: block; }
+  .form-field input { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; font-family: inherit; color: var(--ink); }
+  .form-field input:focus { border-color: var(--primary); outline: 0; }
+  .form-toggle { display: flex; gap: 8px; }
+  .form-toggle label { flex: 1; padding: 10px; border: 1px solid var(--line); border-radius: 6px; text-align: center; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--ink-2); }
+  .form-toggle input { display: none; }
+  .form-toggle input:checked + span { color: var(--primary); }
+  .form-toggle label:has(input:checked) { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
+  .form-submit { width: 100%; background: var(--ink-dark); color: #fff; padding: 14px; border-radius: 8px; font-size: 14px; font-weight: 700; border: 0; cursor: pointer; margin-top: 4px; }
+
+  /* Screen 8 - Test Drive */
+  .td-step { display: flex; align-items: center; gap: 8px; margin: 8px 0; font-size: 12px; }
+  .td-step .num { width: 22px; height: 22px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
+  .td-step.done .num { background: var(--primary); color: #fff; }
+  .td-step.current .num { background: var(--info); color: #fff; }
+  .td-step .lbl { color: var(--ink-2); font-weight: 600; }
+  .td-step.done .lbl, .td-step.current .lbl { color: var(--ink); }
+  .td-options { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+  .td-option { border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 10px; font-size: 12px; }
+  .td-option.sel { border-color: var(--primary); background: var(--primary-soft); }
+  .td-option .ck { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .td-option.sel .ck { border-color: var(--primary); background: var(--primary); }
+  .td-option.sel .ck::after { content: '✓'; color: #fff; font-size: 10px; }
+  .td-option .nm { font-weight: 700; }
+  .td-option .meta { color: var(--muted); font-size: 11px; margin-top: 2px; }
+
+  /* Screen 9 - Long Lead */
+  .promo-card { background: linear-gradient(135deg, #1a1a1a 0%, #314256 100%); color: #fff; border-radius: 12px; padding: 16px; margin: 12px 0; position: relative; overflow: hidden; }
+  .promo-card .amt { font-size: 32px; font-weight: 800; color: var(--warn); font-family: 'DM Serif Display', serif; }
+  .promo-card .amt small { font-size: 16px; color: #fff; }
+  .promo-card .desc { font-size: 12px; margin-top: 6px; opacity: 0.9; }
+  .promo-card .cta { background: var(--warn); color: #1a1a1a; padding: 8px 16px; border-radius: 6px; display: inline-block; font-size: 12px; font-weight: 800; margin-top: 10px; }
+  .promo-card::after { content: '💰'; position: absolute; right: -10px; top: -10px; font-size: 80px; opacity: 0.1; }
+
+  /* Screen 10 - Sales WhatsApp 1v1 */
+  .wa-quick { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .wa-quick .qb { background: #fff; border: 1px solid #ddd; border-radius: 16px; padding: 6px 12px; font-size: 11px; }
+
+  /* Screen 11 - Close loop */
+  .funnel { display: flex; flex-direction: column; gap: 2px; }
+  .funnel .row { background: var(--bg); padding: 10px 12px; border-radius: 6px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .funnel .row.b { background: var(--primary-soft); }
+
+  .fixed-bottom { position: absolute; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line-soft); padding: 8px 12px; display: flex; align-items: center; gap: 8px; }
+  .fb-wa { width: 36px; height: 36px; border-radius: 50%; background: #25D366; color: #fff; display: flex; align-items: center; justify-content: center; }
+  .fb-call { flex: 1; background: var(--warn); color: #fff; padding: 10px; border-radius: 8px; text-align: center; font-size: 12px; font-weight: 700; }
+
+  .scenarios { margin-top: 64px; background: var(--surface); border-radius: 16px; padding: 32px; border: 1px solid var(--line-soft); }
+  .scenarios h2 { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 8px; }
+  .scenarios .sub { color: var(--ink-2); margin-bottom: 24px; }
+  .scen-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .scen-card { border: 1px solid var(--line-soft); border-radius: 12px; padding: 18px; transition: all 0.2s; }
+  .scen-card:hover { border-color: var(--line); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .scen-card .id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
+  .scen-card .nm { font-size: 15px; font-weight: 700; margin: 6px 0 8px; }
+  .scen-card .ds { font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+  .scen-card .meta { display: flex; gap: 8px; margin-top: 12px; font-size: 10px; color: var(--muted); }
+  .scen-card .meta span { background: var(--bg); padding: 2px 6px; border-radius: 3px; }
+  .scen-card .meta span.v12 { background: var(--warn-soft); color: var(--warn); }
+  .scen-card .meta span.sales { background: #fce7f3; color: #be185d; }
+
+  .metrics { margin-top: 48px; background: var(--surface); border-radius: 16px; padding: 32px; border: 1px solid var(--line-soft); }
+  .metrics h2 { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 8px; }
+  .metrics .sub { color: var(--ink-2); margin-bottom: 24px; }
+  .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .metric-card { padding: 16px; background: var(--bg); border-radius: 10px; }
+  .metric-card .cat { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  .metric-card .nm { font-size: 13px; font-weight: 700; margin: 6px 0 4px; }
+  .metric-card .tgt { font-size: 22px; font-weight: 800; color: var(--primary); }
+  .metric-card .tgt small { font-size: 12px; color: var(--muted); margin-left: 4px; font-weight: 500; }
+
+  .footnote { margin-top: 48px; padding: 16px; background: var(--warn-soft); border-radius: 10px; color: #6b4d12; font-size: 13px; border-left: 3px solid var(--warn); }
+  .footnote strong { color: #4a3508; }
+  .footnote code { background: rgba(0,0,0,0.05); padding: 2px 6px; border-radius: 3px; font-size: 12px; }
+
+  @media (max-width: 1024px) {
+    .main { grid-template-columns: 1fr; }
+    .map { position: static; }
+    .stage-area { grid-template-columns: 1fr; justify-items: center; }
+    .scen-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats, .metric-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .stats, .metric-grid, .scen-grid { grid-template-columns: 1fr; }
+    .phone { width: 100%; max-width: 390px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="topbar">
+    <div class="logo">AC</div>
+    <div class="title">AUTOCAVA · 产品功能流程 v1.2</div>
+    <div class="meta">2026-08-27 · PM: 叶启刚 · v1.2.1 修正销售协作流程</div>
+  </div>
+
+  <div class="hero">
+    <div class="patch">⚡ v1.2.1 修订 — 修正 S1 触发流程：用户 → WhatsApp → 销售复制参数 → Cavi 后台触发</div>
+    <h1>报告+试驾+留资 端到端</h1>
+    <p class="lead">关键发现：「获取完整报告」不是直接触发 AI 生成，而是跳转 WhatsApp 对话，<b>销售</b>复制报告参数到 Cavi 后台触发生成，报告完成后再通过 WhatsApp 回传给用户。这是 B 端销售协作 + C 端用户消费的双边流程。</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="num">12<small>屏</small></div>
+      <div class="lbl">H5 演示屏幕</div>
+      <div class="delta v12">v1.2.1 修正 +3</div>
+    </div>
+    <div class="stat">
+      <div class="num">6<small>种</small></div>
+      <div class="lbl">业务场景</div>
+      <div class="delta v12">+S0/S5/S6</div>
+    </div>
+    <div class="stat">
+      <div class="num">2<small>个</small></div>
+      <div class="lbl">核心角色</div>
+      <div class="delta" style="color:#be185d">+销售协作</div>
+    </div>
+    <div class="stat">
+      <div class="num">21<small>个</small></div>
+      <div class="lbl">关键指标</div>
+      <div class="delta v12">+3 销售协作</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <aside class="map">
+      <h3>流程地图 · 12 屏</h3>
+
+      <div class="stage-label">阶段 0 · 触达</div>
+      <div class="node" data-screen="0">
+        <span class="dot"></span>
+        <span>首页 / 榜单 / 车系返现</span>
+        <span class="tag">S0</span>
+      </div>
+
+      <div class="stage-label">阶段 1 · 车系页</div>
+      <div class="node" data-screen="1">
+        <span class="dot"></span>
+        <span>车系页 + 报告概览</span>
+        <span class="tag">S1</span>
+      </div>
+
+      <div class="stage-label">阶段 2 · 跳转 WhatsApp</div>
+      <div class="node" data-screen="2">
+        <span class="dot"></span>
+        <span style="color:#be185d;">⚡ 跳转 WA (带报告参数)</span>
+        <span class="tag" style="background:#fce7f3;color:#be185d;">v1.2.1</span>
+      </div>
+      <div class="node" data-screen="3">
+        <span class="dot"></span>
+        <span style="color:#be185d;">⚡ 销售端: 收到对话 + 参数</span>
+        <span class="tag" style="background:#fce7f3;color:#be185d;">v1.2.1</span>
+      </div>
+      <div class="node" data-screen="4">
+        <span class="dot"></span>
+        <span style="color:#be185d;">⚡ 销售端: Cavi 后台触发</span>
+        <span class="tag" style="background:#fce7f3;color:#be185d;">v1.2.1</span>
+      </div>
+      <div class="node" data-screen="5">
+        <span class="dot"></span>
+        <span style="color:#be185d;">⚡ 报告完成 + WA 回传</span>
+        <span class="tag" style="background:#fce7f3;color:#be185d;">v1.2.1</span>
+      </div>
+
+      <div class="stage-label">阶段 3 · 报告消费</div>
+      <div class="node" data-screen="6">
+        <span class="dot"></span>
+        <span>报告 H5 呈现 (8 段)</span>
+        <span class="tag">S1</span>
+      </div>
+
+      <div class="stage-label">阶段 4 · 留资 + 试驾</div>
+      <div class="node" data-screen="7">
+        <span class="dot"></span>
+        <span>短期留资 (WhatsApp 顾问)</span>
+        <span class="tag">4A</span>
+      </div>
+      <div class="node" data-screen="8">
+        <span class="dot"></span>
+        <span>试驾预约 (选车型/经销商)</span>
+        <span class="tag">4B</span>
+      </div>
+      <div class="node" data-screen="9">
+        <span class="dot"></span>
+        <span>长期留资 (领券+优惠方案)</span>
+        <span class="tag">4C</span>
+      </div>
+
+      <div class="stage-label">阶段 5 · 销售跟进</div>
+      <div class="node" data-screen="10">
+        <span class="dot"></span>
+        <span>销售 WhatsApp 1v1 跟进</span>
+        <span class="tag">S5</span>
+      </div>
+      <div class="node" data-screen="11">
+        <span class="dot"></span>
+        <span>成单闭环 (CRM)</span>
+        <span class="tag">S5</span>
+      </div>
+    </aside>
+
+    <section class="stage-area">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-status">
+            <span>9:41</span>
+            <div class="icons">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h20V11H2v11zm2-9h16v7H4v-7zM7 2h10v7H7V2zm2 2v3h6V4H9z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.24 4.24 0 0 0-6 0zm-4-4l2 2a7.07 7.07 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+          </div>
+          <div class="phone-url" id="phone-url">autocava.com.mx</div>
+          <div class="phone-content" id="phone-content"></div>
+          <div class="fixed-bottom" id="fixed-bottom" style="display:none">
+            <div class="fb-wa"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg></div>
+            <div class="fb-call">📞 Llamar · 销售顾问</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="caption">
+        <div class="stage-badge" id="cap-stage">阶段 0 · 触达</div>
+        <h2 id="cap-title">...</h2>
+        <p class="scene" id="cap-scene">...</p>
+
+        <h4>业务场景 & 关键动作</h4>
+        <ul id="cap-scenarios"></ul>
+
+        <h4>关键节点</h4>
+        <dl class="kv" id="cap-kv"></dl>
+
+        <div class="nav">
+          <button class="nav-btn" id="prev-btn" onclick="changeScreen(-1)">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            上一步
+          </button>
+          <button class="nav-btn primary" id="next-btn" onclick="changeScreen(1)">
+            下一步
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="scenarios">
+    <h2>6 种业务场景 + 1 个销售协作子流程</h2>
+    <p class="sub">v1.2.1 关键修正：S1 业务场景的执行由"用户直接触发"改为"销售协作触发"。新增 1 个销售协作子流程（4 步：收对话 → 复制参数 → 后台触发 → 回传）。</p>
+    <div class="scen-grid">
+      <div class="scen-card">
+        <div class="id">S0 · v1.2 新</div>
+        <div class="nm">长期"省"心智触达</div>
+        <div class="ds">首页 banner / 榜单·降价榜 / 条件找车·省钱专区 / 车系页返现入口</div>
+        <div class="meta"><span>阶段 0</span><span class="v12">+v1.2</span></div>
+      </div>
+      <div class="scen-card">
+        <div class="id">S1 · v1.2.1 修正</div>
+        <div class="nm">用户主动获取报告（带销售协作）</div>
+        <div class="ds">车系页 → 跳 WA → 销售收对话 → 复制参数 → Cavi 后台触发 → 报告回传</div>
+        <div class="meta"><span>阶段 1-2</span><span class="sales">⚡ +销售</span></div>
+      </div>
+      <div class="scen-card">
+        <div class="id">S2 · v1.1</div>
+        <div class="nm">数据变更触发</div>
+        <div class="ds">4 数据源任一字段更新（价格/CAVI/评论/金融）</div>
+        <div class="meta"><span>阶段 2</span><span>high</span></div>
+      </div>
+      <div class="scen-card">
+        <div class="id">S3 · v1.1</div>
+        <div class="nm">定时刷新</div>
+        <div class="ds">后台 cron 每日 02:00 全量</div>
+        <div class="meta"><span>阶段 2</span><span>normal</span></div>
+      </div>
+      <div class="scen-card">
+        <div class="id">S4 · v1.1</div>
+        <div class="nm">人工强制</div>
+        <div class="ds">PM / 运营后台手动触发（也走 Cavi 后台）</div>
+        <div class="meta"><span>阶段 2</span><span>normal</span></div>
+      </div>
+      <div class="scen-card">
+        <div class="id">S5 · v1.2 新</div>
+        <div class="nm">预约试驾</div>
+        <div class="ds">报告段 08 第 2 卡 / 留资页"要试驾"勾选</div>
+        <div class="meta"><span>阶段 4B</span><span class="v12">+v1.2</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <h2>关键指标 (v1.2.1 = 24 个)</h2>
+    <p class="sub">报告生成 7 个 + 留资转化 5 个 + 试驾 4 个 + 销售跟进 3 个 + <b>销售协作 5 个 (v1.2.1 新)</b> = 24 个核心可观测点。</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="cat">报告 · 沿用 v1.1</div>
+        <div class="nm">AI 字段合规率</div>
+        <div class="tgt">100<small>%</small></div>
+      </div>
+      <div class="metric-card">
+        <div class="cat">销售 · v1.2.1 新</div>
+        <div class="nm">WA 跳转成功率</div>
+        <div class="tgt">≥ 99<small>%</small></div>
+      </div>
+      <div class="metric-card">
+        <div class="cat">销售 · v1.2.1 新</div>
+        <div class="nm">参数复制 → 触发 SLA</div>
+        <div class="tgt">≤ 30<small>s</small></div>
+      </div>
+      <div class="metric-card">
+        <div class="cat">销售 · v1.2.1 新</div>
+        <div class="nm">报告回传 → 用户打开率</div>
+        <div class="tgt">≥ 80<small>%</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <strong>📋 v1.2.1 关键修正</strong>：S1 业务场景的执行被拆为「用户跳 WhatsApp」+「销售复制参数」+「销售在 Cavi 后台触发」3 步。这纠正了 v1.2 中"用户直接触发报告生成"的错误假设 — 实际是<strong>销售协作触发</strong>。详见 <code>docs/产品功能流程-v1.2.md</code> v1.2.1 修订版。
+  </div>
+
+</div>
+
+<script>
+// ========== Screen Content Library ==========
+const SCREENS = {
+  0: {
+    url: 'autocava.com.mx',
+    stage: '阶段 0 · 触达',
+    title: '首页 / 榜单 / 车系返现',
+    scene: '从多个外部入口建立"省"的心智，引导后续留资。',
+    scenarios: [
+      'S0 业务场景：首页 banner / 条件找车·省钱 / 榜单·降价榜 / 车系页购车返现',
+      '不进入报告生成链路（S1），直接走长期留资路径',
+    ],
+    kv: { '触发方': '外部流量', '频率': '持续', '优先级': 'high', '链路': '4C 长期留资' },
+    showFixedBottom: false,
+    body: `
+      <div class="screen">
+        <div class="banner">
+          <div class="tag">🔥 限时优惠</div>
+          <div class="h">Versa 2026 优惠季<small>购车立省 $47,000 MXN · 仅限本周</small></div>
+          <div class="btn">立即领取 →</div>
+        </div>
+        <div class="section-title">降价榜 · 本周<small>实时更新</small></div>
+        <div class="rank-list">
+          <div class="rank-item first"><div class="rank-num">1</div><div class="rank-name">Nissan Versa 2026</div><div class="rank-cut">↓$47,000</div><div class="coupon">领券</div></div>
+          <div class="rank-item"><div class="rank-num">2</div><div class="rank-name">VW Virtus 2026</div><div class="rank-cut">↓$35,200</div><div class="coupon">领券</div></div>
+          <div class="rank-item"><div class="rank-num">3</div><div class="rank-name">Kia K3 2026</div><div class="rank-cut">↓$28,800</div><div class="coupon">领券</div></div>
+        </div>
+      </div>
+    `
+  },
+
+  1: {
+    url: 'autocava.com.mx/nissan-versa-2026',
+    stage: '阶段 1 · 车系页',
+    title: '车系解读模块 + 报告概览',
+    scene: '车系页展示【车系解读模块】作为报告钩子。点击"获取完整报告"→ 跳转 WhatsApp（不是直接触发 AI）。',
+    scenarios: [
+      'S1 业务场景的入口：用户主动点击"获取完整报告"',
+      '点击后：跳转 WhatsApp + 附带报告生成参数（车系/版本/触发方）',
+      '<b>不是</b>直接调用 Cavi 后台 — 需销售在 WA 端接收并触发',
+    ],
+    kv: { '触发方': '用户主动', '频率': '每用户每次', '优先级': 'high', '链路': 'S1 → 跳转 WA' },
+    showFixedBottom: false,
+    body: `
+      <div class="screen">
+        <div class="series-hero">
+          <div class="series-h1">Nissan Versa 2026</div>
+          <div class="series-sub">Sedán · Gasolina · 1.6L · MX</div>
+        </div>
+        <div class="car-img">
+          <svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 30 L10 22 L20 16 L34 13 L52 13 L62 16 L70 22 L74 30 L66 30 A4 4 0 0 1 58 30 L22 30 A4 4 0 0 1 14 30 Z" fill="#888"/>
+            <path d="M22 16 L34 13 L52 13 L60 16 L60 21 L22 21 Z" fill="#333"/>
+          </svg>
+        </div>
+        <div class="price-row">
+          <div class="price-now">$327,900</div>
+          <div class="price-old">$374,900</div>
+        </div>
+        <div class="price-cashback">购车返现 $47,000</div>
+
+        <div class="report-module">
+          <div class="rm-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M7 14l3-3 3 3 5-5"/></svg>
+            <div class="lbl">车系解读 · CAVI</div>
+          </div>
+          <div class="rm-title" style="font-size:13px;">产品力均衡，家充用户的综合价值更突出。<br>购车时把版本价格、当前金融方案、服务覆盖与充电环境一起判断。</div>
+          <div class="rm-preview">
+            <div class="pm-row"><span>月供</span><span class="v">$4,890 起</span></div>
+            <div class="pm-row"><span>综合评分</span><span class="v">4.6 / 5</span></div>
+            <div class="pm-row"><span>推荐率</span><span class="v">89%</span></div>
+          </div>
+        </div>
+        <div class="report-cta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          获取完整报告
+        </div>
+        <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:6px;">
+          点击后跳转 WhatsApp，由专属顾问协助您生成报告
+        </div>
+      </div>
+    `
+  },
+
+  // ========== 修正：用户点击后跳转到 WhatsApp（带报告参数）==========
+  2: {
+    url: 'wa.me/525527419019?text=...',
+    stage: '阶段 2 · 跳转 WhatsApp ⚡',
+    title: '用户侧：跳转到 WhatsApp（带报告参数）',
+    scene: '<b style="color:#be185d;">v1.2.1 关键修正</b>：用户点"获取完整报告"不是直接触发 AI，而是跳转 WhatsApp，把报告参数以消息形式发给销售。',
+    scenarios: [
+      '<b style="color:#be185d;">触发动作</b>：拼装 URL → wa.me/{phone}?text={prefilled_message}',
+      'prefilled_message 包含：车系 / 版本 / 触发方（user_request） / 经销商 / 时间',
+      '用户进入 WhatsApp 对话，看到已预填的报告生成请求',
+      '销售在 WA 端 5min 内响应（这就是留资！）',
+    ],
+    kv: { '跳转 URL': 'wa.me/{phone}?text=...', 'prefilled': '车系/版本/触发方', '响应方': '销售', 'SLA': '≤5min' },
+    showFixedBottom: false,
+    body: `
+      <div class="wa-header">
+        <div class="wa-avatar"></div>
+        <div>
+          <div class="wa-name">Carlos · Cavi 顾问</div>
+          <div class="wa-status">● 在线 · 5min 内响应</div>
+        </div>
+      </div>
+      <div class="wa-body">
+        <div class="wa-bubble system">📋 您的车辆解读报告请求已发送</div>
+
+        <div class="wa-bubble them">
+          <div>👋 你好，我想看 <b>Nissan Versa 2026</b> 的完整车辆解读报告</div>
+          <pre>📊 请求参数:
+车系: Nissan Versa 2026 (series_id=356)
+版本: ADVANCE CVT (推荐)
+触发方: 用户主动 (S1)
+来源: 车系页 / 获取完整报告
+请求时间: 2026-08-27 18:09
+
+请帮我生成完整报告，谢谢!</pre>
+          <div class="time">18:09 ✓✓</div>
+        </div>
+
+        <div class="wa-bubble">
+          👋 收到！我现在帮您生成 Versa 2026 的完整报告，约需 1-2 分钟。
+          <div class="time">18:09 ✓✓</div>
+        </div>
+        <div class="wa-bubble">
+          我先在 Cavi 后台帮您触发报告生成 — 报告完成后会自动发到这个对话窗口。
+          <div class="time">18:10 ✓✓</div>
+        </div>
+      </div>
+      <div class="wa-input">
+        <div class="in">输入消息...</div>
+        <span>📎</span>
+      </div>
+    `
+  },
+
+  // ========== 销售端双窗口：上方 WhatsApp + 下方 Cavi 参数面板 ==========
+  3: {
+    url: 'cavi.sales.autocava.com.mx/leads',
+    stage: '阶段 2 · 销售端 ⚡',
+    title: '销售端：收对话 + 一键复制参数',
+    scene: '<b style="color:#be185d;">v1.2.1 新增</b>：销售在 Cavi 销售工作台看到对话，同时看到报告参数预览面板。',
+    scenarios: [
+      '<b style="color:#be185d;">销售工作台双窗口</b>：上 = 用户 WhatsApp 对话 / 下 = Cavi 报告参数面板',
+      '参数面板自动从 WA 消息解析车系/版本/触发方/时间',
+      '销售可"一键复制"参数到 Cavi 后台报告生成页',
+      '关键：<b>销售是 AI 生成的触发代理</b>，不是系统直接触发',
+    ],
+    kv: { '销售工作台': 'Cavi Sales', '解析字段': '车系/版本/触发方/时间', '动作': '复制参数 + 进入后台', 'SLA': '≤30s' },
+    showFixedBottom: false,
+    body: `
+      <div class="split-screen">
+        <div class="split-half">
+          <div class="split-head">
+            <span class="dot"></span>
+            WhatsApp · 用户对话
+          </div>
+          <div class="split-body" style="background:#ece5dd;padding:8px;">
+            <div style="background:#fff;border-radius:6px;padding:6px 8px;font-size:10px;margin-bottom:4px;">
+              <b>张明</b> · 18:09
+              <div style="color:var(--muted);">想看 Versa 2026 完整报告 (series_id=356)</div>
+            </div>
+            <div style="background:#dcf8c6;border-radius:6px;padding:6px 8px;font-size:10px;margin-bottom:4px;">
+              <b>我 (Carlos)</b> · 18:10
+              <div>收到，正在 Cavi 后台帮您生成...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="split-half">
+          <div class="split-head">
+            <span class="dot" style="background:#3b82f6;"></span>
+            Cavi · 报告参数面板 (自动解析)
+          </div>
+          <div class="split-body" style="background:#f9fafb;">
+            <div class="param-card">
+              <div class="ph">📊 已识别参数</div>
+              <pre>{
+  "series_id": 356,
+  "model": "nissan-versa",
+  "year": 2026,
+  "version": "ADVANCE CVT",
+  "trigger": "user_request",
+  "source": "series_page",
+  "lead_id": "L-2026082701",
+  "request_at": "2026-08-27T18:09:42Z"
+}</pre>
+              <div class="copy-btn" style="cursor:pointer;">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                一键复制参数
+              </div>
+            </div>
+            <div class="open-cavi">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              进入 Cavi 后台触发 →
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+  },
+
+  // ========== 销售在 Cavi 后台触发生成 ==========
+  4: {
+    url: 'cavi.admin.autocava.com.mx/md-gen?series_id=356',
+    stage: '阶段 2 · Cavi 后台 ⚡',
+    title: '销售触发：参数已填 + 生成中',
+    scene: '<b style="color:#be185d;">v1.2.1 新增</b>：销售进入 Cavi 后台 → 看到参数已自动填入 → 点"立即生成" → 后端走原 PRD v1.1 的 5 步流程。',
+    scenarios: [
+      'Cavi 后台报告生成页（已有 v1.1），参数已自动预填',
+      '销售点"立即生成" → 触发后端 5 步流程（接入 → 4 源 → AI → 校验 → 落地）',
+      '这里不破坏 v1.1 架构 — 销售只是"触发代理"，与 S4 人工强制走同一接口',
+      '生成时间：P99 < 60s / 通常 20-30s',
+    ],
+    kv: { '触发方式': '销售手动 (S1.1)', '参数来源': 'WA 自动解析 + 复制', '生成时间': '20-60s', '架构': '沿用 v1.1' },
+    showFixedBottom: false,
+    body: `
+      <div class="cavi-nav">
+        <span style="font-weight:700;">⚙️ Cavi</span>
+        <span class="crumb">/</span>
+        <span class="crumb">车辆解读</span>
+        <span class="crumb">/</span>
+        <span class="crumb cur">报告生成 (lead: L-2026082701)</span>
+      </div>
+      <div class="cavi-body">
+        <div class="cavi-form">
+          <div class="h">📋 报告参数 <span class="src">来自 WA 自动解析</span></div>
+          <div class="kv-row"><div class="k">series_id</div><div class="v">356</div></div>
+          <div class="kv-row"><div class="k">model</div><div class="v">nissan-versa</div></div>
+          <div class="kv-row"><div class="k">year</div><div class="v">2026</div></div>
+          <div class="kv-row"><div class="k">version</div><div class="v">ADVANCE CVT</div></div>
+          <div class="kv-row"><div class="k">trigger</div><div class="v">user_request</div></div>
+          <div class="kv-row"><div class="k">source</div><div class="v">series_page</div></div>
+          <div class="kv-row"><div class="k">lead_id</div><div class="v">L-2026082701</div></div>
+        </div>
+
+        <div class="gen-progress">
+          <div class="h">🔄 报告生成中...</div>
+          <div class="gen-bar"><div class="gen-bar-fill"></div></div>
+          <div class="gen-step-row done"><div class="chk">✓</div><div>① 触发 (S1.1 销售手动)</div></div>
+          <div class="gen-step-row done"><div class="chk">✓</div><div>② 接入 (参数校验/缓存)</div></div>
+          <div class="gen-step-row done"><div class="chk">✓</div><div>③ 4 数据源并行 (CAVI/销售/金融)</div></div>
+          <div class="gen-step-row active"><div class="chk">4</div><div>④ AI Agent 生成 + 5 步校验</div></div>
+          <div class="gen-step-row pending"><div class="chk">5</div><div>⑤ 落地 (MD + 快照 + 部署)</div></div>
+        </div>
+
+        <div class="cavi-actions">
+          <div class="cavi-btn ghost">取消</div>
+          <div class="cavi-btn primary" style="background:#1f2937;color:#fff;">⏳ 生成中...</div>
+        </div>
+      </div>
+    `
+  },
+
+  // ========== 报告完成 + WA 回传 ==========
+  5: {
+    url: 'wa.me/525527419019?text=...',
+    stage: '阶段 2 · 报告回传 ⚡',
+    title: '报告完成 + WhatsApp 自动回传',
+    scene: '<b style="color:#be185d;">v1.2.1 新增</b>：Cavi 后台生成完成 → 自动通过 WhatsApp 发回给用户（PDF + H5 链接）。',
+    scenarios: [
+      'Cavi 后台触发落地后 → 系统自动回调销售工作台 → 通过 WA Business API 发 PDF + H5 链接',
+      '用户收到报告（PDF 32 页 + 在线 H5 报告）',
+      '<b>后续能力</b>：cavi_ai 接管，自动应答用户的回访消息（Q4 待定）',
+      '关键：销售不需要手动转发，系统自动完成',
+    ],
+    kv: { '回传方式': 'WA Business API 自动', '内容': 'PDF 32 页 + H5 链接', '耗时': '生成完即发 (<3s)', '后续': 'cavi_ai 接管' },
+    showFixedBottom: false,
+    body: `
+      <div class="cavi-nav">
+        <span style="font-weight:700;">⚙️ Cavi</span>
+        <span class="crumb">/</span>
+        <span class="crumb cur">报告生成完成 ✓</span>
+      </div>
+      <div class="cavi-body">
+        <div class="success-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="h">报告生成成功</div>
+          <div class="sub">已自动通过 WhatsApp 发送给用户</div>
+        </div>
+
+        <div class="cavi-form">
+          <div class="h">📄 报告信息</div>
+          <div class="kv-row"><div class="k">文件</div><div class="v" style="font-size:10px;">nissan-versa-2026.md (32 KB)</div></div>
+          <div class="kv-row"><div class="k">data_version</div><div class="v">v20260827-1810</div></div>
+          <div class="kv-row"><div class="k">5 步校验</div><div class="v" style="color:var(--primary);">✓ 全部通过</div></div>
+          <div class="kv-row"><div class="k">AI 合规</div><div class="v" style="color:var(--primary);">✓ 100%</div></div>
+          <div class="kv-row"><div class="k">H5 URL</div><div class="v" style="font-size:9px;">cavi.report/nissan-versa-2026</div></div>
+          <div class="kv-row"><div class="k">PDF</div><div class="v" style="font-size:9px;">自动转 PDF · 32 页</div></div>
+        </div>
+      </div>
+    `
+  },
+
+  // ========== 报告 H5 呈现（用户消费）==========
+  6: {
+    url: 'cavi.report/nissan-versa-2026',
+    stage: '阶段 3 · 报告消费',
+    title: '报告 H5 呈现 (8 段 + 段 08)',
+    scene: '用户收到 WA 报告链接 → 打开 H5 报告 → 看 8 段内容 → 段 08 三卡触发留资/试驾/AI。',
+    scenarios: [
+      '段 02 cta-bar：¿Calcular tu cuota? → 金融比价（轻度转化）',
+      '段 08 第 1 卡：whatsapp → 4A 短期留资',
+      '段 08 第 2 卡：test_drive → 4B 试驾',
+      '段 08 第 3 卡：cavi_ai → AI 自动回复（后续）',
+    ],
+    kv: { '段 02': '价格/金融', '段 04': 'CAVI 评分', '段 05': '年度成本', '段 08': '3 张 next-card' },
+    showFixedBottom: true,
+    body: `
+      <div class="screen">
+        <div class="seg-eyebrow">02 · PRECIO Y FINANCIAMIENTO</div>
+        <div class="seg-title">Precio y planes</div>
+        <div class="price-card">
+          <div class="ver">ADVANCE CVT · 主推版本</div>
+          <div class="amt">$327,900<small>MXN</small></div>
+          <div class="save">+ 返现 $47,000</div>
+          <div class="finance-mini">
+            <div class="card"><div class="lbl">BBVA 36 月</div><div class="v">$4,890/月</div></div>
+            <div class="card"><div class="lbl">Nissan 48 月</div><div class="v">$3,720/月</div></div>
+          </div>
+        </div>
+        <div class="cta-bar">¿Calcular tu cuota? · Compara hasta 3 bancos · 1 min →</div>
+
+        <div class="seg-eyebrow">08 · SIGUIENTE PASO</div>
+        <div class="seg-title">¿Listo para decidir?</div>
+        <div class="seg-sub">3 种方式继续，选最适合你的</div>
+
+        <div class="next-cards">
+          <div class="next-card" onclick="goTo(7)">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg></div>
+            <div><div class="h">Hablar con un asesor</div><div class="s">1v1 协助购车决策 · &lt; 5 min 响应</div></div>
+            <div class="arr">›</div>
+          </div>
+          <div class="next-card" onclick="goTo(8)">
+            <div class="ic" style="background:var(--info-soft);color:var(--info);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+            <div><div class="h">Agendar prueba de manejo</div><div class="s">280+ 经销商 · 选车型/选时间</div></div>
+            <div class="arr">›</div>
+          </div>
+        </div>
+      </div>
+    `
+  },
+
+  7: {
+    url: 'autocava.com.mx/contacto?source=report',
+    stage: '阶段 4A · 短期留资',
+    title: 'WhatsApp 顾问 + 留资表单',
+    scene: '用户在段 08 第 1 张卡片点"Hablar con un asesor" → 跳转 WhatsApp + Cavi 站内留资页（双通道）。销售 5min 内响应。',
+    scenarios: [
+      '主入口：报告段 08 第 1 张 next-card (whatsapp)',
+      '兜底入口：固定底栏 WhatsApp 图标',
+      '字段：手机/姓名/是否试驾/提交"获取方案"',
+      '"是否试驾"勾选 → 同时触发节点 4B 试驾流程',
+    ],
+    kv: { '表单字段': '手机/姓名/是否试驾', '提交按钮': '获取方案', '响应 SLA': '≤5min', '线索类型': 'report_short_lead' },
+    showFixedBottom: false,
+    body: `
+      <div class="screen">
+        <div class="section-title" style="margin-top:0;">Hablar con un asesor</div>
+        <div class="form-card">
+          <div class="form-h">获取购车决策方案</div>
+          <div class="form-sub">购车决策支持，1 个入口，帮你看清购车总成本。留下联系方式，专人 1v1 协助你判断下一步。</div>
+          <div class="form-echo">
+            <div class="img"></div>
+            <div class="info">
+              <div class="nm">Nissan Versa 2026 · ADVANCE CVT</div>
+              <div class="dt">CAVI 4.6 · 经销商：CDMX Polanco</div>
+            </div>
+          </div>
+          <div class="form-field"><label class="lbl">手机号</label><input type="tel" value="+52 55 1234 5678"></div>
+          <div class="form-field"><label class="lbl">姓名</label><input type="text" value="张明"></div>
+          <div class="form-field">
+            <label class="lbl">是否需要试驾？</label>
+            <div class="form-toggle">
+              <label><input type="radio" name="td" value="1"><span>需要</span></label>
+              <label><input type="radio" name="td" value="0" checked><span>暂不需要</span></label>
+            </div>
+          </div>
+          <button class="form-submit">获取方案</button>
+        </div>
+      </div>
+    `
+  },
+
+  8: {
+    url: 'autocava.com.mx/visit?seriesId=356',
+    stage: '阶段 4B · 试驾预约',
+    title: '选车型 / 选经销商 / 选时间',
+    scene: '用户进入试驾流程：5 步走完。当前展示第 2 步：选经销商。',
+    scenarios: [
+      '主入口：报告段 08 第 2 张 next-card (test_drive)',
+      '辅入口：留资页"要试驾"勾选',
+      '5 步：选车型/选经销商/选时间/留资/成功',
+      '业务规则：默认本车系 6 版本 + 地理位置就近经销商',
+    ],
+    kv: { '步骤': '5 步', '字段': '车型/经销商/时间/手机', '响应 SLA': '≤5min', '线索类型': 'test_drive' },
+    showFixedBottom: false,
+    body: `
+      <div class="screen">
+        <div class="section-title" style="margin-top:0;">Agendar prueba de manejo</div>
+        <div class="td-step done"><div class="num">✓</div><div class="lbl">1. 选车型</div></div>
+        <div class="td-step current"><div class="num">2</div><div class="lbl">选经销商</div></div>
+        <div class="td-step"><div class="num">3</div><div class="lbl">选时间</div></div>
+        <div class="td-step"><div class="num">4</div><div class="lbl">留资确认</div></div>
+        <div class="td-step"><div class="num">5</div><div class="lbl">预约成功</div></div>
+        <div class="section-title">附近的 Nissan 经销商<small>按距离排序</small></div>
+        <div class="td-options">
+          <div class="td-option sel"><div class="ck"></div><div><div class="nm">Nissan Polanco</div><div class="meta">📍 2.3 km · CDMX Polanco</div></div></div>
+          <div class="td-option"><div class="ck"></div><div><div class="nm">Nissan Santa Fe</div><div class="meta">📍 5.7 km · CDMX Santa Fe</div></div></div>
+        </div>
+        <button class="form-submit">下一步 · 选时间</button>
+      </div>
+    `
+  },
+
+  9: {
+    url: 'autocava.com.mx/cupon/nissan-versa',
+    stage: '阶段 4C · 长期留资',
+    title: '领券 → 留资（咨询优惠方案）',
+    scene: '用户从阶段 0 触达页进入。领券是动作，留资是承诺。销售响应 SLA 10min。',
+    scenarios: [
+      '主入口：阶段 0 触达（首页/榜单/车系返现）',
+      '辅入口：报告段 02-07 cta-bar（轻度转化）',
+      '3 子页面：领券页 → 留资页 → 结果页',
+    ],
+    kv: { '子页面': '3 个', '回显字段': '车信息/车价/AutoCava价格/额外减', '响应 SLA': '≤10min', '线索类型': 'promo_lead' },
+    showFixedBottom: false,
+    body: `
+      <div class="screen">
+        <div class="promo-card">
+          <div class="amt">$47,000<small> MXN</small></div>
+          <div class="desc">Versa 2026 限时返现 · 仅限本周领取</div>
+          <div class="cta">🎁 立即领取</div>
+        </div>
+        <div class="form-card" style="margin-top:16px;">
+          <div class="form-h">咨询优惠方案</div>
+          <div class="form-sub">留下手机号，专属顾问 10min 内联系您。</div>
+          <div class="form-echo">
+            <div class="img"></div>
+            <div class="info">
+              <div class="nm">Versa ADVANCE CVT</div>
+              <div class="dt">官方 $374,900 - 返现 $47,000 = <b>$327,900</b></div>
+            </div>
+          </div>
+          <div class="form-field"><label class="lbl">手机号</label><input type="tel" value="+52 55 1234 5678"></div>
+          <button class="form-submit" style="background:var(--warn);">获取优惠方案</button>
+        </div>
+      </div>
+    `
+  },
+
+  10: {
+    url: 'wa.me/525527419019',
+    stage: '阶段 5 · 销售跟进',
+    title: 'WhatsApp 1v1 顾问',
+    scene: '线索进 CRM → 销售 1v1 跟进 → 协助金融/试驾/优惠。承接 4A/4B/4C 全部线索类型。',
+    scenarios: [
+      '4A 短留资 / 4B 试驾 / 4C 长留资统一进 CRM',
+      '线索状态：new → contacted → qualified → test_drove → won/lost',
+      '销售 SLA：4A/4B ≤5min, 4C ≤10min',
+    ],
+    kv: { '线索来源': 'CRM 统一', '首响 SLA': '5-10min', '关键动作': '1v1 协助', '转化目标': '试驾/到店/成交' },
+    showFixedBottom: false,
+    body: `
+      <div class="wa-header">
+        <div class="wa-avatar"></div>
+        <div>
+          <div class="wa-name">Carlos · Cavi 顾问</div>
+          <div class="wa-status">● 在线</div>
+        </div>
+      </div>
+      <div class="wa-body" style="display:flex;flex-direction:column;">
+        <div class="wa-bubble">👋 您好！我是 Cavi 顾问 Carlos。看到您对 <b>Nissan Versa 2026</b> 感兴趣，有几个点想跟您确认：
+          <div style="margin-top:4px;">1️⃣ 主要用途（通勤/家庭/长途）</div>
+          <div>2️⃣ 预算范围</div>
+          <div>3️⃣ 是否需要试驾</div>
+          <div class="time">10:23 ✓✓</div>
+        </div>
+        <div class="wa-bubble them">主要家用，预算 35 万左右，想先试驾一下
+          <div class="time">10:25 ✓✓</div>
+        </div>
+        <div class="wa-bubble">👍 了解了。Versa ADVANCE CVT 是家庭最常选的版本，月供 $4,890 起。我帮您约本周六的试驾可以吗？
+          <div class="time">10:25 ✓✓</div>
+        </div>
+        <div class="wa-quick">
+          <div class="qb">✅ 周六上午</div>
+          <div class="qb">✅ 周六下午</div>
+          <div class="qb">✅ 周日上午</div>
+        </div>
+      </div>
+      <div class="wa-input">
+        <div class="in">输入消息...</div>
+        <span>📎</span>
+        <span>😊</span>
+      </div>
+    `
+  },
+
+  11: {
+    url: 'autocava.com.mx/admin/funnel',
+    stage: '阶段 5 · 成单闭环',
+    title: '线索转化漏斗 + 归因',
+    scene: '线索最终转化闭环。CRM 全程追踪：留资 → 销售跟 → 试驾履约 → 成交。cavi_ai 灰度中。',
+    scenarios: [
+      '4A/4B/4C 线索统一在 CRM 中跟踪',
+      'cavi_ai 后续能力：AI 自动回复 PDF 报告（本期灰度）',
+      '成单数据回流到 BI 看板，归因到线索来源',
+    ],
+    kv: { '线索流转': 'CRM', '关键归因': '来源 → 成交', 'AI 自动回复': '后续能力', 'BI 看板': '已上线' },
+    showFixedBottom: false,
+    body: `
+      <div class="screen">
+        <div class="section-title" style="margin-top:0;">线索转化漏斗 · v1.2.1 全局</div>
+        <div class="funnel">
+          <div class="row b"><span>📞 4A 短留资 (WhatsApp 顾问)</span><span style="color:var(--primary);font-weight:700;">P0 ≤5min</span></div>
+          <div class="row b"><span>🚗 4B 试驾预约</span><span style="color:var(--primary);font-weight:700;">P0 ≤5min</span></div>
+          <div class="row"><span>💰 4C 长留资 (优惠)</span><span style="color:var(--muted);">P1 ≤10min</span></div>
+          <div class="row"><span>🤖 cavi_ai 自动回复</span><span style="color:var(--muted);">P2 自动 (灰度)</span></div>
+        </div>
+        <div class="section-title" style="margin-top:20px;">目标转化率</div>
+        <div style="background:var(--bg);border-radius:10px;padding:12px;">
+          <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px;"><span>报告 → 短留资率</span><span style="color:var(--primary);font-weight:700;">≥ 8%</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px;"><span>试驾履约率</span><span style="color:var(--primary);font-weight:700;">≥ 70%</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px;"><span>留资 → 成交率</span><span style="color:var(--primary);font-weight:700;">≥ 8%</span></div>
+        </div>
+      </div>
+    `
+  }
+};
+
+// ========== Render ==========
+let currentScreen = 0;
+
+function render() {
+  const s = SCREENS[currentScreen];
+  document.getElementById('phone-content').innerHTML = s.body;
+  document.getElementById('phone-url').textContent = s.url;
+  document.getElementById('cap-stage').textContent = s.stage;
+  document.getElementById('cap-stage').className = 'stage-badge' + (s.stage.includes('销售') ? ' sales' : '');
+  document.getElementById('cap-title').textContent = s.title;
+  document.getElementById('cap-scene').innerHTML = s.scene;
+
+  const scenUl = document.getElementById('cap-scenarios');
+  scenUl.innerHTML = s.scenarios.map(x => {
+    const isSales = x.includes('⚡') || x.includes('销售') || x.includes('触发代理');
+    return `<li class="${isSales ? 'sales' : ''}">${x}</li>`;
+  }).join('');
+
+  const kvDl = document.getElementById('cap-kv');
+  kvDl.innerHTML = Object.entries(s.kv).map(([k,v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
+
+  document.getElementById('fixed-bottom').style.display = s.showFixedBottom ? 'flex' : 'none';
+
+  document.querySelectorAll('.map .node').forEach(n => {
+    n.classList.toggle('active', parseInt(n.dataset.screen) === currentScreen);
+  });
+
+  document.getElementById('prev-btn').disabled = currentScreen === 0;
+  document.getElementById('next-btn').disabled = currentScreen === Object.keys(SCREENS).length - 1;
+  document.getElementById('phone-content').scrollTop = 0;
+}
+
+function changeScreen(dir) {
+  const next = currentScreen + dir;
+  if (next < 0 || next >= Object.keys(SCREENS).length) return;
+  currentScreen = next;
+  render();
+}
+
+function goTo(idx) {
+  currentScreen = idx;
+  render();
+  document.querySelector('.stage-area').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.querySelectorAll('.map .node').forEach(n => {
+  n.addEventListener('click', () => goTo(parseInt(n.dataset.screen)));
+});
+
+render();
+</script>
+
+</body>
+</html>

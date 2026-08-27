@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1428">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Nissan Versa 2026 — Reporte de Compra | AUTOCAVA</title>
+  <style>
+    :root {
+      --navy: #0f1428;
+      --navy-2: #161c36;
+      --navy-3: #1a2040;
+      --line: rgba(255,255,255,0.08);
+      --yellow: #f5c542;
+      --yellow-soft: #fde9a8;
+      --text: #1a1f3a;
+      --text-soft: #5b6478;
+      --text-mute: #8a93a6;
+      --bg: #ffffff;
+      --bg-soft: #f4f5f7;
+      --border: #e6e8ee;
+      --green: #16a34a;
+      --green-soft: #ecfdf3;
+      --red: #dc2626;
+      --red-soft: #fef2f2;
+      --orange: #FF6B00;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 15px;
+      background: var(--navy);
+      overflow: hidden;
+    }
+
+    /* ============ Progress Bar ============ */
+    .progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: var(--yellow);
+      z-index: 100;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* ============ Top Bar ============ */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 90;
+      background: var(--navy);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 16px;
+      padding-top: calc(12px + env(safe-area-inset-top, 0px));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+    .topbar-brand img {
+      height: 22px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+    .topbar-meta {
+      font-size: 10px;
+      color: var(--text-mute);
+      letter-spacing: 1px;
+    }
+
+    /* ============ Nav Dots (Right) ============ */
+    .navdots {
+      position: fixed;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .navdots button {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      transition: all 0.25s;
+    }
+    .navdots button.on {
+      background: var(--yellow);
+      border-color: var(--yellow);
+      transform: scale(1.3);
+    }
+
+    /* ============ Nav Buttons (Bottom) ============ */
+    .navbtn {
+      position: fixed;
+      bottom: 28px;
+      right: 16px;
+      z-index: 90;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--yellow);
+      color: var(--navy);
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: none;
+      transition: all 0.2s;
+    }
+    .navbtn:active { transform: scale(0.95); background: var(--yellow-soft); }
+    .navbtn.prev { right: 74px; background: var(--navy-2); color: #fff; border: 1px solid var(--line); }
+    .navbtn.prev:active { background: var(--navy-3); }
+
+    /* ============ Slides Stage ============ */
+    .stage {
+      height: 100svh;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .slide {
+      min-height: 100svh;
+      scroll-snap-align: start;
+      padding: 72px 16px 80px;
+    }
+
+    /* ============ Slide Variants ============ */
+    .slide.dark { background: var(--navy); color: #fff; }
+    .slide.dark2 { background: var(--navy-2); color: #fff; }
+    .slide.light { background: var(--bg); color: var(--text); }
+    .slide.gray { background: var(--bg-soft); color: var(--text); }
+
+    .slide-inner {
+      max-width: 480px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* ============ Typography ============ */
+    .kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--yellow);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+    .slide.dark .kicker,
+    .slide.dark2 .kicker { color: var(--yellow); }
+
+    h2 {
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      letter-spacing: -0.3px;
+    }
+    .slide.dark h2,
+    .slide.dark2 h2 { color: #fff; }
+
+    .lead {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-soft);
+      margin-bottom: 16px;
+    }
+    .slide.dark .lead,
+    .slide.dark2 .lead { color: #aab1c4; }
+    .lead b { color: var(--text); font-weight: 600; }
+    .slide.dark .lead b,
+    .slide.dark2 .lead b { color: #fff; }
+
+    /* ============ Chips ============ */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--navy-2);
+      border: 1px solid var(--line);
+      padding: .35em .8em;
+      font-size: 11px;
+      color: #aab1c4;
+      border-radius: 4px;
+      margin: 4px 4px 4px 0;
+    }
+    .chip em { font-style: normal; color: var(--yellow); font-weight: 600; }
+    .chiprow { display: flex; flex-wrap: wrap; margin-top: 16px; }
+
+    /* ============ Cover Slide ============ */
+    .slide.cover {
+      background: var(--navy);
+      text-align: center;
+    }
+    .slide.cover .slide-inner {
+      justify-content: center;
+      align-items: center;
+    }
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,197,66,0.15);
+      border: 1px solid var(--yellow);
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+    .cover-badge .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--yellow);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .cover-badge span {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--yellow);
+    }
+    .cover-title {
+      font-size: clamp(2.5rem, 10vw, 4rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+    .cover-title .yr { color: var(--yellow); }
+    .cover-sub {
+      font-size: 14px;
+      color: #aab1c4;
+      line-height: 1.6;
+      max-width: 320px;
+      margin-bottom: 24px;
+    }
+    .cover-score {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--navy-2);
+      border: 2px solid var(--yellow);
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .cover-score .num { font-size: 28px; font-weight: 800; color: var(--yellow); }
+    .cover-score .lbl { font-size: 8px; color: var(--text-mute); letter-spacing: 1px; }
+    .cover-specs {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .cover-spec {
+      text-align: center;
+      padding: 12px 16px;
+      background: var(--navy-2);
+      border-radius: 8px;
+      border: 1px solid var(--line);
+    }
+    .cover-spec .v { font-size: 20px; font-weight: 800; color: var(--yellow); }
+    .cover-spec .l { font-size: 10px; color: var(--text-mute); margin-top: 2px; }
+
+    /* ============ Spec Cards ============ */
+    .spec-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+    .spec-card {
+      background: var(--navy-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .spec-card .v { color: var(--yellow); font-size: 24px; font-weight: 800; min-width: 100px; }
+    .spec-card .v .u { font-size: 11px; color: var(--yellow-soft); font-weight: 600; margin-left: 2px; }
+    .spec-card .l { color: #aab1c4; font-size: 12px; }
+    .spec-card .l b { color: #fff; }
+
+    /* ============ Trim Cards ============ */
+    .trim-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+    .trim-card {
+      background: var(--navy-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+    }
+    .trim-card.rec::before {
+      content: "推荐";
+      position: absolute;
+      top: -8px;
+      right: 10px;
+      background: var(--yellow);
+      color: var(--navy);
+      font-size: 8px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+    }
+    .trim-card .ver { color: var(--text-mute); font-size: 9px; letter-spacing: 1px; min-width: 70px; font-weight: 700; }
+    .trim-card .name { color: #fff; font-size: 14px; font-weight: 700; }
+    .trim-card .price { margin-left: auto; color: var(--yellow); font-size: 16px; font-weight: 800; }
+
+    /* ============ Compare Grid ============ */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+    .compare-cell {
+      background: var(--navy-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .compare-cell .l { color: var(--text-mute); font-size: 10px; margin-bottom: 4px; }
+    .compare-cell .v { color: #fff; font-size: 14px; font-weight: 600; }
+    .compare-cell .v .acc { color: var(--yellow); }
+
+    /* ============ Price Cards ============ */
+    .price-grid { display: grid; gap: 10px; margin-top: 16px; }
+    .price-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .price-card.dark { background: var(--navy); border-color: var(--navy); color: #fff; }
+    .price-card .lbl { font-size: 11px; color: var(--text-mute); margin-bottom: 6px; font-weight: 600; }
+    .price-card.dark .lbl { color: var(--text-mute); }
+    .price-card .price { font-size: 26px; font-weight: 800; line-height: 1.1; }
+    .price-card .price .cur { font-size: 14px; color: var(--text-soft); font-weight: 600; }
+    .price-card.dark .price { color: var(--yellow); }
+    .price-card .sub { font-size: 11px; color: var(--text-soft); margin-top: 4px; }
+    .price-card.dark .sub { color: var(--text-mute); }
+    .price-card .body { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .price-card.dark .body { border-color: var(--line); }
+    .price-card .row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px; }
+    .price-card .row span:last-child { font-weight: 600; color: var(--text); }
+    .price-card.dark .row { color: #aab1c4; }
+    .price-card.dark .row span:last-child { color: #fff; }
+
+    /* ============ Feature Grid ============ */
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+    .feature-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .feature-card .v { font-size: 26px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .feature-card .v .u { font-size: 12px; color: var(--text-soft); font-weight: 600; margin-left: 3px; }
+    .feature-card .l { font-size: 11px; color: var(--text-soft); line-height: 1.4; }
+    .feature-card .l b { color: var(--text); font-weight: 600; }
+
+    /* ============ CAVI Score ============ */
+    .cavi-top { display: grid; gap: 10px; margin-top: 16px; }
+    .cavi-score {
+      background: var(--yellow);
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+    }
+    .cavi-score .l { color: var(--navy); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 4px; }
+    .cavi-score .s { color: var(--navy); font-size: 56px; font-weight: 800; line-height: 1; }
+    .cavi-score .u { color: var(--navy); font-size: 11px; opacity: 0.7; }
+    .cavi-score .rec { color: var(--navy); font-size: 12px; font-weight: 700; margin-top: 6px; }
+
+    .cavi-summary {
+      background: var(--navy);
+      border-radius: 8px;
+      padding: 18px;
+      color: #fff;
+    }
+    .cavi-summary h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+    .cavi-summary h3 .hl { color: var(--yellow); }
+    .cavi-summary p { color: #aab1c4; font-size: 12px; line-height: 1.7; }
+    .cavi-summary .meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+    .cavi-summary .meta .v { color: var(--yellow); font-size: 18px; font-weight: 800; }
+    .cavi-summary .meta .l { color: var(--text-mute); font-size: 9px; margin-top: 2px; }
+
+    .cavi-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .metric {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .l { font-size: 11px; color: var(--text-soft); margin-bottom: 6px; }
+    .metric .stars { color: var(--yellow); font-size: 11px; letter-spacing: 1px; margin-bottom: 4px; }
+    .metric .v { font-size: 15px; font-weight: 700; }
+    .metric .v small { color: var(--text-mute); font-weight: 500; font-size: 10px; margin-left: 2px; }
+
+    /* ============ Reviews ============ */
+    .reviews { display: grid; gap: 8px; margin-top: 10px; }
+    .review-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .review-card .stars { color: var(--yellow); font-size: 11px; margin-bottom: 6px; }
+    .review-card .text { font-size: 12px; line-height: 1.6; color: var(--text-soft); font-style: italic; margin-bottom: 8px; }
+    .review-card .meta { font-size: 10px; color: var(--text-mute); }
+
+    /* ============ Cost Section ============ */
+    .cost-main {
+      background: var(--yellow);
+      border-radius: 10px;
+      padding: 22px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .cost-main .l { color: var(--navy); font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
+    .cost-main .v { color: var(--navy); font-size: 36px; font-weight: 800; line-height: 1; }
+    .cost-main .v .u { font-size: 14px; margin-left: 4px; }
+    .cost-main .sub { color: var(--navy); font-size: 11px; opacity: 0.8; margin-top: 6px; }
+
+    .cost-stat {
+      background: var(--navy);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+    .cost-stat .l { color: var(--text-mute); font-size: 11px; }
+    .cost-stat .v { color: var(--yellow); font-size: 16px; font-weight: 800; }
+
+    .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .cost-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cost-card.hi { background: var(--yellow); border-color: var(--yellow); }
+    .cost-card .l { font-size: 10px; color: var(--text-soft); margin-bottom: 6px; }
+    .cost-card.hi .l { color: var(--navy); }
+    .cost-card .v { font-size: 16px; font-weight: 800; }
+    .cost-card.hi .v { color: var(--navy); }
+    .cost-card .s { font-size: 10px; color: var(--text-mute); margin-top: 6px; }
+    .cost-card.hi .s { color: var(--navy); opacity: 0.7; }
+
+    /* ============ Protection ============ */
+    .protect-main {
+      background: var(--yellow);
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .protect-main .n { font-size: 56px; font-weight: 800; color: var(--navy); line-height: 1; }
+    .protect-main .u { color: var(--navy); font-size: 14px; font-weight: 700; letter-spacing: 1px; margin-top: 4px; }
+    .protect-main .s { color: var(--navy); font-size: 11px; opacity: 0.8; margin-top: 8px; }
+
+    .protect-list { display: grid; gap: 8px; margin-top: 10px; }
+    .protect-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .protect-item .icon {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      background: var(--bg-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--navy);
+    }
+    .protect-item .h { font-weight: 700; font-size: 13px; margin-bottom: 2px; }
+    .protect-item .s { color: var(--text-soft); font-size: 11px; line-height: 1.5; }
+
+    /* ============ Competitors ============ */
+    .compete-grid { display: grid; gap: 10px; margin-top: 16px; }
+    .compete-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .compete-card.self { border: 2px solid var(--yellow); }
+    .compete-card .tag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 3px;
+      margin-bottom: 10px;
+    }
+    .compete-card .tag.self { background: var(--yellow); color: var(--navy); }
+    .compete-card .tag.alt { background: var(--bg-soft); color: var(--text-soft); }
+    .compete-card .card-row { display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
+    .compete-img {
+      width: 70px;
+      height: 50px;
+      border-radius: 6px;
+      background: #f0f0f0;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .compete-img img { width: 100%; height: 100%; object-fit: contain; }
+    .compete-card .name { font-size: 14px; font-weight: 800; margin-bottom: 2px; }
+    .compete-card .price { font-size: 11px; color: var(--text-soft); }
+    .compete-card .price b { color: var(--text); }
+    .compete-card .pros, .compete-card .cons {
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      line-height: 1.4;
+      margin-bottom: 5px;
+    }
+    .compete-card .pros { background: var(--green-soft); color: var(--green); }
+    .compete-card .cons { background: var(--red-soft); color: var(--red); }
+    .compete-card .pros b, .compete-card .cons b { font-weight: 700; margin-right: 4px; }
+
+    /* ============ Next Steps ============ */
+    .next-grid { display: grid; gap: 10px; margin-top: 16px; }
+    .next-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .next-card.self { background: var(--navy); border-color: var(--navy); color: #fff; }
+    .next-card .ic {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--yellow);
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .next-card.self .ic { background: var(--yellow); }
+    .next-card .body { flex: 1; }
+    .next-card .h { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .next-card .s { font-size: 12px; color: var(--text-soft); line-height: 1.5; margin-bottom: 8px; }
+    .next-card.self .s { color: #aab1c4; }
+    .next-card .btn { color: var(--orange); font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 4px; }
+
+    /* ============ Verdict ============ */
+    .verdict {
+      background: linear-gradient(135deg, rgba(245,197,66,0.1), transparent);
+      border: 1px solid rgba(245,197,66,0.3);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-top: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .verdict .vtag {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--yellow);
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+    .verdict p { font-size: 12px; line-height: 1.7; color: #aab1c4; }
+    .verdict p b { color: #fff; }
+
+    /* ============ Footer ============ */
+    .report-footer {
+      background: var(--navy);
+      padding: 32px 20px;
+      text-align: center;
+      color: var(--text-mute);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+    .report-footer .meta {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--yellow);
+      margin-bottom: 12px;
+    }
+
+    /* ============ Responsive ============ */
+    @media (min-width: 600px) {
+      .slide { padding: 80px 40px 100px; }
+      .slide-inner { max-width: 560px; }
+      .feature-grid, .cavi-metrics, .cost-grid { grid-template-columns: repeat(4, 1fr); }
+      .price-grid { grid-template-columns: 1fr 1fr; }
+      .protect-list { grid-template-columns: 1fr 1fr; }
+      .reviews { grid-template-columns: 1fr 1fr; }
+      .compare-grid { grid-template-columns: repeat(4, 1fr); }
+      .navdots { right: 20px; }
+      .navbtn { right: 20px; }
+      .navbtn.prev { right: 78px; }
+    }
+    @media (max-width: 480px) {
+      .navdots { display: none; }
+      .feature-grid, .cavi-metrics, .cost-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress" id="prog"></div>
+
+<!-- ============ Top Bar ============ -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <span>AUTOCAVA</span>
+  </div>
+  <div class="topbar-meta">NISSAN · 2026 · CAVI</div>
+</div>
+
+<!-- ============ Nav Dots ============ -->
+<nav class="navdots" id="dots" aria-label="页面导航"></nav>
+
+<!-- ============ Nav Buttons ============ -->
+<button class="navbtn prev" id="prev" aria-label="上一页">‹</button>
+<button class="navbtn next" id="next" aria-label="下一页">›</button>
+
+<!-- ============ Slides Stage ============ -->
+<main class="stage" id="stage">
+
+  <!-- ============ S1: Cover ============ -->
+  <section class="slide cover">
+    <div class="slide-inner">
+      <div class="cover-badge">
+        <span class="dot"></span>
+        <span>EXPERTO · CAVI</span>
+      </div>
+      <h1 class="cover-title">NISSAN VERSA<br><span class="yr">2026</span></h1>
+      <p class="cover-sub">墨西哥国民轿车 · 连续多年全国销冠 · CAVI 4.6/5</p>
+      <div class="cover-score">
+        <div class="num">4.6</div>
+        <div class="lbl">CAVI</div>
+      </div>
+      <div class="cover-specs">
+        <div class="cover-spec">
+          <div class="v">18.81</div>
+          <div class="l">km/L 油耗</div>
+        </div>
+        <div class="cover-spec">
+          <div class="v">482L</div>
+          <div class="l">后备箱</div>
+        </div>
+        <div class="cover-spec">
+          <div class="v">6</div>
+          <div class="l">安全气囊</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S2: Spec Strip ============ -->
+  <section class="slide dark">
+    <div class="slide-inner">
+      <div class="kicker">01 · 核心参数</div>
+      <h2>三组数据读懂 Versa 2026</h2>
+      <p class="lead">数据截至 2025年7月，来源 AMIA 销量统计与官方公开资料。</p>
+      <div class="spec-list">
+        <div class="spec-card">
+          <div class="v">18.81 <span class="u">km/L</span></div>
+          <div class="l">最佳综合油耗 · <b>SENSE MT</b></div>
+        </div>
+        <div class="spec-card">
+          <div class="v">482 <span class="u">L</span></div>
+          <div class="l">后备箱空间 · <b>2个大行李箱+登机箱</b></div>
+        </div>
+        <div class="spec-card">
+          <div class="v">7,486 <span class="u">辆</span></div>
+          <div class="l">7月销量 · <b>紧凑轿车销冠</b></div>
+        </div>
+      </div>
+      <div class="chiprow">
+        <span class="chip">数据来源 <em>AMIA 2025</em></span>
+        <span class="chip">CAVI评分 <em>4.6/5</em></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S3: Versions ============ -->
+  <section class="slide dark2">
+    <div class="slide-inner">
+      <div class="kicker">02 · 版本选择</div>
+      <h2>6个版本怎么选？</h2>
+      <p class="lead">入门版与顶配版差价近 10 万，但安全配置全系一致。</p>
+      <div class="trim-list">
+        <div class="trim-card">
+          <div class="ver">SENSE BASE</div>
+          <div class="name">MT</div>
+          <div class="price">$309,990</div>
+        </div>
+        <div class="trim-card">
+          <div class="ver">SENSE</div>
+          <div class="name">MT</div>
+          <div class="price">$316,990</div>
+        </div>
+        <div class="trim-card">
+          <div class="ver">SENSE</div>
+          <div class="name">CVT</div>
+          <div class="price">$341,990</div>
+        </div>
+        <div class="trim-card">
+          <div class="ver">ADVANCE</div>
+          <div class="name">MT</div>
+          <div class="price">$363,990</div>
+        </div>
+        <div class="trim-card rec">
+          <div class="ver">ADVANCE ★</div>
+          <div class="name">CVT</div>
+          <div class="price">$374,990</div>
+        </div>
+        <div class="trim-card">
+          <div class="ver">EXCLUSIVE</div>
+          <div class="name">CVT</div>
+          <div class="price">$406,990</div>
+        </div>
+      </div>
+      <div class="chiprow">
+        <span class="chip">推荐 <em>ADVANCE CVT</em></span>
+        <span class="chip">性价比最优</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S4: Compare ============ -->
+  <section class="slide dark">
+    <div class="slide-inner">
+      <div class="kicker">03 · 竞品对比</div>
+      <h2>与竞品相比，Versa 处于什么位置？</h2>
+      <div class="compare-grid">
+        <div class="compare-cell">
+          <div class="l">入门价格</div>
+          <div class="v">$309,990 <span class="acc">MXN</span></div>
+        </div>
+        <div class="compare-cell">
+          <div class="l">vs 细分市场均价</div>
+          <div class="v"><span class="acc">-23K</span> 更便宜</div>
+        </div>
+        <div class="compare-cell">
+          <div class="l">7月销量</div>
+          <div class="v">7,486 <span class="acc">辆</span></div>
+        </div>
+        <div class="compare-cell">
+          <div class="l">CAVI推荐率</div>
+          <div class="v"><span class="acc">89%</span> 推荐</div>
+        </div>
+      </div>
+      <div class="verdict">
+        <span class="vtag">结论</span>
+        <p><b>价格优势明显</b>，比细分市场平均低约 2.3 万比索，同时保持最高的销量和推荐率。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S5: Financing ============ -->
+  <section class="slide light">
+    <div class="slide-inner">
+      <div class="kicker">04 · 金融方案</div>
+      <h2>价格与融资方案</h2>
+      <p class="lead">以 ADVANCE CVT 为例（官方指导价 $374,990 MXN）</p>
+      <div class="price-grid">
+        <div class="price-card dark">
+          <div class="lbl">ADVANCE CVT · 含税参考价</div>
+          <div class="price"><span class="cur">$</span>374,990</div>
+          <div class="sub">MXN · 经销商参考价</div>
+          <div class="body">
+            <div class="row"><span>官方指导价</span><span>$374,990</span></div>
+            <div class="row"><span>置换补贴</span><span style="color:var(--green)">-$15,000</span></div>
+            <div class="row"><span>实际到手价</span><span>$359,990</span></div>
+          </div>
+        </div>
+        <div class="price-card">
+          <div class="lbl">BBVA 36期方案</div>
+          <div class="price"><span class="cur">$</span>6,244<small style="font-size:12px;color:var(--text-soft)">/月</small></div>
+          <div class="sub">首付 30% · 年利率 12.9%</div>
+          <div class="body">
+            <div class="row"><span>首付</span><span>$112,497</span></div>
+            <div class="row"><span>贷款额</span><span>$262,493</span></div>
+            <div class="row"><span>总利息</span><span>$39,768</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S6: Key Features ============ -->
+  <section class="slide gray">
+    <div class="slide-inner">
+      <div class="kicker">05 · 核心优势</div>
+      <h2>Versa 真正领先的四个方面</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="v">18.81<span class="u">km/L</span></div>
+          <div class="l">综合油耗 <b>SENSE MT</b> · 同级最优</div>
+        </div>
+        <div class="feature-card">
+          <div class="v">482<span class="u">L</span></div>
+          <div class="l">后备箱空间 · <b>2大行李+婴儿车</b></div>
+        </div>
+        <div class="feature-card">
+          <div class="v">6<span class="u">个</span></div>
+          <div class="l">安全气囊 · <b>前排+侧+帘</b> 全系标配</div>
+        </div>
+        <div class="feature-card">
+          <div class="v">62<span class="u">%</span></div>
+          <div class="l">3年残值率 · <b>优于 Virtus/K3</b></div>
+        </div>
+      </div>
+      <div class="chiprow">
+        <span class="chip">配件网络 <em>全国第一</em></span>
+        <span class="chip">保养间隔 <em>10,000km</em></span>
+        <span class="chip">基础保养 <em>~$650 MXN</em></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S7: CAVI Score ============ -->
+  <section class="slide light">
+    <div class="slide-inner">
+      <div class="kicker">06 · CAVI 评分</div>
+      <h2>3,240 位车主的真实评价</h2>
+      <div class="cavi-top">
+        <div class="cavi-score">
+          <div class="l">CAVI SCORE</div>
+          <div class="s">4.6</div>
+          <div class="u">/ 5.0</div>
+          <div class="rec">89% 推荐</div>
+        </div>
+        <div class="cavi-summary">
+          <h3>Balance <span class="hl">价格 / 空间 / 安全</span> 性价比无出其右</h3>
+          <p>亮点：<b>后备箱 (4.8)</b>、<b>油耗 (4.6)</b>、<b>安全性 (4.5)</b>。待改进：<b>高速噪音 (3.9)</b>。</p>
+          <div class="meta">
+            <div><div class="v">7,486</div><div class="l">月销量</div></div>
+            <div><div class="v">#1</div><div class="l">紧凑轿车</div></div>
+            <div><div class="v">3,240</div><div class="l">CAVI评价</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cavi-metrics">
+        <div class="metric">
+          <div class="l">后备箱空间</div>
+          <div class="stars">★★★★★</div>
+          <div class="v">4.8<small>/5.0</small></div>
+        </div>
+        <div class="metric">
+          <div class="l">油耗表现</div>
+          <div class="stars">★★★★★</div>
+          <div class="v">4.6<small>/5.0</small></div>
+        </div>
+        <div class="metric">
+          <div class="l">安全性</div>
+          <div class="stars">★★★★☆</div>
+          <div class="v">4.5<small>/5.0</small></div>
+        </div>
+        <div class="metric">
+          <div class="l">高速噪音</div>
+          <div class="stars">★★★☆☆</div>
+          <div class="v">3.9<small>/5.0</small></div>
+        </div>
+      </div>
+      <div class="reviews">
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <div class="text">"开了快一年，油耗 18 km/L 左右。空间够家用，保养便宜。"</div>
+          <div class="meta">2024 ADVANCE CVT · 15,000 km · CDMX</div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★☆</div>
+          <div class="text">"外观好看，内饰设计合理。CVT 在市区很平顺。"</div>
+          <div class="meta">2025 SENSE CVT · 8,200 km · Guadalajara</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S8: Cost ============ -->
+  <section class="slide gray">
+    <div class="slide-inner">
+      <div class="kicker">07 · 养车成本</div>
+      <h2>年养车账单：约 $28,500 MXN</h2>
+      <p class="lead">按年行驶 20,000 km 中间值估算（燃油+保险+保养）</p>
+      <div class="cost-main">
+        <div class="l">年度总成本</div>
+        <div class="v">$28,500<span class="u">MXN</span></div>
+        <div class="sub">≈ $2,375 MXN/月 · 低于一杯咖啡的日均成本</div>
+      </div>
+      <div class="cost-stat">
+        <div class="l">燃油（20,000km/年）</div>
+        <div class="v">$14,200</div>
+      </div>
+      <div class="cost-stat">
+        <div class="l">保险</div>
+        <div class="v">$9,800</div>
+      </div>
+      <div class="cost-stat">
+        <div class="l">保养</div>
+        <div class="v">$4,500</div>
+      </div>
+      <div class="cost-grid">
+        <div class="cost-card hi">
+          <div class="l">5年总成本</div>
+          <div class="v">$142,500</div>
+          <div class="s">比细分市场均值低 23%</div>
+        </div>
+        <div class="cost-card">
+          <div class="l">基础保养</div>
+          <div class="v">$650</div>
+          <div class="s">每 10,000 km</div>
+        </div>
+        <div class="cost-card">
+          <div class="l">大保养</div>
+          <div class="v">$2,400</div>
+          <div class="s">每 30,000 km</div>
+        </div>
+        <div class="cost-card">
+          <div class="l">3年残值率</div>
+          <div class="v">62%</div>
+          <div class="s">优于 Virtus 和 K3</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S9: Protection ============ -->
+  <section class="slide light">
+    <div class="slide-inner">
+      <div class="kicker">08 · 质保服务</div>
+      <h2>购车后的保障体系</h2>
+      <div class="protect-main">
+        <div class="n">3</div>
+        <div class="u">年 / 100,000 km</div>
+        <div class="s">Nissan México 官方质保</div>
+      </div>
+      <div class="protect-list">
+        <div class="protect-item">
+          <div class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div>
+            <div class="h">Nissan 全国网络</div>
+            <div class="s">280+ 经销商 · 原厂配件保障</div>
+          </div>
+        </div>
+        <div class="protect-item">
+          <div class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          </div>
+          <div>
+            <div class="h">24小时道路救援</div>
+            <div class="s">拖车、搭电、开锁 · 3年免费</div>
+          </div>
+        </div>
+        <div class="protect-item">
+          <div class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+          </div>
+          <div>
+            <div class="h">预付保养计划</div>
+            <div class="s">3次保养套餐 · 起步价 $4,990 MXN</div>
+          </div>
+        </div>
+        <div class="protect-item">
+          <div class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div>
+            <div class="h">Nissan Financial</div>
+            <div class="s">专属金融方案 · 利率优惠</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S10: Competitors ============ -->
+  <section class="slide gray">
+    <div class="slide-inner">
+      <div class="kicker">09 · 竞品分析</div>
+      <h2>与 Virtus / K3 / Mazda 2 摆在一起</h2>
+      <div class="compete-grid">
+        <div class="compete-card self">
+          <span class="tag self">TU ELECCIÓN</span>
+          <div class="card-row">
+            <div class="compete-img">
+              <img src="https://cdn.autocava.com.mx/car/series/87bfccbc706c4e7fa2174f07b784baf3.png" alt="Versa" referrerpolicy="no-referrer">
+            </div>
+            <div>
+              <div class="name">Nissan Versa</div>
+              <div class="price">从 <b>$309,990</b> MXN 起</div>
+            </div>
+          </div>
+          <div class="pros"><b>+</b>价格最优 · 482L后备箱 · 6气囊标配</div>
+          <div class="cons"><b>−</b>高速噪音 · 3年质保（标准）</div>
+        </div>
+        <div class="compete-card">
+          <span class="tag alt">ALTERNATIVA</span>
+          <div class="card-row">
+            <div class="compete-img">
+              <img src="https://cdn.autocava.com.mx/series/white/0452.png" alt="Virtus" referrerpolicy="no-referrer">
+            </div>
+            <div>
+              <div class="name">VW Virtus</div>
+              <div class="price">从 <b>$322,490</b> MXN 起</div>
+            </div>
+          </div>
+          <div class="pros"><b>+</b>德系操控 · 126 HP</div>
+          <div class="cons"><b>−</b>油耗略高 · 印度组装</div>
+        </div>
+        <div class="compete-card">
+          <span class="tag alt">ALTERNATIVA</span>
+          <div class="card-row">
+            <div class="compete-img">
+              <img src="https://cdn.autocava.com.mx/car/series/4d10f808e5894bc1a136e719e7747245.png" alt="K3" referrerpolicy="no-referrer">
+            </div>
+            <div>
+              <div class="name">Kia K3 Sedán</div>
+              <div class="price">从 <b>$304,900</b> MXN 起</div>
+            </div>
+          </div>
+          <div class="pros"><b>+</b>5年质保 · 墨西哥组装</div>
+          <div class="cons"><b>−</b>残值率低于 Versa</div>
+        </div>
+        <div class="compete-card">
+          <span class="tag alt">PREMIUM</span>
+          <div class="card-row">
+            <div class="compete-img">
+              <img src="https://cdn.autocava.com.mx/car/series/f3c9c5dfe42e4e2eb22f2ac6a79d5a03.png" alt="Mazda2" referrerpolicy="no-referrer">
+            </div>
+            <div>
+              <div class="name">Mazda 2 Sedán</div>
+              <div class="price">从 <b>$301,900</b> MXN 起</div>
+            </div>
+          </div>
+          <div class="pros"><b>+</b>Skyactiv操控 · KODO设计</div>
+          <div class="cons"><b>−</b>后备箱440L · 质保3年</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S11: Recommendation ============ -->
+  <section class="slide light">
+    <div class="slide-inner">
+      <div class="kicker">10 · 购车建议</div>
+      <h2>谁该买，买哪个版本</h2>
+      <div class="verdict">
+        <span class="vtag">结论</span>
+        <p><b>核心诉求是"省心省钱地开5年" → 买。</b>Versa 是墨西哥市场风险最低的答案；追求驾驶乐趣或科技配置者，请看完竞品横评再决定。</p>
+      </div>
+      <div class="next-grid">
+        <div class="next-card self">
+          <div class="ic">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="body">
+            <div class="h">联系购车顾问</div>
+            <div class="s">WhatsApp 咨询 · 5分钟内回复</div>
+            <a href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%20el%20Nissan%20Versa%202026" class="btn">WhatsApp →</a>
+          </div>
+        </div>
+        <div class="next-card">
+          <div class="ic">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          </div>
+          <div class="body">
+            <div class="h">预约试驾</div>
+            <div class="s">280+ 经销商 · 可送车上门</div>
+            <a href="https://www.autocava.com.mx/visit?seriesId=356" class="btn">预约 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S12: Footer ============ -->
+  <section class="slide dark">
+    <div class="slide-inner">
+      <div class="report-footer">
+        <div class="meta">
+          <span>数据截至 2026-08</span>
+          <span>来源：AMIA / Nissan México</span>
+          <span>© AutoCava</span>
+        </div>
+        <p>本报告仅供参考，不构成购车建议。价格、利率、配置信息以经销商最终报价为准。</p>
+        <p style="margin-top: 12px;">CAVI 评分基于用户评价数据，评分截止日期为 2026年7月。</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ============ Navigation System ============
+const stage = document.getElementById('stage');
+const slides = [...stage.querySelectorAll('.slide')];
+const dots = document.getElementById('dots');
+const prog = document.getElementById('prog');
+
+// Create dots
+slides.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页');
+  b.addEventListener('click', () => s.scrollIntoView({ behavior: 'smooth' }));
+  dots.appendChild(b);
+});
+const dotsEl = [...dots.children];
+
+function current() {
+  const viewH = window.innerHeight;
+  const scrollT = stage.scrollTop;
+  let idx = 0;
+  slides.forEach((s, i) => {
+    if (s.offsetTop - viewH / 2 <= scrollT + 10) idx = i;
+  });
+  return idx;
+}
+
+function sync() {
+  const i = current();
+  dotsEl.forEach((d, j) => d.classList.toggle('on', j === i));
+  prog.style.width = ((i + 1) / slides.length * 100) + '%';
+}
+function go(n) {
+  const i = Math.max(0, Math.min(slides.length - 1, n));
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  slides[i].scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+}
+
+stage.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
+document.getElementById('next').addEventListener('click', () => go(current() + 1));
+document.getElementById('prev').addEventListener('click', () => go(current() - 1));
+
+// Keyboard
+window.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown') go(current() + 1);
+  if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') go(current() - 1);
+});
+
+sync();
+console.log('[AUTOCAVA] H5 v3 · Brand Style · Report Format · Ready');
+</script>
+
+</body>
+</html>

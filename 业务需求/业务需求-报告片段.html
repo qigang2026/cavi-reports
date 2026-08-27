@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>CAVI · Reporte (Fragmento)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rd-bg: #ffffff;
+      --rd-board: #f8f8f8;
+      --rd-card: #ffffff;
+      --rd-line: #e8e8e8;
+      --rd-line-soft: #f0f0f0;
+      --rd-ink: #222222;
+      --rd-ink2: #666666;
+      --rd-muted: #999999;
+      --rd-amber: #b59317;
+      --rd-amber-soft: #fde9a8;
+      --rd-amber-dim: #d8b657;
+      --rd-amber-bright: #ffc422;
+      --rd-good: #16a34a;
+      --rd-mono: rgba(0, 0, 0, 0.04);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      font-family: "Chakra Petch", "Inter", "PingFang SC", sans-serif;
+      background: #efeae2;          /* WhatsApp 背景色, 模拟真实环境 */
+      color: var(--rd-ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .frame {
+      width: 420px; min-height: 580px;
+      background: var(--rd-card);
+      margin: 20px auto;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      position: relative;
+    }
+    /* Preview 角标 (左上角) */
+    .preview-tag {
+      position: absolute; top: 14px; left: 14px; z-index: 10;
+      background: var(--rd-amber); color: #fff;
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 9px; font-weight: 800; letter-spacing: 0.15em;
+      padding: 4px 9px; border-radius: 2px;
+      display: inline-flex; align-items: center; gap: 4px;
+      box-shadow: 0 2px 6px rgba(181, 147, 23, 0.4);
+    }
+    .preview-tag::before { content: "▸"; font-size: 8px; }
+    .section-num {
+      position: absolute; top: 14px; right: 14px; z-index: 10;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      color: #fff;
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em;
+      padding: 4px 9px; border-radius: 2px;
+    }
+    .section-num b { color: var(--rd-amber-bright); font-weight: 800; }
+
+    .header {
+      padding: 50px 20px 16px;
+      border-bottom: 1px solid var(--rd-line-soft);
+    }
+    .kicker {
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 11px; letter-spacing: 0.22em;
+      color: var(--rd-amber); margin-bottom: 6px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .kicker::before { content: ""; width: 18px; height: 1px; background: var(--rd-amber-dim); }
+    .title {
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 20px; font-weight: 700; line-height: 1.2;
+      color: var(--rd-ink); margin-bottom: 6px;
+    }
+    .sub {
+      font-size: 12px; color: var(--rd-ink2); line-height: 1.55;
+    }
+    .sub b { color: var(--rd-ink); font-weight: 700; }
+
+    .hero {
+      position: relative;
+      background: #120c10;
+      height: 180px;
+      overflow: hidden;
+    }
+    .hero img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .hero::after {
+      content: ""; position: absolute; inset: auto 0 0 0; height: 50px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    }
+    .hero .score {
+      position: absolute; left: 14px; bottom: 14px; z-index: 3;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
+      padding: 8px 14px; border-left: 3px solid var(--rd-amber);
+    }
+    .hero .score b {
+      display: block; color: var(--rd-amber-bright);
+      font-size: 26px; font-weight: 700; line-height: 1;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    }
+    .hero .score span {
+      color: #fff; font-size: 9px; letter-spacing: 0.06em; font-weight: 600;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+    }
+
+    .body { padding: 18px 20px; }
+    .body .sec-kicker {
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 10.5px; letter-spacing: 0.22em;
+      color: var(--rd-amber); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .body .sec-kicker::before { content: ""; width: 16px; height: 1px; background: var(--rd-amber-dim); }
+    .body .h2 {
+      font-size: 16px; font-weight: 800; line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    .body .lead {
+      color: var(--rd-ink2); font-size: 12px; line-height: 1.6; margin-bottom: 12px;
+    }
+    .body .lead b { color: var(--rd-ink); font-weight: 700; }
+    .body .hero-num {
+      background: transparent; padding: 0; border: none; margin: 8px 0 12px;
+    }
+    .body .hero-num b {
+      display: block; color: var(--rd-amber);
+      font-size: 36px; font-weight: 700; line-height: 1;
+    }
+    .body .hero-num span {
+      color: var(--rd-ink2); font-size: 11px;
+    }
+    .body .charttitle {
+      font-family: "Chakra Petch", sans-serif; font-size: 9.5px;
+      letter-spacing: 0.18em; color: var(--rd-muted);
+      display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
+    }
+    .body .charttitle::before { content: ""; width: 5px; height: 5px; background: var(--rd-amber); }
+    .body .bars { display: flex; flex-direction: column; gap: 7px; }
+    .body .brow {
+      display: grid; grid-template-columns: 50px 1fr 60px; align-items: center; gap: 8px;
+    }
+    .body .brow .bl {
+      font-size: 10px; color: var(--rd-muted);
+      font-family: "Chakra Petch", sans-serif; letter-spacing: 0.04em;
+    }
+    .body .brow .track {
+      height: 9px; background: var(--rd-line-soft);
+      border-radius: 0 3px 3px 0; position: relative;
+    }
+    .body .brow .track i {
+      position: absolute; inset: 0 auto 0 0; width: 0%;
+      background: #b9bfc9; border-radius: 0 3px 3px 0;
+    }
+    .body .brow .track i.hl { background: var(--rd-amber); }
+    .body .brow .bv {
+      font-size: 10.5px; color: var(--rd-ink2); text-align: right;
+      font-family: "Chakra Petch", sans-serif;
+    }
+    .body .brow .bv em { font-style: normal; color: var(--rd-amber); font-weight: 600; }
+
+    /* 模糊的剩余内容 (暗示还有更多) */
+    .more-hint {
+      margin: 18px 20px 0;
+      padding: 14px 16px;
+      background: var(--rd-board);
+      border: 1px dashed var(--rd-line);
+      border-radius: 6px;
+      text-align: center;
+    }
+    .more-hint .ch {
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 10px; letter-spacing: 0.15em;
+      color: var(--rd-muted); margin-bottom: 6px;
+    }
+    .more-hint .ch b { color: var(--rd-amber); font-weight: 700; }
+    .more-hint .list {
+      font-size: 11px; color: var(--rd-ink2);
+      line-height: 1.6;
+    }
+    .more-hint .list span { color: var(--rd-ink); }
+    .more-hint .cta {
+      margin-top: 10px;
+      font-size: 12px; color: var(--rd-amber); font-weight: 700;
+    }
+
+    /* Footer */
+    .foot {
+      padding: 12px 20px;
+      background: var(--rd-board);
+      border-top: 1px solid var(--rd-line);
+      text-align: center;
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 9.5px; letter-spacing: 0.04em;
+      color: var(--rd-muted);
+    }
+    .foot b { color: var(--rd-amber); }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <!-- Preview 角标 + 节号 -->
+    <div class="preview-tag">VISTA PREVIA</div>
+    <div class="section-num">SECCIÓN <b>02</b> / 10</div>
+
+    <!-- 头部: 报告元信息 -->
+    <div class="header">
+      <div class="kicker">REPORTE DE COMPRA · NISSAN VERSA 2026</div>
+      <div class="title">El sedán #1 de México</div>
+      <div class="sub">Venta líder del segmento en julio 2026. CAVI <b>4.6/5</b> basado en 3,240 propietarios.</div>
+    </div>
+
+    <!-- Hero 图 + CAVI 角标 -->
+    <div class="hero">
+      <img src="https://cdn.autocava.com.mx/car/series/87bfccbc706c4e7fa2174f07b784baf3.png" alt="Nissan Versa 2026">
+      <div class="score">
+        <b>4.6</b>
+        <span>CAVI · SCORE PROPIETARIOS</span>
+      </div>
+    </div>
+
+    <!-- 主体: 一节的内容 (ventas mensuales) -->
+    <div class="body">
+      <div class="sec-kicker">02 · POSICIÓN EN EL MERCADO</div>
+      <h2 class="h2">Ventas mensuales: sostiene el liderazgo</h2>
+      <p class="lead">En julio <b>7,486 personas</b> eligieron el Versa — ningún otro sedán se acerca. Volumen estable sobre 6,500 unidades todo el año.</p>
+
+      <div class="hero-num">
+        <b class="num">7,486</b>
+        <span>Ventas julio 2026 · <b>Sedán #1 México</b></span>
+      </div>
+
+      <div class="charttitle">VENTAS MENSUALES (UNIDADES)</div>
+      <div class="bars">
+        <div class="brow">
+          <span class="bl num">JUL</span>
+          <div class="track"><i class="hl" style="width:100%"></i></div>
+          <span class="bv num"><em>7,486</em></span>
+        </div>
+        <div class="brow">
+          <span class="bl num">JUN</span>
+          <div class="track"><i style="width:91%"></i></div>
+          <span class="bv num">6,820</span>
+        </div>
+        <div class="brow">
+          <span class="bl num">MAY</span>
+          <div class="track"><i style="width:95%"></i></div>
+          <span class="bv num">7,110</span>
+        </div>
+        <div class="brow">
+          <span class="bl num">ABR</span>
+          <div class="track"><i style="width:88%"></i></div>
+          <span class="bv num">6,580</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 剩余内容提示 -->
+    <div class="more-hint">
+      <div class="ch">+ <b>9</b> CAPÍTULOS MÁS EN EL REPORTE COMPLETO</div>
+      <div class="list">
+        <span>03</span> Precio y financiamiento (6 versiones) ·
+        <span>04</span> Competencia ·
+        <span>05</span> Fortalezas ·
+        <span>06</span> Puntos débiles<br>
+        <span>07</span> ¿Quién debería comprarlo? ·
+        <span>08</span> Trampas a evitar ·
+        <span>09</span> Costo anual ·
+        <span>10</span> Asesor CAVI
+      </div>
+      <div class="cta">👇 Toca el link para ver todo</div>
+    </div>
+
+    <div class="foot">
+      <b>CAVI</b> · AutoCava AI · Reporte generado 26 AGO 2026
+    </div>
+  </div>
+</body>
+</html>
