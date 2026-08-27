@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Nissan Versa 2026 — Reporte | AUTOCAVA</title>
+  <!-- Iconify per ICON_SPEC.md -->
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <style>
+    :root {
+      --navy: #0f1428;
+      --navy-2: #161c36;
+      --navy-3: #1a2040;
+      --line: rgba(255,255,255,0.1);
+      --yellow: #f5c542;
+      --yellow-soft: #fde9a8;
+      --text: #1a1f3a;
+      --text-soft: #5b6478;
+      --text-mute: #8a93a6;
+      --bg: #ffffff;
+      --bg-soft: #f4f5f7;
+      --border: #e6e8ee;
+      --green: #16a34a;
+      --green-soft: #ecfdf3;
+      --red: #dc2626;
+      --red-soft: #fef2f2;
+      --orange: #FF6B00;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { background: #f5f5f5; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 14px;
+      padding-bottom: 80px; /* space for fixed bottom CTA */
+    }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+
+    /* ============ Top header (sticky) ============ */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--navy);
+      padding: 12px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 52px;
+    }
+    .logo img { height: 24px; width: auto; filter: brightness(0) invert(1); }
+    .topbar-right { color: #c5cad8; font-size: 12px; display: flex; align-items: center; gap: 4px; }
+    .topbar-right .flag {
+      width: 16px; height: 10px; border-radius: 1px;
+      background: linear-gradient(90deg, #006847 33%, #fff 33% 66%, #ce1126 66%);
+    }
+    .menu-btn {
+      width: 32px; height: 32px; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; gap: 4px;
+      cursor: pointer; background: none; border: none; padding: 0;
+    }
+    .menu-btn span { display: block; width: 18px; height: 2px; background: #fff; border-radius: 1px; }
+
+    /* ============ Sub nav (segmented) ============ */
+    .subnav {
+      background: var(--navy);
+      padding: 0 16px 16px;
+    }
+    .seg {
+      display: flex; background: rgba(255,255,255,0.06);
+      border-radius: 8px; padding: 3px; gap: 2px;
+    }
+    .seg-item {
+      flex: 1; text-align: center; padding: 8px 4px; border-radius: 6px;
+      color: #8a93a6; font-size: 12px; cursor: pointer; transition: all 0.2s;
+    }
+    .seg-item.active { background: rgba(255,255,255,0.12); color: #fff; font-weight: 600; }
+
+    /* ============ Hero (yellow circle + car) ============ */
+    .hero {
+      background: var(--navy);
+      padding: 16px 16px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-tag { color: var(--yellow); font-size: 10px; font-weight: 700; letter-spacing: 3px; margin-bottom: 8px; }
+    .hero-title { color: #fff; font-size: 28px; line-height: 1.15; font-weight: 800; margin-bottom: 4px; }
+    .hero-subtitle { color: var(--yellow); font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+    .hero-desc { color: #aab1c4; font-size: 13px; line-height: 1.65; margin-bottom: 20px; }
+
+    .hero-visual {
+      position: relative; height: 200px; margin-top: 8px;
+    }
+    .yellow-circle {
+      position: absolute; right: -30px; top: 50%; transform: translateY(-50%);
+      width: 220px; height: 220px; border-radius: 50%;
+      background: var(--yellow);
+    }
+    .car-stage {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      width: 280px; height: 150px; z-index: 2;
+    }
+    .car-stage img {
+      width: 100%; height: 100%; object-fit: contain; object-position: center;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+    }
+    .score-badge {
+      position: absolute; right: 12px; top: 8px; z-index: 3;
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--navy); color: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    }
+    .score-badge .num { font-size: 22px; font-weight: 800; color: var(--yellow); line-height: 1; }
+    .score-badge .lbl { font-size: 8px; color: #8a93a6; margin-top: 2px; letter-spacing: 1px; }
+
+    /* CTA buttons in hero */
+    .hero-cta {
+      display: block; text-align: center;
+      background: var(--yellow); color: var(--navy);
+      padding: 13px; border-radius: 8px; font-weight: 700; font-size: 14px;
+      margin-bottom: 8px; cursor: pointer;
+    }
+    .hero-link {
+      display: block; text-align: center; color: #aab1c4; font-size: 13px;
+      padding: 6px; cursor: pointer;
+    }
+    .hero-link b { color: #fff; font-weight: 600; }
+
+    /* ============ Container & sections ============ */
+    .container { padding: 0; background: #fff; }
+    section.block { padding: 24px 16px; }
+    section.block.dark { background: var(--navy); color: #fff; }
+    section.block.gray { background: var(--bg-soft); }
+    .block-head { margin-bottom: 20px; }
+    .block-eyebrow {
+      display: inline-block; background: var(--navy); color: var(--yellow);
+      font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+      letter-spacing: 1.5px; margin-bottom: 8px;
+    }
+    .block-title { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 4px; }
+    .block-sub { color: var(--text-soft); font-size: 12px; }
+
+    /* ============ 01 · Spec strip (3 core) ============ */
+    .spec-strip {
+      background: var(--navy); padding: 16px;
+    }
+    .spec-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .spec-card {
+      background: var(--navy-2); border: 1px solid var(--line);
+      border-radius: 8px; padding: 12px 8px; text-align: center;
+    }
+    .spec-card .v { color: var(--yellow); font-size: 16px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+    .spec-card .v .u { font-size: 10px; color: #aab1c4; font-weight: 500; }
+    .spec-card .l { color: #aab1c4; font-size: 10px; line-height: 1.3; }
+
+    /* ============ Trim selector (horizontal scroll) ============ */
+    .trim-section { padding: 20px 0; background: var(--navy); }
+    .trim-section .block-head { padding: 0 16px 16px; margin-bottom: 0; }
+    .trim-scroll {
+      display: flex; gap: 8px; overflow-x: auto; padding: 0 16px 8px;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    }
+    .trim-scroll::-webkit-scrollbar { display: none; }
+    .trim-card {
+      flex-shrink: 0; width: 110px;
+      background: var(--navy-2); border: 1px solid var(--line);
+      border-radius: 8px; padding: 12px; cursor: pointer;
+      position: relative; transition: all 0.2s;
+    }
+    .trim-card.active { border-color: var(--yellow); }
+    .trim-card .ver { color: #8a93a6; font-size: 9px; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .trim-card .name { color: #fff; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .trim-card .price { color: var(--yellow); font-size: 13px; font-weight: 800; }
+    .trim-card .badge-rec {
+      position: absolute; top: -6px; right: 6px;
+      background: var(--yellow); color: var(--navy);
+      font-size: 7px; font-weight: 800; padding: 2px 5px; border-radius: 3px;
+    }
+
+    /* ============ Compare bar ============ */
+    .compare-bar { background: var(--navy); padding: 0 16px 24px; }
+    .compare {
+      background: var(--navy-2); border: 1px solid var(--line);
+      border-radius: 8px; padding: 14px;
+    }
+    .compare-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .compare-head .tag { color: var(--yellow); font-size: 10px; font-weight: 700; letter-spacing: 1px; }
+    .compare-head .more { color: #8a93a6; font-size: 11px; }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .compare-cell .l { color: #8a93a6; font-size: 10px; margin-bottom: 2px; }
+    .compare-cell .v { color: #fff; font-size: 12px; font-weight: 600; }
+    .compare-cell .v .acc { color: var(--yellow); }
+
+    /* ============ Price & financing ============ */
+    .price-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px; margin-bottom: 10px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .price-card:active { transform: scale(0.98); }
+    .price-card.dark { background: var(--navy); border-color: var(--navy); color: #fff; }
+    .price-card .lbl { font-size: 11px; color: var(--text-mute); margin-bottom: 6px; }
+    .price-card.dark .lbl { color: #8a93a6; }
+    .price-card .price { font-size: 24px; font-weight: 800; line-height: 1; }
+    .price-card .price .cur { font-size: 14px; color: var(--text-soft); font-weight: 600; margin-right: 2px; }
+    .price-card.dark .price { color: var(--yellow); }
+    .price-card.dark .price .cur { color: var(--yellow); opacity: 0.7; }
+    .price-card .sub { color: var(--text-soft); font-size: 11px; margin-top: 4px; }
+    .price-card.dark .sub { color: #8a93a6; }
+    .price-card .body { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-soft); }
+    .price-card.dark .body { border-color: var(--line); color: #aab1c4; }
+    .price-card .row { display: flex; justify-content: space-between; padding: 2px 0; }
+    .price-card .row span:last-child { color: var(--text); font-weight: 600; }
+    .price-card.dark .row span:last-child { color: #fff; }
+
+    .cta-bar {
+      background: var(--navy); color: #fff; border-radius: 10px;
+      padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; margin-top: 4px;
+    }
+    .cta-bar .left .h { font-weight: 700; font-size: 13px; margin-bottom: 2px; }
+    .cta-bar .left .s { color: #8a93a6; font-size: 11px; }
+    .cta-bar .btn {
+      background: var(--yellow); color: var(--navy); font-weight: 700;
+      padding: 8px 14px; border-radius: 6px; font-size: 12px;
+    }
+
+    /* ============ Core features (2x2 grid) ============ */
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .feature-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px;
+    }
+    .feature-card .v { font-size: 22px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+    .feature-card .v .u { font-size: 12px; color: var(--text-soft); font-weight: 600; margin-left: 2px; }
+    .feature-card .l { color: var(--text-soft); font-size: 11px; line-height: 1.4; }
+    .feature-card .l b { color: var(--text); }
+
+    /* ============ Story / quote ============ */
+    .quote-img {
+      width: 100%; height: 180px; border-radius: 10px; overflow: hidden;
+      background: linear-gradient(135deg, #c9bca0 0%, #8c7d61 100%);
+      position: relative; margin-bottom: 16px;
+    }
+    .quote-img .tag {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(0,0,0,0.5); color: #fff;
+      padding: 3px 8px; border-radius: 4px; font-size: 10px;
+    }
+    .quote-content h3 { font-size: 16px; font-weight: 800; line-height: 1.4; margin-bottom: 10px; }
+    .quote-content p { color: var(--text-soft); font-size: 12px; line-height: 1.7; }
+
+    /* ============ CAVI reviews ============ */
+    .cavi-top { display: grid; grid-template-columns: 110px 1fr; gap: 10px; margin-bottom: 12px; }
+    .cavi-score {
+      background: var(--yellow); border-radius: 10px; padding: 16px;
+      text-align: center; display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      cursor: pointer;
+    }
+    .cavi-score .l { color: var(--navy); font-size: 9px; font-weight: 700; letter-spacing: 1px; margin-bottom: 2px; }
+    .cavi-score .s { color: var(--navy); font-size: 36px; font-weight: 800; line-height: 1; }
+    .cavi-score .u { color: var(--navy); font-size: 9px; margin-top: 2px; }
+    .cavi-score .rec { color: var(--navy); font-size: 9px; font-weight: 700; margin-top: 4px; }
+    .cavi-summary {
+      background: var(--navy); color: #fff; border-radius: 10px; padding: 16px;
+    }
+    .cavi-summary h3 { font-size: 13px; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
+    .cavi-summary h3 .hl { color: var(--yellow); }
+    .cavi-summary p { color: #aab1c4; font-size: 11px; line-height: 1.65; }
+    .cavi-summary .meta { display: flex; gap: 16px; padding-top: 10px; border-top: 1px solid var(--line); margin-top: 10px; }
+    .cavi-summary .meta .v { color: var(--yellow); font-size: 14px; font-weight: 800; }
+    .cavi-summary .meta .l { color: #8a93a6; font-size: 9px; }
+
+    .cavi-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .metric {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px;
+    }
+    .metric .l { color: var(--text-soft); font-size: 10px; margin-bottom: 6px; }
+    .metric .stars { color: var(--yellow); font-size: 11px; letter-spacing: 1px; margin-bottom: 4px; }
+    .metric .v { font-size: 14px; font-weight: 700; }
+    .metric .v small { color: var(--text-mute); font-weight: 500; font-size: 10px; margin-left: 2px; }
+
+    .review-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px; margin-bottom: 8px;
+    }
+    .review-card .stars { color: var(--yellow); font-size: 11px; margin-bottom: 6px; }
+    .review-card .text { font-size: 12px; line-height: 1.6; color: var(--text); font-style: italic; margin-bottom: 8px; }
+    .review-card .meta { font-size: 10px; color: var(--text-mute); }
+
+    /* ============ Cost ============ */
+    .cost-top { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .cost-main {
+      grid-column: span 2;
+      background: var(--yellow); border-radius: 10px; padding: 18px;
+      text-align: center;
+    }
+    .cost-main .l { color: var(--navy); font-size: 10px; font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
+    .cost-main .v { color: var(--navy); font-size: 28px; font-weight: 800; line-height: 1; }
+    .cost-main .v .u { font-size: 12px; margin-left: 2px; }
+    .cost-main .sub { color: var(--navy); font-size: 10px; margin-top: 4px; opacity: 0.75; }
+    .cost-stat {
+      background: var(--navy); color: #fff; border-radius: 8px; padding: 12px;
+    }
+    .cost-stat .l { color: #8a93a6; font-size: 10px; margin-bottom: 4px; }
+    .cost-stat .v { color: var(--yellow); font-size: 16px; font-weight: 800; }
+    .cost-stat .v .cur { font-size: 10px; opacity: 0.7; margin-right: 1px; }
+    .cost-stat .v .u { font-size: 9px; color: #aab1c4; margin-left: 2px; font-weight: 500; }
+
+    .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .cost-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px;
+    }
+    .cost-card.hi { background: var(--yellow); border-color: var(--yellow); }
+    .cost-card .l { color: var(--text-soft); font-size: 10px; margin-bottom: 4px; }
+    .cost-card.hi .l { color: var(--navy); }
+    .cost-card .v { font-size: 16px; font-weight: 800; line-height: 1; }
+    .cost-card .v .cur { font-size: 9px; color: var(--text-soft); font-weight: 600; margin-right: 1px; }
+    .cost-card.hi .v .cur { color: var(--navy); }
+    .cost-card .s { color: var(--text-mute); font-size: 9px; margin-top: 4px; }
+    .cost-card.hi .s { color: var(--navy); opacity: 0.7; }
+
+    /* ============ Protection ============ */
+    .protect-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .protect-main {
+      background: var(--yellow); border-radius: 10px; padding: 24px;
+      text-align: center;
+    }
+    .protect-main .n { font-size: 48px; font-weight: 800; color: var(--navy); line-height: 1; }
+    .protect-main .u { color: var(--navy); font-size: 12px; font-weight: 700; margin-top: 2px; }
+    .protect-main .s { color: var(--navy); font-size: 11px; margin-top: 6px; opacity: 0.75; }
+    .protect-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .protect-item {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px;
+    }
+    .protect-item .icon {
+      width: 32px; height: 32px; border-radius: 6px;
+      background: var(--bg-soft); display: flex; align-items: center; justify-content: center;
+      color: var(--navy); margin-bottom: 8px;
+    }
+    .protect-item .h { font-weight: 700; font-size: 12px; margin-bottom: 2px; }
+    .protect-item .s { color: var(--text-soft); font-size: 10px; line-height: 1.4; }
+
+    /* ============ Competitors (horizontal scroll) ============ */
+    .compete-scroll {
+      display: flex; gap: 10px; overflow-x: auto; padding: 0 0 8px;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
+      margin: 0 -16px; padding-left: 16px; padding-right: 16px;
+    }
+    .compete-scroll::-webkit-scrollbar { display: none; }
+    .compete-card {
+      flex-shrink: 0; width: 180px;
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px;
+    }
+    .compete-card.self { border: 2px solid var(--yellow); }
+    .compete-card .tag {
+      display: inline-block; font-size: 8px; font-weight: 700;
+      padding: 2px 6px; border-radius: 3px; margin-bottom: 8px;
+    }
+    .compete-card .tag.self { background: var(--yellow); color: var(--navy); }
+    .compete-card .tag.alt { background: var(--bg-soft); color: var(--text-soft); }
+    .compete-img {
+      width: 100%; height: 80px; border-radius: 6px; margin-bottom: 8px;
+      background: #f8f8f8; display: flex; align-items: center; justify-content: center;
+    }
+    .compete-img img { width: 100%; height: 100%; object-fit: contain; }
+    .compete-card .name { font-size: 14px; font-weight: 800; margin-bottom: 2px; }
+    .compete-card .price { color: var(--text-soft); font-size: 11px; margin-bottom: 8px; }
+    .compete-card .price b { color: var(--text); }
+    .compete-card .pros, .compete-card .cons {
+      font-size: 10px; padding: 6px 8px; border-radius: 4px; line-height: 1.4; margin-bottom: 4px;
+    }
+    .compete-card .pros { background: var(--green-soft); color: var(--green); }
+    .compete-card .cons { background: var(--red-soft); color: var(--red); }
+
+    /* ============ Next steps (stacked full-width) ============ */
+    .next-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px; text-align: center;
+      margin-bottom: 10px; cursor: pointer;
+    }
+    .next-card .ic {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--yellow); color: var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 10px; font-size: 18px;
+    }
+    .next-card .h { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .next-card .s { color: var(--text-soft); font-size: 11px; line-height: 1.5; }
+    .next-card .arrow { display: inline-block; margin-top: 8px; color: var(--orange); font-weight: 700; font-size: 12px; }
+
+    /* ============ Footer ============ */
+    footer {
+      background: var(--navy); color: #6b7488; padding: 20px 16px;
+      font-size: 11px; text-align: center;
+    }
+    footer .links { display: flex; justify-content: center; gap: 14px; margin-bottom: 6px; }
+    footer .links a { color: #aab1c4; }
+
+    /* ============ Fixed bottom CTA bar ============ */
+    .fixed-bottom {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      padding: 10px 12px;
+      display: flex; gap: 8px;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+    }
+    .fixed-bottom .btn {
+      flex: 1; padding: 10px 4px; border-radius: 8px;
+      font-size: 12px; font-weight: 700; text-align: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      cursor: pointer; text-decoration: none;
+      min-height: 56px;
+    }
+    .fixed-bottom .btn .iconify { display: block; }
+    .fixed-bottom .btn .lbl { font-size: 11px; opacity: 0.95; }
+    .fixed-bottom .btn.wa { background: #25D366; color: #fff; }
+    .fixed-bottom .btn.cavi { background: var(--navy); color: #fff; }
+    .fixed-bottom .btn.td { background: var(--yellow); color: var(--navy); }
+
+    /* ============ Toast ============ */
+    .toast {
+      position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--navy); color: #fff;
+      padding: 10px 16px; border-radius: 8px;
+      font-size: 13px; font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      z-index: 9999; opacity: 0;
+      transition: all 0.3s ease;
+      max-width: calc(100vw - 32px);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.success { background: #16a34a; }
+    .toast.error { background: #dc2626; }
+
+    /* ============ Bottom sheet / modal ============ */
+    .modal-mask {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 9000; display: none; align-items: flex-end;
+    }
+    .modal-mask.show { display: flex; }
+    .modal {
+      background: #fff; border-radius: 16px 16px 0 0;
+      width: 100%; max-width: 480px; margin: 0 auto;
+      padding: 20px 20px 32px;
+      max-height: 80vh; overflow-y: auto;
+      animation: sheetUp 0.3s ease;
+    }
+    @keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal .grip { width: 36px; height: 4px; background: #e0e0e0; border-radius: 2px; margin: 0 auto 16px; }
+    .modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+    .modal .sub { color: var(--text-soft); font-size: 12px; margin-bottom: 16px; }
+    .modal .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .modal .row:last-of-type { border-bottom: none; }
+    .modal .row span:last-child { font-weight: 700; }
+    .modal .highlight { background: var(--yellow); padding: 14px; border-radius: 8px; margin: 12px 0; text-align: center; }
+    .modal .highlight .v { font-size: 24px; font-weight: 800; color: var(--navy); }
+    .modal .actions { display: flex; gap: 8px; margin-top: 16px; }
+    .modal .btn-primary {
+      flex: 1; background: var(--navy); color: #fff;
+      padding: 12px; border-radius: 8px; font-weight: 700;
+      text-align: center; text-decoration: none; font-size: 13px;
+    }
+    .modal .btn-secondary {
+      background: #f1f1f1; color: var(--text);
+      padding: 12px 20px; border-radius: 8px; font-weight: 600;
+      text-align: center; cursor: pointer; font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ Top header ============ -->
+  <div class="topbar">
+    <a href="https://www.autocava.com.mx" class="logo">
+      <img src="https://cdn.autocava.com.mx/_nuxt/asset/logo.v3.mLItLIXo.svg" alt="AutoCava" referrerpolicy="no-referrer">
+    </a>
+    <div class="topbar-right">
+      <span class="flag"></span> México
+    </div>
+  </div>
+
+  <!-- ============ Sub nav ============ -->
+  <div class="subnav">
+    <div class="seg">
+      <div class="seg-item active">Comprador nuevo</div>
+      <div class="seg-item">Distribuidor</div>
+      <div class="seg-item">Cliente actual</div>
+    </div>
+  </div>
+
+  <!-- ============ Hero ============ -->
+  <section class="hero">
+    <div class="hero-tag">EXPERTO · CAVI</div>
+    <h1 class="hero-title">Nissan Versa 2026</h1>
+    <div class="hero-subtitle">¿Vale la pena? Respuesta en 30s.</div>
+    <p class="hero-desc">Sedán subcompacto · 7,486 ventas en julio (sedán #1 en México) · CAVI 4.6/5 · Desde $309,990 MXN</p>
+
+    <div class="hero-visual">
+      <div class="yellow-circle"></div>
+      <div class="score-badge">
+        <div class="num">4.6</div>
+        <div class="lbl">CAVI</div>
+      </div>
+      <div class="car-stage">
+        <img src="https://cdn.autocava.com.mx/car/series/87bfccbc706c4e7fa2174f07b784baf3.png"
+             alt="Nissan Versa 2026" loading="eager" referrerpolicy="no-referrer">
+      </div>
+    </div>
+
+    <a href="#financing" class="hero-cta" style="margin-top: 16px;">▶ Ver precio y financiamiento</a>
+    <a href="#compare" class="hero-link">Comparar con <b>VW Virtus / K3 / Mazda 2 ›</b></a>
+  </section>
+
+  <!-- ============ 01 · Spec strip (3 core) ============ -->
+  <section class="spec-strip">
+    <div class="spec-grid">
+      <div class="spec-card">
+        <div class="v">18.81<span class="u"> km/L</span></div>
+        <div class="l">Consumo combinado · mejor del segmento</div>
+      </div>
+      <div class="spec-card">
+        <div class="v">482<span class="u"> L</span></div>
+        <div class="l">Cajuela · 2 maletas + carreola</div>
+      </div>
+      <div class="spec-card">
+        <div class="v">7,486<span class="u"> ventas</span></div>
+        <div class="l">Julio · sedán #1 MX</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Trim selector ============ -->
+  <section class="trim-section">
+    <div class="block-head">
+      <div class="block-eyebrow">VERSIONES</div>
+      <h2 class="block-title" style="color:#fff">Elige tu versión</h2>
+      <p class="block-sub" style="color:#aab1c4">6 versiones · desde $309,990 MXN</p>
+    </div>
+    <div class="trim-scroll">
+      <div class="trim-card" data-version="sense-base-mt" data-name="SENSE BASE MT" data-msrp="309990" data-official="374900" data-monthly="5162">
+        <div class="ver">SENSE BASE</div>
+        <div class="name">MT</div>
+        <div class="price">$309,990</div>
+      </div>
+      <div class="trim-card" data-version="sense-mt" data-name="SENSE MT" data-msrp="316990" data-official="382900" data-monthly="5278">
+        <div class="ver">SENSE</div>
+        <div class="name">MT</div>
+        <div class="price">$316,990</div>
+      </div>
+      <div class="trim-card" data-version="sense-cvt" data-name="SENSE CVT" data-msrp="341990" data-official="406900" data-monthly="5694">
+        <div class="ver">SENSE</div>
+        <div class="name">CVT</div>
+        <div class="price">$341,990</div>
+      </div>
+      <div class="trim-card" data-version="advance-mt" data-name="ADVANCE MT" data-msrp="363990" data-official="428900" data-monthly="6061">
+        <div class="ver">ADVANCE</div>
+        <div class="name">MT</div>
+        <div class="price">$363,990</div>
+      </div>
+      <div class="trim-card active" data-version="advance-cvt" data-name="ADVANCE CVT" data-msrp="374990" data-official="439900" data-monthly="6244">
+        <span class="badge-rec">RECOMENDADO</span>
+        <div class="ver">ADVANCE</div>
+        <div class="name">CVT</div>
+        <div class="price">$374,990</div>
+      </div>
+      <div class="trim-card" data-version="exclusive-cvt" data-name="EXCLUSIVE CVT" data-msrp="406990" data-official="470900" data-monthly="6777">
+        <div class="ver">EXCLUSIVE</div>
+        <div class="name">CVT</div>
+        <div class="price">$406,990</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Compare bar ============ -->
+  <section class="compare-bar">
+    <div class="compare">
+      <div class="compare-head">
+        <span class="tag">VS COMPETENCIA</span>
+        <span class="more" id="more-compare">Ver más ›</span>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-cell">
+          <div class="l">Precio de entrada</div>
+          <div class="v">$309,990 <span class="acc">MXN</span></div>
+        </div>
+        <div class="compare-cell">
+          <div class="l">Vs. promedio</div>
+          <div class="v"><span class="acc">−$23K</span> más barato</div>
+        </div>
+        <div class="compare-cell">
+          <div class="l">Ventas julio</div>
+          <div class="v">7,486 <span class="acc">uds</span></div>
+        </div>
+        <div class="compare-cell">
+          <div class="l">Recomienda</div>
+          <div class="v"><span class="acc">89%</span> usuarios</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 · Precio y financiamiento ============ -->
+  <section class="block" id="financing">
+    <div class="block-head">
+      <div class="block-eyebrow">02 · PRECIO Y FINANCIAMIENTO</div>
+      <h2 class="block-title">Precio y planes</h2>
+      <p class="block-sub">Distribuidor + bancos + financiación marca + intercambio</p>
+    </div>
+    <div class="price-card dark" id="main-price-card" data-version="advance-cvt">
+      <div class="lbl" id="price-lbl">Precio sugerido · ADVANCE CVT</div>
+      <div class="price" id="price-num"><span class="cur">$</span>374,990</div>
+      <div class="sub" id="price-sub">MXN · precio de lista Nissan México</div>
+      <div class="body" id="price-body">
+        <div class="row"><span>Precio base</span><span id="price-base">$374,990</span></div>
+        <div class="row"><span>Bono intercambio</span><span style="color:var(--green)">−$15,000</span></div>
+        <div class="row"><span>Precio efectivo</span><span id="price-effective">$359,990</span></div>
+      </div>
+    </div>
+    <div class="price-card">
+      <div class="lbl">Banco · BBVA 36 meses</div>
+      <div class="price"><span class="cur">$</span>6,244<small style="font-size:11px;color:var(--text-soft);font-weight:500;margin-left:2px">/mes</small></div>
+      <div class="sub">Enganche 30% · Tasa 12.9%</div>
+    </div>
+    <div class="price-card">
+      <div class="lbl">Financiamiento Nissan</div>
+      <div class="price"><span class="cur">$</span>5,899<small style="font-size:11px;color:var(--text-soft);font-weight:500;margin-left:2px">/mes</small></div>
+      <div class="sub">48 meses · 0% intereses primer año</div>
+    </div>
+    <div class="price-card">
+      <div class="lbl">Bono intercambio</div>
+      <div class="price"><span class="cur">$</span>15,000</div>
+      <div class="sub">Si entregas tu auto actual</div>
+    </div>
+    <div class="cta-bar" id="cta-cuota">
+      <div class="left">
+        <div class="h">¿Calcular tu cuota?</div>
+        <div class="s">Compara hasta 3 bancos · 1 min</div>
+      </div>
+      <div class="btn">Calcular →</div>
+    </div>
+  </section>
+
+  <!-- ============ 03 · Core selling points ============ -->
+  <section class="block gray">
+    <div class="block-head">
+      <div class="block-eyebrow">03 · VENTAJAS CLAVE</div>
+      <h2 class="block-title">Lo que destaca</h2>
+      <p class="block-sub">4 datos que resumen el valor</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="v">18.81<span class="u">km/L</span></div>
+        <div class="l">Consumo SENSE MT · <b>mejor del segmento</b></div>
+      </div>
+      <div class="feature-card">
+        <div class="v">482<span class="u">L</span></div>
+        <div class="l">Cajuela · <b>2 maletas + carreola</b></div>
+      </div>
+      <div class="feature-card">
+        <div class="v">6<span class="u">airbags</span></div>
+        <div class="l">Frontales + laterales + cortina · <b>estándar</b></div>
+      </div>
+      <div class="feature-card">
+        <div class="v">3<span class="u">años</span></div>
+        <div class="l">Garantía Nissan · <b>100,000 km</b></div>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px;">
+      <div class="quote-img">
+        <div class="tag">CASO · Testimonio</div>
+        <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="bgMex2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f4d29c"/>
+              <stop offset="0.6" stop-color="#d68b54"/>
+              <stop offset="1" stop-color="#8a4a25"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="180" fill="url(#bgMex2)"/>
+          <path d="M0,110 L80,80 L150,100 L220,75 L300,95 L400,80 L400,180 L0,180 Z" fill="#5a3d22" opacity="0.6"/>
+          <ellipse cx="200" cy="170" rx="50" ry="5" fill="rgba(0,0,0,0.3)"/>
+          <rect x="175" y="100" width="50" height="65" rx="12" fill="#f5f5f0"/>
+          <circle cx="200" cy="85" r="18" fill="#e8d4b0"/>
+        </svg>
+      </div>
+      <div class="quote-content">
+        <h3>"Llevo casi un año y todo funciona."</h3>
+        <p>Propietario ADVANCE CVT, 15,000 km. Su testimonio: <b>mantenimiento económico</b> ($650 MXN el servicio menor), consumo real ~18 km/L, cajuela "cabe la carreola sin problema".</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 · CAVI reviews ============ -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">04 · CAVI · RESEÑAS</div>
+      <h2 class="block-title">Reseñas de usuarios</h2>
+      <p class="block-sub">3,240 propietarios · corte julio 2026</p>
+    </div>
+    <div class="cavi-top">
+      <div class="cavi-score" id="cavi-score-btn">
+        <div class="l">CAVI</div>
+        <div class="s">4.6</div>
+        <div class="u">/ 5.0</div>
+        <div class="rec">89% recomienda</div>
+      </div>
+      <div class="cavi-summary">
+        <h3>Balance <span class="hl">precio / espacio / seguridad</span> inmejorable</h3>
+        <p>4.6 = 89% recomienda. Sobresale: <b>cajuela (4.8)</b>, <b>consumo (4.6)</b>, <b>seguridad (4.5)</b>. Áreas: ruido carretera (3.9), CarPlay (3.7).</p>
+        <div class="meta">
+          <div><div class="v">7,486</div><div class="l">Ventas</div></div>
+          <div><div class="v">#1</div><div class="l">Sedán MX</div></div>
+          <div><div class="v">3.2K</div><div class="l">Reseñas</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="cavi-metrics">
+      <div class="metric">
+        <div class="l">Cajuela</div>
+        <div class="stars">★★★★★</div>
+        <div class="v">4.8<small>/5</small></div>
+      </div>
+      <div class="metric">
+        <div class="l">Consumo</div>
+        <div class="stars">★★★★★</div>
+        <div class="v">4.6<small>/5</small></div>
+      </div>
+      <div class="metric">
+        <div class="l">Seguridad</div>
+        <div class="stars">★★★★☆</div>
+        <div class="v">4.5<small>/5</small></div>
+      </div>
+      <div class="metric">
+        <div class="l">Ruido</div>
+        <div class="stars">★★★☆☆</div>
+        <div class="v">3.9<small>/5</small></div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <div class="text">"Llevo casi un año y consumo 18 km/L. Mantenimiento muy económico, servicio menor $650 MXN."</div>
+      <div class="meta">2024 ADVANCE CVT · 15,000 km · CDMX</div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <div class="text">"Diseño atractivo, CVT muy suave en ciudad. Solo el ruido de carretera es notable, pero aceptable por el precio."</div>
+      <div class="meta">2025 SENSE CVT · 8,200 km · Guadalajara</div>
+    </div>
+  </section>
+
+  <!-- ============ 05 · Cost ============ -->
+  <section class="block gray">
+    <div class="block-head">
+      <div class="block-eyebrow">05 · COSTO DE USO</div>
+      <h2 class="block-title">Costo anual</h2>
+      <p class="block-sub">Estimado 20,000 km/año</p>
+    </div>
+    <div class="cost-top">
+      <div class="cost-main">
+        <div class="l">COSTO ANUAL</div>
+        <div class="v">$28,500<span class="u">MXN</span></div>
+        <div class="sub">≈ $2,375 / mes</div>
+      </div>
+      <div class="cost-stat">
+        <div class="l">Gasolina</div>
+        <div class="v"><span class="cur">$</span>14,200<span class="u">/año</span></div>
+      </div>
+      <div class="cost-stat">
+        <div class="l">Seguro</div>
+        <div class="v"><span class="cur">$</span>9,800<span class="u">/año</span></div>
+      </div>
+    </div>
+    <div class="cost-grid">
+      <div class="cost-card hi">
+        <div class="l">5 años total</div>
+        <div class="v"><span class="cur">$</span>142,500</div>
+        <div class="s">−23% vs promedio</div>
+      </div>
+      <div class="cost-card">
+        <div class="l">Servicio menor</div>
+        <div class="v"><span class="cur">$</span>650</div>
+        <div class="s">Cada 10,000 km</div>
+      </div>
+      <div class="cost-card">
+        <div class="l">Servicio mayor</div>
+        <div class="v"><span class="cur">$</span>2,400</div>
+        <div class="s">Cada 30,000 km</div>
+      </div>
+      <div class="cost-card">
+        <div class="l">Revalorización 3a</div>
+        <div class="v">62%</div>
+        <div class="s">Mejor que Virtus/K3</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06 · Protection ============ -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">06 · GARANTÍA Y SERVICIO</div>
+      <h2 class="block-title">Cobertura post-compra</h2>
+      <p class="block-sub">Nissan México · 280+ distribuidores</p>
+    </div>
+    <div class="protect-grid">
+      <div class="protect-main">
+        <div class="n">3</div>
+        <div class="u">AÑOS / 100,000 KM</div>
+        <div class="s">Garantía total Nissan México</div>
+      </div>
+      <div class="protect-list">
+        <div class="protect-item">
+          <div class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div class="h">Red Nissan en todo México</div>
+          <div class="s">280+ distribuidores · refacciones originales</div>
+        </div>
+        <div class="protect-item">
+          <div class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          </div>
+          <div class="h">Asistencia vial 24/7</div>
+          <div class="s">Grúa, gasolina, cerrajero · 3 años</div>
+        </div>
+        <div class="protect-item">
+          <div class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+          </div>
+          <div class="h">Plan mantenimiento prepagado</div>
+          <div class="s">3 servicios desde $4,990 MXN</div>
+        </div>
+        <div class="protect-item">
+          <div class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </div>
+          <div class="h">Nissan Connect</div>
+          <div class="s">Localizar, abrir, diagnosticar</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 07 · Competitors ============ -->
+  <section class="block gray" id="compare">
+    <div class="block-head">
+      <div class="block-eyebrow">07 · COMPETENCIA</div>
+      <h2 class="block-title">Si te interesa el Versa</h2>
+      <p class="block-sub">4 sedanes subcompactos · mismo rango</p>
+    </div>
+    <div class="compete-scroll">
+      <div class="compete-card self" data-name="Nissan Versa" data-id="356">
+        <span class="tag self">TU ELECCIÓN</span>
+        <div class="compete-img">
+          <img src="https://cdn.autocava.com.mx/car/series/87bfccbc706c4e7fa2174f07b784baf3.png" alt="Nissan Versa" loading="lazy" referrerpolicy="no-referrer">
+        </div>
+        <div class="name">Nissan Versa</div>
+        <div class="price">Desde <b>$309,990</b> MXN</div>
+        <div class="pros"><b>+</b>Mejor precio · 482L · 6 airbags</div>
+        <div class="cons"><b>−</b>Ruido carretera · garantía 3a</div>
+      </div>
+      <div class="compete-card" data-name="VW Virtus" data-id="452">
+        <span class="tag alt">ALTERNATIVA</span>
+        <div class="compete-img">
+          <img src="https://cdn.autocava.com.mx/series/white/0452.png" alt="VW Virtus" loading="lazy" referrerpolicy="no-referrer">
+        </div>
+        <div class="name">VW Virtus</div>
+        <div class="price">Desde <b>$322,490</b> MXN</div>
+        <div class="pros"><b>+</b>Manejo alemán · 126 HP</div>
+        <div class="cons"><b>−</b>Consumo mayor · ensamble India</div>
+      </div>
+      <div class="compete-card" data-name="Kia K3 Sedán" data-id="526">
+        <span class="tag alt">ALTERNATIVA</span>
+        <div class="compete-img">
+          <img src="https://cdn.autocava.com.mx/car/series/4d10f808e5894bc1a136e719e7747245.png" alt="Kia K3" loading="lazy" referrerpolicy="no-referrer">
+        </div>
+        <div class="name">Kia K3 Sedán</div>
+        <div class="price">Desde <b>$304,900</b> MXN</div>
+        <div class="pros"><b>+</b>Garantía 5 años · 8 versiones</div>
+        <div class="cons"><b>−</b>Resale inferior</div>
+      </div>
+      <div class="compete-card" data-name="Mazda 2 Sedán" data-id="521">
+        <span class="tag alt">PREMIUM</span>
+        <div class="compete-img">
+          <img src="https://cdn.autocava.com.mx/car/series/f3c9c5dfe42e4e2eb22f2ac6a79d5a03.png" alt="Mazda 2" loading="lazy" referrerpolicy="no-referrer">
+        </div>
+        <div class="name">Mazda 2 Sedán</div>
+        <div class="price">Desde <b>$301,900</b> MXN</div>
+        <div class="pros"><b>+</b>Skyactiv · KODO · ensamble MX</div>
+        <div class="cons"><b>−</b>Cajuela 440L</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 08 · Next steps ============ -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">08 · SIGUIENTE PASO</div>
+      <h2 class="block-title">¿Listo para decidir?</h2>
+      <p class="block-sub">Elige cómo continuar</p>
+    </div>
+    <div class="next-card" id="next-whatsapp">
+      <div class="ic">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="h">Hablar con un asesor</div>
+      <div class="s">WhatsApp directo · &lt; 5 min respuesta</div>
+      <div class="arrow">Abrir chat →</div>
+    </div>
+    <div class="next-card" id="next-testdrive">
+      <div class="ic">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      </div>
+      <div class="h">Agendar prueba de manejo</div>
+      <div class="s">280+ distribuidores en México</div>
+      <div class="arrow">Reservar horario →</div>
+    </div>
+    <div class="next-card" id="next-cavi">
+      <div class="ic">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 7h6m-6 4h6m-6 4h4M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>
+      </div>
+      <div class="h">Preguntar a Cavi (AI)</div>
+      <div class="s">Asistente inteligente 24/7</div>
+      <div class="arrow">Abrir Cavi →</div>
+    </div>
+  </section>
+
+  <!-- ============ Footer ============ -->
+  <footer>
+    <div class="links">
+      <a href="https://www.autocava.com.mx/cavi">Sobre AUTOCAVA</a>
+      <a href="https://www.autocava.com.mx/auto">Términos</a>
+      <a href="https://www.autocava.com.mx/auto">Privacidad</a>
+      <a href="mailto:contacto@autocava.mx">Contacto</a>
+    </div>
+    <div>© 2026 AUTOCAVA · Av. Reforma 123, CDMX</div>
+  </footer>
+
+  <!-- ============ Fixed bottom CTA (icons per ICON_SPEC.md) ============ -->
+  <div class="fixed-bottom">
+    <a href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%20el%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F" class="btn wa">
+      <span class="iconify" data-icon="simple-icons:whatsapp" data-width="22" data-height="22"></span>
+      <span class="lbl">WhatsApp</span>
+    </a>
+    <a href="https://www.autocava.com.mx/visit?seriesId=356" class="btn td">
+      <span class="iconify" data-icon="simple-icons:waze" data-width="22" data-height="22"></span>
+      <span class="lbl">Test drive</span>
+    </a>
+    <a href="https://www.autocava.com.mx/cavi" class="btn cavi">
+      <span class="iconify" data-icon="simple-icons:openai" data-width="22" data-height="22"></span>
+      <span class="lbl">Cavi AI</span>
+    </a>
+  </div>
+
+  <!-- ============ Modal bottom sheet ============ -->
+  <div class="modal-mask" id="modal-mask">
+    <div class="modal" id="modal-content">
+      <div class="grip"></div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+
+    // ============ Toast ============
+    function toast(msg, type) {
+      const t = document.createElement('div');
+      t.className = 'toast' + (type === 'success' ? ' success' : type === 'error' ? ' error' : '');
+      t.textContent = msg;
+      document.body.appendChild(t);
+      requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+      setTimeout(() => {
+        t.classList.remove('show');
+        setTimeout(() => t.remove(), 300);
+      }, 2200);
+    }
+
+    // ============ Modal (bottom sheet) ============
+    const mask = document.getElementById('modal-mask');
+    const modalContent = document.getElementById('modal-content');
+    function openModal(html) {
+      modalContent.innerHTML = '<div class="grip"></div>' + html;
+      mask.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      mask.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+    mask.addEventListener('click', e => { if (e.target === mask) closeModal(); });
+
+    // ============ Sub-nav tab switcher ============
+    const SEG_LABELS = {
+      'Comprador nuevo': 'Mostrando precios para comprador nuevo',
+      'Distribuidor': 'Vista distribuidor · requiere login',
+      'Cliente actual': 'Vista cliente: servicio + garantía'
+    };
+    document.querySelectorAll('.seg-item').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.seg-item').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        toast(SEG_LABELS[tab.textContent.trim()] || tab.textContent.trim());
+      });
+    });
+
+    // ============ Trim cards ============
+    const fmt = n => '$' + Number(n).toLocaleString('en-US');
+    const priceCard = document.getElementById('main-price-card');
+    document.querySelectorAll('.trim-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.trim-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        const v = card.dataset;
+        const msrp = parseInt(v.msrp);
+        const bono = 15000;
+        document.getElementById('price-lbl').textContent = 'Precio sugerido · ' + v.name;
+        document.getElementById('price-num').innerHTML = '<span class="cur">$</span>' + msrp.toLocaleString('en-US');
+        document.getElementById('price-sub').textContent = 'MXN · desde $' + parseInt(v.monthly).toLocaleString('en-US') + '/mes';
+        document.getElementById('price-base').textContent = fmt(msrp);
+        document.getElementById('price-effective').textContent = fmt(msrp - bono);
+        priceCard.dataset.version = v.version;
+        // scroll price card into view
+        document.getElementById('financing').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        toast('Versión: ' + v.name, 'success');
+      });
+    });
+
+    // ============ Smooth scroll for hash links ============
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (href === '#' || href.length < 2) return;
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ============ Calcular mi cuota → modal ============
+    document.getElementById('cta-cuota').addEventListener('click', () => {
+      const v = priceCard.dataset.version || 'advance-cvt';
+      const trim = document.querySelector('.trim-card[data-version="' + v + '"]').dataset;
+      const msrp = parseInt(trim.msrp);
+      const enganche = Math.round(msrp * 0.3);
+      const monthly = Math.round((msrp - enganche) * 0.0125);
+      openModal(`
+        <h3>Calcula tu cuota</h3>
+        <p class="sub">${trim.name} · desde $${msrp.toLocaleString('en-US')} MXN</p>
+        <div class="highlight">
+          <div style="font-size:10px;color:var(--navy);font-weight:700;letter-spacing:1px;margin-bottom:4px">CUOTA ESTIMADA</div>
+          <div class="v">$${monthly.toLocaleString('en-US')}<span style="font-size:14px">/mes</span></div>
+          <div style="font-size:11px;color:var(--navy);margin-top:4px">36 meses · enganche 30% · 12.9%</div>
+        </div>
+        <div class="row"><span>Precio del auto</span><span>$${msrp.toLocaleString('en-US')}</span></div>
+        <div class="row"><span>Enganche (30%)</span><span>$${enganche.toLocaleString('en-US')}</span></div>
+        <div class="row"><span>Monto a financiar</span><span>$${(msrp - enganche).toLocaleString('en-US')}</span></div>
+        <div class="row"><span>Plan 36 meses</span><span>$${monthly.toLocaleString('en-US')}/mes</span></div>
+        <div class="actions">
+          <a href="https://www.autocava.com.mx/finance/apply?sourceType=1&seriesId=356&brandId=49&versionId=${v}" class="btn-primary">Aplicar →</a>
+          <div class="btn-secondary" onclick="document.getElementById('modal-mask').click()">Cerrar</div>
+        </div>
+      `);
+    });
+
+    // ============ CAVI score → modal ============
+    document.getElementById('cavi-score-btn').addEventListener('click', () => {
+      openModal(`
+        <h3>CAVI 4.6/5.0 · Desglose</h3>
+        <p class="sub">Composite de 3,240 propietarios · Julio 2026</p>
+        <div class="row"><span>Cajuela</span><span>4.8 ★★★★★</span></div>
+        <div class="row"><span>Consumo real</span><span>4.6 ★★★★★</span></div>
+        <div class="row"><span>Seguridad</span><span>4.5 ★★★★☆</span></div>
+        <div class="row"><span>Diseño / interiores</span><span>4.4 ★★★★☆</span></div>
+        <div class="row"><span>Servicio post-venta</span><span>4.3 ★★★★☆</span></div>
+        <div class="row"><span>Ruido carretera</span><span>3.9 ★★★☆☆</span></div>
+        <div class="row"><span>Precio/valor</span><span>4.7 ★★★★★</span></div>
+        <div class="actions"><div class="btn-primary" onclick="document.getElementById('modal-mask').click()">Entendido</div></div>
+      `);
+    });
+
+    // ============ Next-step 3 cards ============
+    document.getElementById('next-whatsapp').addEventListener('click', () => {
+      openModal(`
+        <h3>WhatsApp directo</h3>
+        <p class="sub">Asesor CAVI · respuesta &lt; 5 min</p>
+        <div class="highlight"><div class="v" style="color:var(--navy)">+52 55 2741 9019</div></div>
+        <p style="font-size:12px;color:var(--text-soft);margin:12px 0">Comparte enganche y plazo preferido.</p>
+        <div class="actions">
+          <a href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%20el%20Nissan%20Versa%202026" class="btn-primary">Abrir WhatsApp →</a>
+          <div class="btn-secondary" onclick="document.getElementById('modal-mask').click()">Cerrar</div>
+        </div>
+      `);
+    });
+    document.getElementById('next-testdrive').addEventListener('click', () => {
+      openModal(`
+        <h3>Reservar prueba de manejo</h3>
+        <p class="sub">280+ distribuidores Nissan en México</p>
+        <div class="row"><span>Ciudad</span><span>CDMX · Polanco</span></div>
+        <div class="row"><span>Disponible</span><span>Hoy 16:00 - 19:00</span></div>
+        <div class="row"><span>Duración</span><span>45 min</span></div>
+        <div class="actions">
+          <a href="https://www.autocava.com.mx/visit?seriesId=356" class="btn-primary">Confirmar →</a>
+          <div class="btn-secondary" onclick="document.getElementById('modal-mask').click()">Cerrar</div>
+        </div>
+      `);
+    });
+    document.getElementById('next-cavi').addEventListener('click', () => {
+      openModal(`
+        <h3>Preguntar a Cavi</h3>
+        <p class="sub">Asistente IA · recomendaciones personalizadas</p>
+        <div class="row"><span>Disponible</span><span>24/7</span></div>
+        <div class="row"><span>Responde sobre</span><span>Precio, rivales, costos</span></div>
+        <div class="actions">
+          <a href="https://www.autocava.com.mx/cavi" class="btn-primary">Abrir Cavi →</a>
+          <div class="btn-secondary" onclick="document.getElementById('modal-mask').click()">Cerrar</div>
+        </div>
+      `);
+    });
+
+    // ============ Competitor cards → open autocava link ============
+    document.querySelectorAll('.compete-card').forEach(card => {
+      const id = card.dataset.id;
+      const name = card.dataset.name;
+      if (id) {
+        card.addEventListener('click', () => {
+          toast('Abriendo ' + name + '...');
+          setTimeout(() => window.open('https://www.autocava.com.mx/auto/series/' + id, '_blank'), 300);
+        });
+      }
+    });
+
+    // ============ Compare "Ver más" ============
+    document.getElementById('more-compare').addEventListener('click', e => {
+      e.stopPropagation();
+      const target = document.getElementById('compare');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // ============ Footer mailto ============
+    document.querySelectorAll('footer .links a').forEach(a => {
+      a.addEventListener('click', e => {
+        if (a.href.startsWith('mailto:')) {
+          e.preventDefault();
+          window.location.href = a.href;
+        }
+      });
+    });
+
+    console.log('[AUTOCAVA H5] ready · 6 trim cards · 8 chapters · sticky bottom CTA');
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1200">
+  <title>AUTOCAVA 购车报告 · 一眼看懂是否适合你</title>
+  <style>
+    :root {
+      --navy: #0f1428;
+      --navy-2: #161c36;
+      --navy-3: #1a2040;
+      --line: rgba(255,255,255,0.08);
+      --line-2: rgba(255,255,255,0.12);
+      --yellow: #f5c542;
+      --yellow-soft: #fde9a8;
+      --text: #1a1f3a;
+      --text-soft: #5b6478;
+      --text-mute: #8a93a6;
+      --bg: #ffffff;
+      --bg-soft: #f4f5f7;
+      --border: #e6e8ee;
+      --green: #16a34a;
+      --green-soft: #ecfdf3;
+      --red: #dc2626;
+      --red-soft: #fef2f2;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: #fff; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 14px;
+      min-width: 1200px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+
+    .container { width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ============ Top bar ============ */
+    .topbar {
+      background: var(--navy);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 8px;
+      color: #fff; font-weight: 800; letter-spacing: 2px; font-size: 16px;
+    }
+    .logo .dot { width: 14px; height: 14px; background: var(--yellow); border-radius: 2px; }
+    .main-nav { display: flex; gap: 36px; }
+    .main-nav a {
+      color: #c5cad8; font-size: 14px; padding: 6px 0; position: relative;
+    }
+    .main-nav a:hover { color: #fff; }
+    .main-nav a.active { color: #fff; }
+    .main-nav a.active::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: -19px;
+      height: 2px; background: var(--yellow);
+    }
+    .topbar-right { display: flex; align-items: center; gap: 20px; color: #c5cad8; font-size: 13px; }
+    .region { display: flex; align-items: center; gap: 4px; }
+    .region .globe {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #6c89ff, #2a3a8c);
+    }
+
+    /* Sub nav (segmented control) */
+    .subnav { background: var(--navy); padding: 0 0 20px; }
+    .seg {
+      display: inline-flex; background: rgba(255,255,255,0.05);
+      border-radius: 6px; padding: 3px; gap: 2px;
+    }
+    .seg-item {
+      padding: 6px 16px; border-radius: 4px; color: #8a93a6; font-size: 13px;
+    }
+    .seg-item.active { background: rgba(255,255,255,0.1); color: #fff; }
+
+    /* ============ Hero ============ */
+    .hero {
+      background: var(--navy);
+      padding: 48px 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center;
+    }
+    .eyebrow {
+      display: inline-block; color: var(--yellow);
+      font-size: 12px; font-weight: 700; letter-spacing: 4px; margin-bottom: 22px;
+    }
+    .hero-title {
+      color: #fff; font-size: 60px; line-height: 1.1; font-weight: 800;
+      letter-spacing: -1px; margin-bottom: 24px;
+    }
+    .hero-desc {
+      color: #aab1c4; font-size: 14px; line-height: 1.8;
+      max-width: 460px; margin-bottom: 28px;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--yellow); color: var(--navy);
+      padding: 12px 22px; border-radius: 6px; font-weight: 700; font-size: 13px;
+    }
+    .hero-cta:hover { background: var(--yellow-soft); }
+    .hero-link {
+      color: #aab1c4; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;
+      margin-left: 16px;
+    }
+    .hero-link b { color: #fff; font-weight: 600; }
+
+    .hero-visual {
+      position: relative; height: 380px;
+    }
+    .yellow-circle {
+      position: absolute; right: -40px; top: 50%; transform: translateY(-50%);
+      width: 380px; height: 380px; border-radius: 50%;
+      background: var(--yellow);
+    }
+    .car-stage {
+      position: absolute; right: 30px; top: 50%; transform: translateY(-50%);
+      width: 540px; z-index: 2;
+    }
+    .score-badge {
+      position: absolute; right: 0; top: 0; z-index: 3;
+      width: 88px; height: 88px; border-radius: 50%;
+      background: var(--navy); color: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .score-badge .num { font-size: 30px; font-weight: 800; color: var(--yellow); line-height: 1; }
+    .score-badge .lbl { font-size: 9px; color: #8a93a6; margin-top: 4px; letter-spacing: 1px; }
+
+    /* Trim selector */
+    .trim {
+      background: var(--navy); padding: 32px 0 0;
+    }
+    .trim-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    }
+    .trim-card {
+      background: var(--navy-2); border: 1px solid var(--line); border-radius: 8px;
+      padding: 18px 20px; cursor: pointer; position: relative;
+    }
+    .trim-card.active { border-color: var(--yellow); }
+    .trim-card.active::before {
+      content: ""; position: absolute; left: 0; top: 18px; bottom: 18px; width: 3px;
+      background: var(--yellow); border-radius: 0 2px 2px 0;
+    }
+    .trim-card .ver { color: #8a93a6; font-size: 11px; letter-spacing: 1px; margin-bottom: 6px; }
+    .trim-card .name { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .trim-card .price { color: var(--yellow); font-size: 20px; font-weight: 800; }
+    .trim-card .price small { color: #8a93a6; font-weight: 500; font-size: 11px; margin-left: 4px; }
+
+    /* Comparison bar */
+    .compare-bar {
+      background: var(--navy); padding: 24px 0 56px;
+    }
+    .compare {
+      background: var(--navy-2); border: 1px solid var(--line); border-radius: 8px;
+      padding: 18px 22px;
+    }
+    .compare-head {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+    }
+    .compare-head .tag { color: var(--yellow); font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+    .compare-head .more { color: #8a93a6; font-size: 12px; }
+    .compare-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    }
+    .compare-cell { border-left: 1px solid var(--line); padding-left: 18px; }
+    .compare-cell:first-child { border-left: none; padding-left: 0; }
+    .compare-cell .l { color: #8a93a6; font-size: 11px; margin-bottom: 4px; }
+    .compare-cell .v { color: #fff; font-size: 14px; font-weight: 600; }
+    .compare-cell .v .acc { color: var(--yellow); }
+
+    /* ============ Section base ============ */
+    section.block { padding: 64px 0; }
+    section.block.gray { background: var(--bg-soft); }
+    .block-head { margin-bottom: 32px; }
+    .block-eyebrow {
+      display: inline-block; background: var(--navy); color: var(--yellow);
+      font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 4px;
+      letter-spacing: 2px; margin-bottom: 12px;
+    }
+    .block-title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .block-sub { color: var(--text-soft); font-size: 13px; }
+
+    /* Price & financing */
+    .price-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .price-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      padding: 24px;
+    }
+    .price-card.dark { background: var(--navy); border-color: var(--navy); color: #fff; }
+    .price-card .lbl { font-size: 12px; color: var(--text-mute); margin-bottom: 10px; }
+    .price-card.dark .lbl { color: #8a93a6; }
+    .price-card .price { font-size: 36px; font-weight: 800; line-height: 1; }
+    .price-card.dark .price { color: var(--yellow); }
+    .price-card .sub { color: var(--text-soft); font-size: 12px; margin-top: 6px; }
+    .price-card.dark .sub { color: #8a93a6; }
+    .price-card .body { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-soft); }
+    .price-card.dark .body { border-color: var(--line); color: #aab1c4; }
+    .price-card .row { display: flex; justify-content: space-between; padding: 4px 0; }
+    .price-card .row span:last-child { color: var(--text); font-weight: 600; }
+    .price-card.dark .row span:last-child { color: #fff; }
+
+    .cta-bar {
+      background: var(--navy); color: #fff; border-radius: 8px;
+      padding: 18px 24px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .cta-bar .left .h { font-weight: 700; margin-bottom: 4px; }
+    .cta-bar .left .s { color: #8a93a6; font-size: 12px; }
+    .cta-bar .btn {
+      background: var(--yellow); color: var(--navy); font-weight: 700;
+      padding: 10px 22px; border-radius: 6px; font-size: 13px;
+    }
+
+    /* Core features */
+    .feature-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .feature-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      padding: 24px;
+    }
+    .feature-card .v { font-size: 36px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .feature-card .v .u { font-size: 14px; color: var(--text-soft); font-weight: 600; margin-left: 4px; }
+    .feature-card .l { color: var(--text-soft); font-size: 13px; }
+    .feature-card .l b { color: var(--text); }
+
+    /* Quote section */
+    .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+    .quote-img {
+      border-radius: 8px; overflow: hidden; min-height: 320px;
+      background: linear-gradient(135deg, #c9bca0 0%, #8c7d61 100%);
+      position: relative;
+    }
+    .quote-img .tag {
+      position: absolute; top: 16px; left: 16px;
+      background: rgba(0,0,0,0.5); color: #fff;
+      padding: 4px 10px; border-radius: 4px; font-size: 11px;
+    }
+    .quote-content { padding: 16px 0; }
+    .quote-content h3 { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; }
+    .quote-content p { color: var(--text-soft); font-size: 13px; line-height: 1.8; }
+
+    /* CAVI */
+    .cavi-top { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin-bottom: 12px; }
+    .cavi-score {
+      background: var(--yellow); border-radius: 8px; padding: 32px; text-align: center;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+    .cavi-score .l { color: var(--navy); font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
+    .cavi-score .s { color: var(--navy); font-size: 84px; font-weight: 800; line-height: 1; }
+    .cavi-score .u { color: var(--navy); font-size: 11px; margin-top: 4px; }
+    .cavi-summary {
+      background: var(--navy); color: #fff; border-radius: 8px; padding: 32px;
+    }
+    .cavi-summary h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .cavi-summary h3 .hl { color: var(--yellow); }
+    .cavi-summary p { color: #aab1c4; font-size: 13px; line-height: 1.8; }
+
+    .cavi-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .metric {
+      background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 20px;
+    }
+    .metric .l { color: var(--text-soft); font-size: 12px; margin-bottom: 10px; }
+    .metric .stars { color: var(--yellow); font-size: 13px; letter-spacing: 2px; margin-bottom: 8px; }
+    .metric .v { font-size: 18px; font-weight: 700; }
+    .metric .v small { color: var(--text-mute); font-weight: 500; font-size: 12px; margin-left: 4px; }
+
+    /* Cost */
+    .cost-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .cost-main {
+      background: var(--yellow); border-radius: 8px; padding: 28px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .cost-main .l { color: var(--navy); font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
+    .cost-main .v { color: var(--navy); font-size: 44px; font-weight: 800; line-height: 1; }
+    .cost-main .v .u { font-size: 14px; margin-left: 4px; }
+    .cost-main .sub { color: var(--navy); font-size: 11px; margin-top: 6px; opacity: 0.75; }
+
+    .cost-stat {
+      background: var(--navy); color: #fff; border-radius: 8px; padding: 20px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .cost-stat .l { color: #8a93a6; font-size: 11px; margin-bottom: 8px; }
+    .cost-stat .v { color: var(--yellow); font-size: 20px; font-weight: 700; }
+    .cost-stat .v .u { font-size: 11px; color: #aab1c4; margin-left: 4px; font-weight: 500; }
+
+    .cost-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .cost-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 22px;
+    }
+    .cost-card.hi { background: var(--yellow); border-color: var(--yellow); }
+    .cost-card .l { color: var(--text-soft); font-size: 12px; margin-bottom: 8px; }
+    .cost-card.hi .l { color: var(--navy); }
+    .cost-card .v { font-size: 26px; font-weight: 800; line-height: 1; }
+    .cost-card .v .u { font-size: 13px; color: var(--text-soft); font-weight: 500; margin-left: 2px; }
+    .cost-card.hi .v .u { color: var(--navy); }
+    .cost-card .s { color: var(--text-mute); font-size: 11px; margin-top: 8px; }
+    .cost-card.hi .s { color: var(--navy); opacity: 0.7; }
+
+    /* Protection */
+    .protect-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 12px; }
+    .protect-main {
+      background: var(--yellow); border-radius: 8px; padding: 32px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+    .protect-main .n { font-size: 96px; font-weight: 800; color: var(--navy); line-height: 1; }
+    .protect-main .u { color: var(--navy); font-size: 18px; font-weight: 700; margin-top: 4px; }
+    .protect-main .s { color: var(--navy); font-size: 12px; margin-top: 12px; opacity: 0.75; }
+
+    .protect-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .protect-item {
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      padding: 20px; display: flex; gap: 14px; align-items: flex-start;
+    }
+    .protect-item .icon {
+      width: 40px; height: 40px; flex-shrink: 0; border-radius: 8px;
+      background: var(--bg-soft); display: flex; align-items: center; justify-content: center;
+      color: var(--navy);
+    }
+    .protect-item .h { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .protect-item .s { color: var(--text-soft); font-size: 12px; line-height: 1.6; }
+
+    /* Competitors */
+    .compete-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .compete-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 20px;
+    }
+    .compete-img {
+      width: 100%; height: 140px; border-radius: 6px; margin-bottom: 14px;
+      background: linear-gradient(135deg, #c8cdd6, #8b92a3);
+      position: relative; overflow: hidden;
+    }
+    .compete-img .badge {
+      position: absolute; top: 8px; left: 8px;
+      background: rgba(0,0,0,0.55); color: #fff;
+      padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: 700;
+    }
+    .compete-card .name { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .compete-card .price { color: var(--text-soft); font-size: 13px; margin-bottom: 14px; }
+    .compete-card .price b { color: var(--text); }
+    .compete-card .pros, .compete-card .cons {
+      font-size: 12px; padding: 10px 12px; border-radius: 6px; line-height: 1.5; margin-bottom: 8px;
+    }
+    .compete-card .pros { background: var(--green-soft); color: var(--green); }
+    .compete-card .cons { background: var(--red-soft); color: var(--red); }
+    .compete-card .pros b, .compete-card .cons b { font-weight: 700; margin-right: 4px; }
+
+    /* Next steps */
+    .next-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .next-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      padding: 32px; text-align: center;
+    }
+    .next-card .ic {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--yellow); color: var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px; font-size: 22px;
+    }
+    .next-card .h { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .next-card .s { color: var(--text-soft); font-size: 13px; }
+
+    /* Footer */
+    footer {
+      background: var(--navy); color: #6b7488; padding: 28px 0; font-size: 12px; text-align: center;
+    }
+    footer .links { display: flex; justify-content: center; gap: 18px; margin-bottom: 8px; color: #aab1c4; }
+    footer .copy { color: #6b7488; }
+  </style>
+</head>
+<body>
+
+  <!-- ============ Header ============ -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo"><span class="dot"></span>AUTOCAVA</div>
+      <nav class="main-nav">
+        <a href="#" class="active">学院</a>
+        <a href="#">选车</a>
+        <a href="#">上险率</a>
+        <a href="#">我的</a>
+      </nav>
+      <div class="topbar-right">
+        <span class="region"><span class="globe"></span> 中国版</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Sub nav ============ -->
+  <div class="subnav">
+    <div class="container">
+      <div class="seg">
+        <div class="seg-item active">新购用户</div>
+        <div class="seg-item">销售门店</div>
+        <div class="seg-item">老客户</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Hero ============ -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">EYES ON</div>
+        <h1 class="hero-title">一眼看懂<br>它是否适合你</h1>
+        <p class="hero-desc">
+          EYES ON 为您精准解读，结合 4.05 综合分。了解您最适合的推荐方案，再来分析风险点。我们的报告结合 1688 货源底价，覆盖 7 大用车场景。
+        </p>
+        <a href="#" class="hero-cta">▶ 产品力画像、覆盖用户数领先版本</a>
+        <a href="#" class="hero-link">选车方向 <b>› 看看同价位级别相同级别的智能 SUV</b></a>
+      </div>
+      <div class="hero-visual">
+        <div class="yellow-circle"></div>
+        <div class="score-badge">
+          <div class="num">4.05</div>
+          <div class="lbl">CAVI SCORE</div>
+        </div>
+        <div class="car-stage">
+          <!-- Car silhouette SVG -->
+          <svg viewBox="0 0 540 220" xmlns="http://www.w3.org/2000/svg" width="100%">
+            <defs>
+              <linearGradient id="carG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#e3e7ee"/>
+                <stop offset="1" stop-color="#7d869c"/>
+              </linearGradient>
+              <linearGradient id="glassG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#3a4768"/>
+                <stop offset="1" stop-color="#1a2040"/>
+              </linearGradient>
+            </defs>
+            <!-- shadow -->
+            <ellipse cx="270" cy="195" rx="220" ry="10" fill="rgba(0,0,0,0.15)"/>
+            <!-- body -->
+            <path d="M40,160 Q60,130 120,120 L180,90 Q230,75 290,75 L380,75 Q440,80 490,110 Q520,125 510,160 L500,170 L40,170 Z" fill="url(#carG)" stroke="#5a6378" stroke-width="1"/>
+            <!-- glass -->
+            <path d="M170,120 Q200,90 240,85 L370,85 Q420,90 460,118 L460,135 L170,135 Z" fill="url(#glassG)"/>
+            <!-- belt line -->
+            <path d="M150,138 L470,138" stroke="#4a5366" stroke-width="2"/>
+            <!-- door cut -->
+            <line x1="290" y1="120" x2="290" y2="160" stroke="#5a6378" stroke-width="1"/>
+            <!-- handle -->
+            <rect x="240" y="128" width="22" height="3" rx="1" fill="#4a5366"/>
+            <rect x="318" y="128" width="22" height="3" rx="1" fill="#4a5366"/>
+            <!-- wheels -->
+            <circle cx="135" cy="170" r="28" fill="#1a1f3a"/>
+            <circle cx="135" cy="170" r="20" fill="#3a4768"/>
+            <circle cx="135" cy="170" r="9" fill="#0f1428"/>
+            <circle cx="420" cy="170" r="28" fill="#1a1f3a"/>
+            <circle cx="420" cy="170" r="20" fill="#3a4768"/>
+            <circle cx="420" cy="170" r="9" fill="#0f1428"/>
+            <!-- headlights -->
+            <path d="M50,140 L75,135 L80,150 L52,155 Z" fill="#fff8d6"/>
+            <!-- taillights -->
+            <path d="M495,140 L505,140 L500,155 L490,155 Z" fill="#dc2626"/>
+            <!-- grille hint -->
+            <rect x="58" y="155" width="20" height="3" rx="1" fill="#4a5366"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Trim selector ============ -->
+  <section class="trim">
+    <div class="container">
+      <div class="trim-grid">
+        <div class="trim-card">
+          <div class="ver">标准续航 · 0</div>
+          <div class="name">Standard Range</div>
+          <div class="price">$ 286,900<small>起</small></div>
+        </div>
+        <div class="trim-card active">
+          <div class="ver">标配 · 0</div>
+          <div class="name">Long Range AWD</div>
+          <div class="price">$ 359,900<small>起</small></div>
+        </div>
+        <div class="trim-card">
+          <div class="ver">加长V · 02/12</div>
+          <div class="name">Performance</div>
+          <div class="price">$ 412,300<small>起</small></div>
+        </div>
+        <div class="trim-card">
+          <div class="ver">定制 · 限量</div>
+          <div class="name">Signature Edition</div>
+          <div class="price">$ 469,900<small>起</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Comparison bar ============ -->
+  <section class="compare-bar">
+    <div class="container">
+      <div class="compare">
+        <div class="compare-head">
+          <span class="tag">竞品对比</span>
+          <span class="more">查看完整对比 ›</span>
+        </div>
+        <div class="compare-grid">
+          <div class="compare-cell">
+            <div class="l">本车 4.05 分</div>
+            <div class="v">高于 <span class="acc">72%</span> 同级 SUV</div>
+          </div>
+          <div class="compare-cell">
+            <div class="l">续航表现</div>
+            <div class="v">510 <span class="acc">km</span> CLTC</div>
+          </div>
+          <div class="compare-cell">
+            <div class="l">保值率</div>
+            <div class="v"><span class="acc">68.2%</span> / 3 年</div>
+          </div>
+          <div class="compare-cell">
+            <div class="l">用户口碑</div>
+            <div class="v">4.6 <span class="acc">/ 5.0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 价格与金融方案 ============ -->
+  <section class="block">
+    <div class="container">
+      <div class="block-head">
+        <div class="block-eyebrow">PRICE</div>
+        <h2 class="block-title">价格与金融方案</h2>
+        <p class="block-sub">权威底价 · 多种金融方案</p>
+      </div>
+      <div class="price-grid">
+        <div class="price-card dark">
+          <div class="lbl">厂商指导价</div>
+          <div class="price">$869,900</div>
+          <div class="sub">Polestar 3 Long Range Dual Motor</div>
+          <div class="body">
+            <div class="row"><span>基础售价</span><span>$ 869,900</span></div>
+            <div class="row"><span>选装包</span><span>+ $ 28,000</span></div>
+            <div class="row"><span>补贴后</span><span>$ 829,900</span></div>
+          </div>
+        </div>
+        <div class="price-card">
+          <div class="lbl">36 期金融方案</div>
+          <div class="price">$12,873<small style="font-size:14px;color:var(--text-soft);font-weight:500;margin-left:4px">/月</small></div>
+          <div class="sub">首付 30% · 年化 4.99%</div>
+          <div class="body">
+            <div class="row"><span>首付</span><span>$ 260,970</span></div>
+            <div class="row"><span>贷款额</span><span>$ 608,930</span></div>
+            <div class="row"><span>总利息</span><span>$ 56,500</span></div>
+          </div>
+        </div>
+        <div class="price-card">
+          <div class="lbl">48 期金融方案</div>
+          <div class="price">$11,432<small style="font-size:14px;color:var(--text-soft);font-weight:500;margin-left:4px">/月</small></div>
+          <div class="sub">首付 20% · 年化 5.49%</div>
+          <div class="body">
+            <div class="row"><span>首付</span><span>$ 173,980</span></div>
+            <div class="row"><span>贷款额</span><span>$ 695,920</span></div>
+            <div class="row"><span>总利息</span><span>$ 88,200</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="cta-bar">
+        <div class="left">
+          <div class="h">看方案 · 测算月供 / 利息</div>
+          <div class="s">输入预算与年限，1 分钟算出最优方案</div>
+        </div>
+        <a href="#" class="btn">立即测算 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 核心卖点 ============ -->
+  <section class="block gray">
+    <div class="container">
+      <div class="block-head">
+        <div class="block-eyebrow">HIGHLIGHT</div>
+        <h2 class="block-title">核心卖点</h2>
+        <p class="block-sub">用户最关心的 4 个关键参数</p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="v">510<span class="u">km</span></div>
+          <div class="l">CLTC 续航 · 城市通勤 <b>一周一充</b></div>
+        </div>
+        <div class="feature-card">
+          <div class="v">487<span class="u">hp</span></div>
+          <div class="l">最大功率 · 百公里加速 <b>4.7s</b></div>
+        </div>
+        <div class="feature-card">
+          <div class="v">80.2<span class="u">kWh</span></div>
+          <div class="l">电池容量 · 高密度 <b>三元锂</b></div>
+        </div>
+        <div class="feature-card">
+          <div class="v">800<span class="u">V</span></div>
+          <div class="l">高压平台 · <b>10–80%</b> 仅需 18 分钟</div>
+        </div>
+      </div>
+
+      <div class="quote-grid" style="margin-top: 32px;">
+        <div class="quote-img">
+          <div class="tag">案例 · 用户故事</div>
+          <!-- Person silhouette -->
+          <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#d6c8a8"/>
+                <stop offset="0.6" stop-color="#b89e72"/>
+                <stop offset="1" stop-color="#7a6748"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="320" fill="url(#sky)"/>
+            <!-- distant mountains -->
+            <path d="M0,200 L80,160 L150,190 L220,150 L300,180 L400,160 L400,320 L0,320 Z" fill="#5a4d36" opacity="0.6"/>
+            <path d="M0,230 L100,200 L200,225 L320,205 L400,220 L400,320 L0,320 Z" fill="#3d3322"/>
+            <!-- person body -->
+            <ellipse cx="200" cy="290" rx="60" ry="6" fill="rgba(0,0,0,0.3)"/>
+            <rect x="170" y="180" width="60" height="100" rx="14" fill="#f5f5f0"/>
+            <circle cx="200" cy="155" r="22" fill="#e8d4b0"/>
+            <rect x="180" y="145" width="40" height="8" rx="2" fill="#3a3a3a"/>
+          </svg>
+        </div>
+        <div class="quote-content">
+          <h3>立标即是不容失败，看家底出自行政官出身</h3>
+          <p>
+            极星 3 在豪华电动 SUV 阵营中以"北欧极简"著称。整车主打安全与可持续 —— 从内饰的真皮替代品到回收铝制轮毂，每一处细节都在传递品牌价值观。
+            如果你注重"低调但讲究"的格调，看重 7 个以上安全气囊 + 行业领先的 ADAS 辅助驾驶，它会比同价位的德系新势力更值得考虑。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 用户口碑评价 (CAVI 指数) ============ -->
+  <section class="block">
+    <div class="container">
+      <div class="block-head">
+        <div class="block-eyebrow">CAVI · 用户口碑</div>
+        <h2 class="block-title">用户口碑评价 (CAVI 指数)</h2>
+        <p class="block-sub">综合 12,438 位真实车主的反馈</p>
+      </div>
+      <div class="cavi-top">
+        <div class="cavi-score">
+          <div class="l">CAVI SCORE</div>
+          <div class="s">4.05</div>
+          <div class="u">/ 5.0</div>
+        </div>
+        <div class="cavi-summary">
+          <h3>广般用户对 <span class="hl">续航 / 智能驾驶 / 内饰质感</span> 综合价值性突出</h3>
+          <p>
+            4.05 分意味着 80% 的用户"愿意推荐给他人"。在 30-50 万级纯电 SUV 中位列前三，
+            强项：续航真实度、内饰用料、ADAS 流畅度；弱项：车机本地化、第三方充电兼容性。
+          </p>
+        </div>
+      </div>
+      <div class="cavi-metrics">
+        <div class="metric">
+          <div class="l">外观设计</div>
+          <div class="stars">★★★★★</div>
+          <div class="v">4.7<small>/5.0</small></div>
+        </div>
+        <div class="metric">
+          <div class="l">内饰质感</div>
+          <div class="stars">★★★★★</div>
+          <div class="v">4.6<small>/5.0</small></div>
+        </div>
+        <div class="metric">
+          <div class="l">智能驾驶</div>
+          <div class="stars">★★★★☆</div>
+          <div class="v">4.3<small>/5.0</small></div>
+        </div>
+        <div class="metric">
+          <div class="l">售后保养</div>
+          <div class="stars">★★★★☆</div>
+          <div class="v">4.1<small>/5.0</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 用车成本 ============ -->
+  <section class="block gray">
+    <div class="container">
+      <div class="block-head">
+        <div class="block-eyebrow">TCO</div>
+        <h2 class="block-title">用车成本</h2>
+        <p class="block-sub">1 年 2 万公里场景下的综合支出</p>
+      </div>
+      <div class="cost-top">
+        <div class="cost-main">
+          <div class="l">年均用车成本</div>
+          <div class="v">$7,280<span class="u">/年</span></div>
+          <div class="sub">折合每月约 $607</div>
+        </div>
+        <div class="cost-stat">
+          <div class="l">电费支出</div>
+          <div class="v">$1,640<span class="u">/年</span></div>
+        </div>
+        <div class="cost-stat">
+          <div class="l">保险费用</div>
+          <div class="v">$3,780<span class="u">/年</span></div>
+        </div>
+        <div class="cost-stat">
+          <div class="l">保养维护</div>
+          <div class="v">$860<span class="u">/年</span></div>
+        </div>
+      </div>
+      <div class="cost-grid">
+        <div class="cost-card hi">
+          <div class="l">5 年总成本</div>
+          <div class="v">$18,965<u>.00</u></div>
+          <div class="s">对比同级平均低 22%</div>
+        </div>
+        <div class="cost-card">
+          <div class="l">百公里电耗</div>
+          <div class="v">15.2<u>kWh</u></div>
+          <div class="s">同级中位水平</div>
+        </div>
+        <div class="cost-card">
+          <div class="l">保养周期</div>
+          <div class="v">2<u>万公里</u></div>
+          <div class="s">首保免费</div>
+        </div>
+        <div class="cost-card">
+          <div class="l">保值率 3 年</div>
+          <div class="v">68.2<u>%</u></div>
+          <div class="s">高于 BBA 同级</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 购车保障与覆盖 ============ -->
+  <section class="block">
+    <div class="container">
+      <div class="block-head">
+        <div class="block-eyebrow">COVERAGE</div>
+        <h2 class="block-title">购车保障与覆盖</h2>
+        <p class="block-sub">全周期用车无忧</p>
+      </div>
+      <div class="protect-grid">
+        <div class="protect-main">
+          <div class="n">6</div>
+          <div class="u">年 / 15 万公里</div>
+          <div class="s">整车超长质保</div>
+        </div>
+        <div class="protect-list">
+          <div class="protect-item">
+            <div class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+            </div>
+            <div>
+              <div class="h">三电系统终身保修</div>
+              <div class="s">电池、电机、电控首任车主终身保修</div>
+            </div>
+          </div>
+          <div class="protect-item">
+            <div class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <div class="h">7×24 小时道路救援</div>
+              <div class="s">全国 300+ 城市，2 小时响应</div>
+            </div>
+          </div>
+          <div class="protect-item">
+            <div class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+            </div>
+            <div>
+              <div class="h">免费 OTA 升级</div>
+              <div class="s">整车 OTA，常用常新</div>
+            </div>
+          </div>
+          <div class="protect-item">
+            <div class="icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div>
+              <div class="h">3 年免费充电</div>
+              <div class="s">覆盖国家电网、特来电等主流运营商</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 主要竞品怎么选 ============ -->
+  <section class="block gray">
+    <div class="container">
+      <div class="block-head">
+        <div class="block-eyebrow">VS</div>
+        <h2 class="block-title">主要竞品怎么选</h2>
+        <p class="block-sub">同价位 / 同级别的高频对比对象</p>
+      </div>
+      <div class="compete-grid">
+        <div class="compete-card">
+          <div class="compete-img">
+            <div class="badge">性价比</div>
+            <svg viewBox="0 0 400 140" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+              <ellipse cx="200" cy="125" rx="160" ry="6" fill="rgba(0,0,0,0.15)"/>
+              <path d="M30,100 Q50,80 100,75 L150,55 Q190,45 240,45 L320,45 Q360,50 380,75 L380,105 L30,105 Z" fill="#c8cdd6" stroke="#8b92a3" stroke-width="1"/>
+              <path d="M140,75 Q170,55 210,52 L320,52 Q355,55 375,75 L375,82 L140,82 Z" fill="#3a4768"/>
+              <circle cx="120" cy="108" r="18" fill="#1a1f3a"/>
+              <circle cx="320" cy="108" r="18" fill="#1a1f3a"/>
+            </svg>
+          </div>
+          <div class="name">蔚来 C6</div>
+          <div class="price">指导价 <b>$ 306,283</b> 起</div>
+          <div class="pros"><b>✓ 优势</b>内饰豪华、换电模式、智驾本土化</div>
+          <div class="cons"><b>✗ 短板</b>高速续航衰减、保值率波动</div>
+        </div>
+        <div class="compete-card">
+          <div class="compete-img">
+            <div class="badge">销量王</div>
+            <svg viewBox="0 0 400 140" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+              <ellipse cx="200" cy="125" rx="160" ry="6" fill="rgba(0,0,0,0.15)"/>
+              <path d="M30,100 Q50,80 100,75 L150,55 Q190,45 240,45 L320,45 Q360,50 380,75 L380,105 L30,105 Z" fill="#dde0e6" stroke="#7d869c" stroke-width="1"/>
+              <path d="M140,75 Q170,55 210,52 L320,52 Q355,55 375,75 L375,82 L140,82 Z" fill="#1a2040"/>
+              <circle cx="120" cy="108" r="18" fill="#1a1f3a"/>
+              <circle cx="320" cy="108" r="18" fill="#1a1f3a"/>
+            </svg>
+          </div>
+          <div class="name">特斯拉 MODEL Y</div>
+          <div class="price">指导价 <b>$ 788,000 - $ 1,123,000</b></div>
+          <div class="pros"><b>✓ 优势</b>品牌力、超充网络、FSD</div>
+          <div class="cons"><b>✗ 短板</b>内饰简陋、悬挂偏硬</div>
+        </div>
+        <div class="compete-card">
+          <div class="compete-img">
+            <div class="badge">新势力</div>
+            <svg viewBox="0 0 400 140" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+              <ellipse cx="200" cy="125" rx="160" ry="6" fill="rgba(0,0,0,0.15)"/>
+              <path d="M30,100 Q50,80 100,75 L150,55 Q190,45 240,45 L320,45 Q360,50 380,75 L380,105 L30,105 Z" fill="#cfd2da" stroke="#8b92a3" stroke-width="1"/>
+              <path d="M140,75 Q170,55 210,52 L320,52 Q355,55 375,75 L375,82 L140,82 Z" fill="#3a4768"/>
+              <circle cx="120" cy="108" r="18" fill="#1a1f3a"/>
+              <circle cx="320" cy="108" r="18" fill="#1a1f3a"/>
+            </svg>
+          </div>
+          <div class="name">起亚 EV6</div>
+          <div class="price">指导价 <b>$ 1,174,000 - $ 1,124,000</b></div>
+          <div class="pros"><b>✓ 优势</b>800V 高压、操控优秀</div>
+          <div class="cons"><b>✗ 短板</b>后排空间、品牌溢价低</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 想进一步了解 ============ -->
+  <section class="block">
+    <div class="container">
+      <div class="block-head">
+        <div class="block-eyebrow">NEXT</div>
+        <h2 class="block-title">想进一步了解？选择一种方式</h2>
+        <p class="block-sub">我们的购车顾问 30 分钟内回复</p>
+      </div>
+      <div class="next-grid">
+        <div class="next-card">
+          <div class="ic">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="h">预约专属顾问</div>
+          <div class="s">1 对 1 视频/电话咨询<br>覆盖全车型、全方案</div>
+        </div>
+        <div class="next-card">
+          <div class="ic">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          </div>
+          <div class="h">预约线下试驾</div>
+          <div class="s">全国 200+ 体验中心<br>免费上门取送</div>
+        </div>
+        <div class="next-card">
+          <div class="ic">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4zM4 8h16M8 4v16"/></svg>
+          </div>
+          <div class="h">下载完整报告</div>
+          <div class="s">包含全部对比表<br>PDF · 32 页</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Footer ============ -->
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="#">关于 AUTOCAVA</a>
+        <a href="#">用户协议</a>
+        <a href="#">隐私政策</a>
+        <a href="#">联系我们</a>
+      </div>
+      <div class="copy">© 2026 AUTOCAVA · 京 ICP 备 XXXXXXXX 号 · 数据仅供参考，请以官方信息为准</div>
+    </div>
+  </footer>
+
+</body>
+</html>
