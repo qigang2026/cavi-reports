@@ -57,6 +57,7 @@
 
       --mono: rgba(0, 0, 0, 0.04);
       --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -81,13 +82,13 @@
     .deckbar {
       position: fixed; inset: 0 0 auto 0; z-index: 40;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 16px;
+      padding: calc(14px + var(--safe-top)) 16px 14px;
       border-bottom: 1px solid var(--line-soft);
       background: color-mix(in srgb, var(--bg) 82%, transparent);
       backdrop-filter: blur(8px);
     }
     @media (min-width: 768px) {
-      .deckbar { padding: 14px clamp(20px, 4vw, 60px); }
+      .deckbar { padding: calc(14px + var(--safe-top)) clamp(20px, 4vw, 60px) 14px; }
     }
     .deckbar .brand { display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: .18em; color: var(--ink2); min-width: 0; }
     .deckbar .brand i { width: 8px; height: 8px; background: var(--amber); display: block; flex-shrink: 0; }
@@ -100,7 +101,7 @@
     .navdots { position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 40; display: flex; flex-direction: column; gap: 10px; }
     .navdots button { width: 8px; height: 8px; border: 1px solid var(--line); border-radius: 50%; background: transparent; cursor: pointer; padding: 0; }
     .navdots button.on { background: var(--amber); border-color: var(--amber); }
-    .navbtn { position: fixed; bottom: 26px; right: 26px; z-index: 40; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-size: 20px; cursor: pointer; font-family: "Chakra Petch", sans-serif; transition: border-color .15s, color .15s; }
+    .navbtn { position: fixed; bottom: calc(26px + var(--safe-bottom)); right: 26px; z-index: 40; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-size: 20px; cursor: pointer; font-family: "Chakra Petch", sans-serif; transition: border-color .15s, color .15s; }
     .navbtn.prev { right: 88px; }
     .navbtn:hover { border-color: var(--amber); color: var(--amber); }
     .navbtn:active { transform: scale(0.96); }
@@ -109,8 +110,9 @@
        Stage + slide grid (scroll-snap)
        ============================================================ */
     .stage {
-      height: 100svh; overflow-y: auto; scroll-snap-type: y mandatory; scroll-behavior: smooth;
-      padding-top: 50px; /* espacio para deckbar */
+      height: auto; min-height: 100svh; overflow-y: visible; scroll-snap-type: y proximity; scroll-behavior: smooth;
+      padding-top: calc(50px + var(--safe-top)); /* espacio para deckbar + notch */
+      padding-bottom: calc(80px + var(--safe-bottom)); /* espacio para navbtn/fab + home indicator */
     }
     .slide {
       min-height: 100svh; display: grid; grid-template-columns: 1fr 1.06fr;
@@ -118,6 +120,10 @@
       align-items: center;
       padding: 11vh clamp(24px, 6vw, 96px) 9vh;
       scroll-snap-align: start; position: relative; margin-top: 1px;
+    }
+    @media (max-width: 900px) {
+      /* Mobile: 让 slide 高度自适应内容（不被 100svh 强制限死） */
+      .slide { min-height: auto; padding: 7vh 22px 6vh; }
     }
     .slide.figL { grid-template-columns: 1.06fr 1fr; }
 
@@ -341,11 +347,11 @@
       .fig-inner { padding-top: 22px; padding-bottom: 36px; }
 
       /* === navbtn 在 mobile 调位置，避免和 cavi-fab 重叠 === */
-      .navbtn { width: 44px; height: 44px; bottom: 16px; right: 16px; }
+      .navbtn { width: 44px; height: 44px; bottom: calc(16px + var(--safe-bottom)); right: 16px; }
       .navbtn.prev { right: 70px; }
 
       /* === Cavi-fab 不要被 navbtn 盖住，向上移 === */
-      .cavi-fab { bottom: 70px !important; }
+      .cavi-fab { bottom: calc(70px + var(--safe-bottom)) !important; }
     }
     @media (max-width: 600px) {
       .brow { grid-template-columns: 78px 1fr 60px; gap: 8px; }
@@ -443,7 +449,7 @@
 
     /* Cavi FAB */
     .cavi-fab {
-      position: fixed; bottom: 90px; right: 16px;
+      position: fixed; bottom: calc(90px + var(--safe-bottom)); right: 16px;
       width: 60px; height: 60px; border-radius: 50%;
       background: #fff;
       display: flex; align-items: center; justify-content: center;
@@ -455,7 +461,7 @@
     .cavi-fab:active { transform: scale(.95); }
     .cavi-fab-icon { width: 36px; height: 21px; object-fit: contain; }
     @media (min-width: 600px) {
-      .cavi-fab { bottom: 110px; right: 24px; }
+      .cavi-fab { bottom: calc(110px + var(--safe-bottom)); right: 24px; }
     }
 
     /* Cavi Chat + Mask */
@@ -469,7 +475,7 @@
     .cavi-mask[hidden] { display: none; }
     @keyframes cavi-mask-in { from { opacity: 0; } to { opacity: 1; } }
     .cavi-chat {
-      position: fixed; bottom: 16px; right: 16px;
+      position: fixed; bottom: calc(16px + var(--safe-bottom)); right: 16px;
       width: calc(100vw - 32px); max-width: 360px; height: 70vh; max-height: 540px;
       background: #fff; border-radius: 16px;
       box-shadow: 0 12px 40px rgba(0, 0, 0, .25), 0 2px 6px rgba(0, 0, 0, .1);
@@ -485,7 +491,7 @@
     }
     .cavi-chat[hidden] { display: none; }
     @media (min-width: 600px) {
-      .cavi-chat { bottom: 24px; right: 24px; }
+      .cavi-chat { bottom: calc(24px + var(--safe-bottom)); right: 24px; }
     }
     .cavi-chat-head {
       display: flex; align-items: center; gap: 10px;
@@ -772,19 +778,22 @@
       <div class="col text">
         <div class="kicker">03 · Precio y financiamiento</div>
         <h2>Seis versiones: ¿cuál te conviene?</h2>
-        <p class="lead">El precio lista va de <b>$309,990 a $406,990 MXN</b>. Con el bono de intercambio de <b>−$15,000</b> y planes a 36–48 meses, el enganche típico es de $93,000–$112,000 MXN.</p>
+        <p class="lead">El precio promocional va de <b>$309,990 a $406,990 MXN</b>, con descuento de <b>−$64,910</b> en toda la línea. Planes a 60-72 meses con mensualidades desde <b>$2,871</b>.</p>
         <div class="tiles">
-          <div class="tile"><b class="num">BBVA · 36m</b><span>Enganche 30% · 12.9% · <b>$6,244/mes</b></span></div>
-          <div class="tile"><b class="num">Nissan · 48m</b><span>0% intereses 1er año · CAT 14.8% · <b>$5,899/mes</b></span></div>
-          <div class="tile"><b class="num">Bono</b><span>Intercambio: <b>−$15,000</b> + Nissan <b>−$8,000</b></span></div>
-          <div class="tile"><b class="num">CAT 14.8%</b><span>Compara siempre el CAT, no la tasa nominal</span></div>
+          <div class="tile" style="background: rgba(181,147,23,.06); border-color: var(--amber);"><b class="num" style="color: var(--amber);">BBVA · 72m ⭐</b><span>9.99% · Enganche 50% · <b style="color:var(--amber);">desde $2,871/mes</b> · CAT 13.2%</span></div>
+          <div class="tile"><b class="num">BBVA · 72m</b><span>11.99% · Enganche 20% · <b>desde $4,242/mes</b> · CAT 16.7%</span></div>
+          <div class="tile"><b class="num">Mstar · 72m</b><span>14.99% · Enganche 10% · <b>desde $4,588/mes</b> · Tercera financiera</span></div>
+          <div class="tile"><b class="num">Banorte · 72m</b><span>14.99% · Enganche 10% · <b>desde $4,588/mes</b> · CAT 22.4%</span></div>
+          <div class="tile"><b class="num">Santander · 72m</b><span>14.99% · Enganche 20% · <b>desde $4,588/mes</b> · CAT 20.9%</span></div>
+          <div class="tile" style="background: var(--card2); border-style: dashed;"><b class="num" style="color: var(--ink2);">ADVANCE CVT · 60m</b><span style="color: var(--ink2);">14.99% · Enganche 30% · <b>$6,244/mes</b> · Plan estándar</span></div>
         </div>
         <ul class="clean">
-          <li>El enganche no debe superar el <b>30% de tu ahorro líquido</b> — deja fondo de emergencia.</li>
-          <li>Con <b>nomina demostrable</b> BBVA y Banamex dan mejor tasa; <b>sin historial</b>, CrediNissan aprueba más rápido.</li>
-          <li>El plan 48m de Nissan tiene <b>0% intereses el primer año</b>, pero CAT real sigue siendo ~14.8%.</li>
+          <li>La <b>menor mensualidad</b> viene de BBVA 9.99% / 50% enganche / 72m / CAT 13.2% — pero requiere <b>nómina demostrable</b>.</li>
+          <li>El <b>enganche más accesible</b> es Mstar/Banorte con 10% inicial; <b>Mstar no pide comprobantes</b> y es plataforma propia.</li>
+          <li><b>CAT real rango 13.2% – 23.6%</b>: BBVA 9.99% el más bajo, BBVA 12.99% (5% enganche) el más alto. Compara siempre el CAT.</li>
+          <li>ADVANCE CVT <b>72m Mstar estimado ~$5,549/mes</b> (escalado desde precio base), <b>60m 14.99% estándar $6,244/mes</b>.</li>
         </ul>
-        <p class="note">Cálculo basado en ADVANCE CVT ($374,990). Tasa y enganche son referenciales; el banco aprueba según buró.</p>
+        <p class="note">Datos de <a href="https://www.autocava.com.mx/auto/series/356" target="_blank" rel="noopener" style="color: var(--ink2); text-decoration: underline;">autocava.com.mx/auto/series/356</a> · Planes 72m calculados sobre SENSE BASE MT ($309,990). Tasa final según buró de crédito.</p>
       </div>
     </section>
 
@@ -897,7 +906,7 @@
         <span class="figtag">FIG.07 — PERFIL DE COMPRADOR</span>
         <div class="fig-inner">
           <div class="pcards">
-            <div class="pcard"><span class="pt">Familia primer auto</span><span class="pv">VERSIÓN · SENSE / ADVANCE</span><p>6 airbags + ESP ya incluidos; Advance suma cámara y CarPlay.</p><span class="pwhy">Plan 48m · enganche 25% · <b>≈$5,900/mes</b></span></div>
+            <div class="pcard"><span class="pt">Familia primer auto</span><span class="pv">VERSIÓN · SENSE / ADVANCE</span><p>6 airbags + ESP ya incluidos; Advance suma cámara y CarPlay.</p><span class="pwhy">Plan 72m · enganche 10% · <b>≈$4,588/mes</b> (Mstar)</span></div>
             <div class="pcard"><span class="pt">Conductor de app / flotilla</span><span class="pv">VERSIÓN · SENSE MT</span><p>Consumo, mantenimiento y reventa: los tres números que importan.</p><span class="pwhy">El auto no puede parar esperando refacciones</span></div>
             <div class="pcard"><span class="pt">Commuter urbano</span><span class="pv">VERSIÓN · ADVANCE CVT</span><p>Suficiente equipamiento, presencia correcta, mensualidad cómoda.</p><span class="pwhy">Sweet spot del catálogo</span></div>
             <div class="pcard"><span class="pt">Comprador que estira presupuesto</span><span class="pv">VERSIÓN · mejor mira K3</span><p>Si puedes pagar Exclusive, evalúa subir de segmento.</p><span class="pwhy">No pagues de más por "versión tope"</span></div>
@@ -932,7 +941,7 @@
             <div>&nbsp;</div>
             <div>Precio lista (incl. IVA): <span class="hln num">MXN 374,990</span> <span class="cm">← pide precio por escrito</span></div>
             <div>Comisión por apertura: <span class="hlc num">2% · 7,500</span> <span class="cm">← va dentro del CAT</span></div>
-            <div>CAT promedio: <span class="hlw num">14.8%</span> <span class="cm">← compara este, no la tasa</span></div>
+            <div>CAT real: <span class="hlw num">13.2% – 23.6%</span> <span class="cm">← BBVA 9.99% (50% enganche) mínimo / 12.99% (5%) máximo</span></div>
             <div>Seguro obligatorio 1.er año: <span class="hlw num">≈12,000</span> <span class="cm">← pregunta si hay cashback</span></div>
             <div>Pago anticipado: <span class="hln num">sin penalización*</span> <span class="cm">← *ver cláusula 9</span></div>
             <div>Entrega: <span class="hlc num">45–60 días hábiles</span> <span class="cm">← fija precio y fecha por escrito</span></div>
@@ -1269,6 +1278,35 @@
         caviChat.hidden = true;
         caviMask.hidden = true;
         document.body.style.overflow = '';
+        // Reset any keyboard-induced inline styles
+        caviChat.style.bottom = '';
+        caviChat.style.maxHeight = '';
+      }
+      // P0-6 修复：iOS Safari 键盘弹起时，position:fixed 元素停留在 layoutViewport 底部（键盘下方）。
+      // 用 visualViewport API 监听键盘，动态调整 chat 的 bottom 和 maxHeight。
+      function handleVisualViewport() {
+        if (!window.visualViewport || caviChat.hidden) return;
+        const vv = window.visualViewport;
+        const layoutH = window.innerHeight;
+        const keyboardH = Math.max(0, layoutH - Math.round(vv.height));
+        if (keyboardH > 100) {
+          // 键盘已弹起：把 chat 提到键盘上方
+          const safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-bottom')) || 0;
+          caviChat.style.bottom = (keyboardH + safeBottom) + 'px';
+          // 同时限制高度，避免超出可视区
+          const availableH = Math.round(vv.height) - 20;
+          if (availableH > 200) {
+            caviChat.style.maxHeight = availableH + 'px';
+          }
+        } else {
+          // 键盘收起：恢复 CSS 默认值
+          caviChat.style.bottom = '';
+          caviChat.style.maxHeight = '';
+        }
+      }
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', handleVisualViewport);
+        window.visualViewport.addEventListener('scroll', handleVisualViewport);
       }
       caviFab && caviFab.addEventListener('click', openCaviChat);
       caviClose && caviClose.addEventListener('click', closeCaviChat);
@@ -1293,8 +1331,8 @@
       }
 
       const CAVI_QUICK = {
-        'precio': 'El precio efectivo del Nissan Versa 2026 ADVANCE CVT+ es de <b>$359,990 MXN</b> (con bono de −$15,000). Precio de lista: $374,990.',
-        'cuota': 'Con enganche del 30% y plan BBVA 36 meses, la cuota sería <b>$6,244/mes</b> a 12.9% CAT. Con Nissan 48 meses: <b>$5,899/mes</b> (0% primer año).',
+        'precio': 'El precio promocional del Nissan Versa 2026 ADVANCE CVT es de <b>$374,990 MXN</b> (precio oficial $439,900, descuento <b>−$64,910</b>). Rango de la línea: $309,990 – $406,990.',
+        'cuota': 'Plan estándar ADVANCE CVT a 60 meses / 14.99% / 30% enganche: <b>$6,244/mes</b>. Con BBVA 72 meses (11.99%, 20% enganche, CAT 16.7%): <b>~$5,131/mes</b>. Con Mstar 72 meses (14.99%, 10% enganche, sin comprobantes): <b>~$5,549/mes</b>.',
         'consumo': 'El Versa 2026 tiene un consumo combinado de <b>18.81 km/L</b>, el mejor del segmento sedán subcompacto en México.',
         'competencia': 'Sus principales competidores son: <b>VW Virtus</b> (más espacio, similar precio), <b>Kia K3 Sedán</b> (mejor garantía), y <b>Mazda 2 Sedán</b> (más premium).',
         'seguridad': 'El Versa 2026 incluye 6 airbags, control de estabilidad, asistente de arranque en pendiente, y frenos ABS. CAVI Score seguridad: 4.5/5.',
@@ -1347,8 +1385,8 @@
 
       // ============ 4. Compartir ============
       const SHARE_TITLE = 'Nissan Versa 2026 — CAVI 4.6/5';
-      const SHARE_TEXT = '🚗 Nissan Versa 2026 · CAVI 4.6/5\n💰 Desde $359,990 MXN\n📊 Sedán #1 en México · 7,486 ventas/mes\n⛽ 18.81 km/L · Mejor consumo del segmento\n🔗 https://www.autocava.com.mx/auto/series/107';
-      const SHARE_URL = 'https://www.autocava.com.mx/auto/series/107';
+      const SHARE_TEXT = '🚗 Nissan Versa 2026 · CAVI 4.6/5\n💰 Desde $309,990 MXN (ADVANCE CVT recomendado $374,990)\n📊 Sedán #1 en México · 7,486 ventas/mes\n⛽ 18.81 km/L · Mejor consumo del segmento\n💳 72m Mstar desde $4,588/mes (10% enganche) · BBVA 9.99% desde $2,871/mes (50%)\n🔗 https://www.autocava.com.mx/auto/series/356';
+      const SHARE_URL = 'https://www.autocava.com.mx/auto/series/356';
 
       function openShareModal() {
         const tiles = [
