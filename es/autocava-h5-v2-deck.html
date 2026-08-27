@@ -37,7 +37,7 @@
       --line-soft: #f0f0f0;
       --ink: #222222;
       --ink2: #666666;
-      --muted: #999999;
+      --muted: #6b7280;
 
       --amber: #b59317;        /* dorado AutoCava · acento principal */
       --amber-soft: #fde9a8;
@@ -247,17 +247,25 @@
     .pcard .pt { font-size: 14px; font-weight: 700; color: var(--ink); }
     .pcard .pv { font-size: 11px; letter-spacing: .06em; color: var(--amber); font-family: "Chakra Petch", sans-serif; }
     .pcard p { font-size: 12px; color: var(--ink2); line-height: 1.65; }
-    .pcard .pwhy { font-size: 11.5px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 8px; line-height: 1.6; }
+    .pcard .pmeta { display: flex; flex-direction: column; gap: 3px; border-top: 1px dashed var(--line); padding-top: 10px; }
+    .pcard .pp { font-family: "Chakra Petch", sans-serif; font-size: 16px; font-weight: 700; color: var(--amber); line-height: 1.1; }
+    .pcard .pwhy { font-size: 11px; color: var(--muted); line-height: 1.5; }
 
     /* ============================================================
        Contract mock (trampas)
        ============================================================ */
-    .contract { background: var(--bg); border: 1px solid var(--line); padding: 18px 20px; font-size: 12.5px; line-height: 2; color: var(--ink2); width: 100%; font-family: "Chakra Petch", sans-serif; }
-    .contract .ct { font-size: 11px; letter-spacing: .2em; color: var(--muted); border-bottom: 1px solid var(--line-soft); padding-bottom: 8px; margin-bottom: 8px; }
-    .contract .hlw { background: color-mix(in srgb, var(--warn) 14%, transparent); color: var(--warn); padding: 0 5px; }
-    .contract .hlc { background: color-mix(in srgb, var(--crit) 12%, transparent); color: #9c2327; padding: 0 5px; }
-    .contract .hln { color: var(--ink); }
-    .contract .cm { float: right; color: var(--muted); font-size: 11px; letter-spacing: .04em; }
+    .contract { background: var(--bg); border: 1px solid var(--line); padding: 16px 18px; font-size: 12.5px; line-height: 1.5; color: var(--ink2); width: 100%; font-family: "Chakra Petch", sans-serif; }
+    .contract .ct { font-size: 10.5px; letter-spacing: .2em; color: var(--muted); border-bottom: 1px solid var(--line-soft); padding-bottom: 8px; margin-bottom: 10px; }
+    .contract .rows { display: flex; flex-direction: column; gap: 0; }
+    .contract .crow { display: flex; flex-direction: column; gap: 3px; padding: 9px 0; border-bottom: 1px dashed var(--line-soft); }
+    .contract .crow:last-child { border-bottom: none; }
+    .contract .cl { font-size: 10.5px; letter-spacing: .04em; color: var(--muted); }
+    .contract .cv { font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+    .contract .cv.hlw { background: color-mix(in srgb, var(--warn) 14%, transparent); color: var(--warn); padding: 1px 6px; display: inline-block; align-self: flex-start; }
+    .contract .cv.hlc { background: color-mix(in srgb, var(--crit) 12%, transparent); color: #9c2327; padding: 1px 6px; display: inline-block; align-self: flex-start; }
+    .contract .cv.hln { color: var(--ink); }
+    .contract .ch { font-size: 11px; color: var(--ink2); font-style: italic; }
+    .contract .cf { font-size: 12px; color: var(--ink2); padding-top: 10px; border-top: 1px solid var(--line-soft); margin-top: 6px; }
 
     /* ============================================================
        Verdict banner
@@ -366,8 +374,13 @@
       .cover h1 .yr { display: inline; }
       .figpanel { padding: 18px; min-height: 240px; }
       .fig-inner { padding-top: 24px; }
-      .laps { flex-wrap: wrap; }
-      .lap { min-width: 60px; }
+      .laps { flex-direction: column; align-items: stretch; gap: 0; }
+      .lap { min-width: 0; text-align: left; display: grid; grid-template-columns: 32px 1fr; gap: 10px; padding: 8px 0; align-items: start; }
+      .lap::before { content: ""; position: absolute; top: 12px; bottom: -8px; left: 12px; right: auto; width: 1px; height: auto; background: var(--line); }
+      .lap:last-child::before { display: none; }
+      .lap::after { position: relative; top: auto; left: auto; transform: none; width: 9px; height: 9px; margin: 4px 0 0 8px; grid-column: 1; }
+      .lap b { display: inline-block; margin-top: 0; font-family: "Chakra Petch", sans-serif; font-size: 13.5px; color: var(--ink); grid-column: 2; }
+      .lap span { font-size: 11.5px; color: var(--muted); letter-spacing: .02em; line-height: 1.5; grid-column: 2; }
     }
     @media (prefers-reduced-motion: reduce) {
       html, body, .stage { scroll-behavior: auto !important; }
@@ -904,10 +917,41 @@
         <span class="figtag">FIG.07 — PERFIL DE COMPRADOR</span>
         <div class="fig-inner">
           <div class="pcards">
-            <div class="pcard"><span class="pt">Familia primer auto</span><span class="pv">VERSIÓN · SENSE / ADVANCE</span><p>6 airbags + ESP ya incluidos; Advance suma cámara y CarPlay.</p><span class="pwhy">Plan 72m · enganche 10% · <b>≈$4,588/mes</b> (Mstar)</span></div>
-            <div class="pcard"><span class="pt">Conductor de app / flotilla</span><span class="pv">VERSIÓN · SENSE MT</span><p>Consumo, mantenimiento y reventa: los tres números que importan.</p><span class="pwhy">El auto no puede parar esperando refacciones</span></div>
-            <div class="pcard"><span class="pt">Commuter urbano</span><span class="pv">VERSIÓN · ADVANCE CVT</span><p>Suficiente equipamiento, presencia correcta, mensualidad cómoda.</p><span class="pwhy">Sweet spot del catálogo</span></div>
-            <div class="pcard"><span class="pt">Comprador que estira presupuesto</span><span class="pv">VERSIÓN · mejor mira K3</span><p>Si puedes pagar Exclusive, evalúa subir de segmento.</p><span class="pwhy">No pagues de más por "versión tope"</span></div>
+            <div class="pcard">
+              <span class="pt">Familia primer auto</span>
+              <span class="pv">VERSIÓN · SENSE / ADVANCE</span>
+              <p>6 airbags + ESP ya incluidos; Advance suma cámara y CarPlay.</p>
+              <div class="pmeta">
+                <span class="pp">≈ $4,588/mes</span>
+                <span class="pwhy">Plan 72m · enganche 10% (Mstar)</span>
+              </div>
+            </div>
+            <div class="pcard">
+              <span class="pt">Conductor de app / flotilla</span>
+              <span class="pv">VERSIÓN · SENSE MT</span>
+              <p>Consumo, mantenimiento y reventa: los tres números que importan.</p>
+              <div class="pmeta">
+                <span class="pp">≈ $4,200/mes</span>
+                <span class="pwhy">El auto no puede parar esperando refacciones</span>
+              </div>
+            </div>
+            <div class="pcard">
+              <span class="pt">Commuter urbano</span>
+              <span class="pv">VERSIÓN · ADVANCE CVT</span>
+              <p>Suficiente equipamiento, presencia correcta, mensualidad cómoda.</p>
+              <div class="pmeta">
+                <span class="pp">≈ $5,549/mes</span>
+                <span class="pwhy">Sweet spot del catálogo</span>
+              </div>
+            </div>
+            <div class="pcard">
+              <span class="pt">Comprador que estira presupuesto</span>
+              <span class="pv">VERSIÓN · mejor mira K3</span>
+              <p>Si puedes pagar Exclusive, evalúa subir de segmento.</p>
+              <div class="pmeta">
+                <span class="pwhy">No pagues de más por "versión tope"</span>
+              </div>
+            </div>
           </div>
         </div>
         <span class="figcap">El mismo auto, diferente versión óptima según el perfil. Antes de cotizar, define para qué lo necesitas.</span>
@@ -936,15 +980,39 @@
         <div class="fig-inner">
           <div class="contract">
             <div class="ct">CONTRATO DE COMPRAVENTA · Nissan México (extracto ilustrativo)</div>
-            <div>&nbsp;</div>
-            <div>Precio lista (incl. IVA): <span class="hln num">MXN 374,990</span> <span class="cm">← pide precio por escrito</span></div>
-            <div>Comisión por apertura: <span class="hlc num">2% · 7,500</span> <span class="cm">← va dentro del CAT</span></div>
-            <div>CAT: <span class="hlw num">Mstar 14.99% · Santander 20.9%</span> <span class="cm">← Mstar no publica CAT exacto; Santander sí</span></div>
-            <div>Seguro obligatorio 1.er año: <span class="hlw num">≈12,000</span> <span class="cm">← pregunta si hay cashback</span></div>
-            <div>Pago anticipado: <span class="hln num">sin penalización*</span> <span class="cm">← *ver cláusula 9</span></div>
-            <div>Entrega: <span class="hlc num">45–60 días hábiles</span> <span class="cm">← fija precio y fecha por escrito</span></div>
-            <div>&nbsp;</div>
-            <div>Recuerda: el precio del anuncio no es lo que pagas. Cada renglón cuenta.</div>
+            <div class="rows">
+              <div class="crow">
+                <span class="cl">Precio lista (incl. IVA)</span>
+                <span class="cv num hln">MXN 374,990</span>
+                <span class="ch">← pide precio por escrito</span>
+              </div>
+              <div class="crow">
+                <span class="cl">Comisión por apertura</span>
+                <span class="cv num hlc">2% · 7,500</span>
+                <span class="ch">← ya va dentro del CAT</span>
+              </div>
+              <div class="crow">
+                <span class="cl">CAT</span>
+                <span class="cv num hlw">Mstar 14.99% · Santander 20.9%</span>
+                <span class="ch">← compara siempre el CAT, no la tasa</span>
+              </div>
+              <div class="crow">
+                <span class="cl">Seguro obligatorio 1.er año</span>
+                <span class="cv num hlw">≈ $12,000</span>
+                <span class="ch">← pregunta si hay cashback</span>
+              </div>
+              <div class="crow">
+                <span class="cl">Pago anticipado</span>
+                <span class="cv num hln">sin penalización*</span>
+                <span class="ch">← *ver cláusula 9</span>
+              </div>
+              <div class="crow">
+                <span class="cl">Entrega</span>
+                <span class="cv num hlc">45–60 días hábiles</span>
+                <span class="ch">← fija precio y fecha por escrito</span>
+              </div>
+            </div>
+            <div class="cf">Recuerda: el precio del anuncio no es lo que pagas. Cada renglón cuenta.</div>
           </div>
         </div>
         <span class="figcap">Extracto ilustrativo. Lee cada renglón antes de firmar — las sorpresas están en los anexos.</span>
