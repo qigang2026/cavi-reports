@@ -74,19 +74,26 @@ generated_at: 2026-08-27
 ---
 ```
 
-#### 2.1.3 文档章节结构（v2.0）
+#### 2.1.3 文档章节结构（v3.0）
 
-| Tab | 章节 | 必须包含 |
-|-----|------|----------|
-| 概览 | 车型概览 | CAVA 评分、定位、适配场景 |
-| 参数 | 详细参数 | 基本信息、动力、安全、科技配置 |
-| 金融 | 价格与金融方案 | 版本列表、月供计算、贷款材料 |
-| 卖点 | 核心卖点 | 亮点、各版本配置差异 |
-| 口碑 | 用户口碑 | 真实用户评价 |
-| 成本 | 用车成本 | 油耗、保险、保养明细 |
-| 保障 | 购车保障与服务覆盖 | 质保、售后网络 |
-| 竞品 | 竞品车型 | 对比表格、优劣分析 |
-| 选购 | 选购指南 + 行动入口 | 推荐版本、行动按钮 |
+> 8 段结构 = 首屏（Hero + Spec strip + Trim selector + Compare bar）+ 02..08 七个内容段。
+> "概览"和"参数"不再分两段；参数融入首屏 Spec strip，身份/定位作为 Hero 元信息。
+
+| 段 | block-eyebrow（西语） | block-title | 必须包含 |
+|----|---------------------|------------|----------|
+| 首屏 | (无 eyebrow，Hero 段) | 车名 + Spec strip + Trim selector + Compare bar | 车名、3 核心数据（Spec strip）、版本选择、对比条 |
+| 02 | `02 · PRECIO Y FINANCIAMIENTO` | Precio y planes | 主价卡（distribuidor 深色）+ 3 补充卡（BBVA / Nissan financing / 交换补贴）+ cta-bar "¿Calcular tu cuota?" |
+| 03 | `03 · CORE SELLING POINTS` | Lo que destaca | 3-4 个核心数据指标（大数字+短标签）+ 1 段洞察（配大图） |
+| 04 | `04 · CAVI · RESEÑAS` | Reseñas de usuarios | CAVI 综合评分 + 推荐率 + 4 维度细分（cajuela / consumo / seguridad / ruido）+ 精选评论 2-3 条 |
+| 05 | `05 · COST` | Costo anual | 年度总成本 + 5 项并列明细（fuel / insurance / maintenance / depreciation / tax）+ 省钱建议 |
+| 06 | `06 · PROTECTION` | Cobertura post-compra | 质保年限+里程、保养包次数+里程、服务网络规模、支持项目 Tag |
+| 07 | `07 · COMPETITORS` | ¿Qué comparar? | 3 张并排卡（VW Virtus / Kia K3 / Mazda 2 类直接对标）+ ALTERNATIVA / PREMIUM 标签 |
+| 08 | `08 · SIGUIENTE PASO` | ¿Listo para decidir? | 3 张 next-card：WhatsApp 顾问 / 预约试驾 / Cavi AI |
+
+**配套全局元素**（不属于 8 段之一，但所有报告必备）：
+- Hero CTA：黄底"Consultar planes"按钮（直链 finance apply）
+- Fixed bottom：窄 WhatsApp 图标 + 橙色"Llamar"按钮
+- 章节内 cta-bar：每个 block 末尾的可量化小 CTA（"¿Calcular tu cuota? · Compara hasta 3 bancos · 1 min"）
 
 ### 2.2 Skill 规范
 

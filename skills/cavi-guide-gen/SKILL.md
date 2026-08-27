@@ -1,7 +1,7 @@
 ---
 name: cavi-guide-gen
 description: 生成 AUTOCAVA CAVI 购车手册。从内部系统获取车型数据，按照标准模板生成 Markdown 文档，供前端渲染展示。
-version: 2.0
+version: 3.0
 input:
   series_id: string (required)  # 车系 ID，如 "356"
   market: string (required)    # 市场代码，如 "MX"
@@ -13,9 +13,11 @@ output:
   model: string               # 车型名
 ---
 
-# CAVI 购车手册生成工具 v2.0
+# CAVI 购车手册生成工具 v3.0
 
 生成让用户"看懂和理解"的车辆解读报告，核心是**翻译参数为用户价值**。
+
+> v3.0 升级：章节数从 9 Tab 减为 **8 段**（首屏含 Spec strip + 02..08 七段内容），章节命名对齐西语 `block-eyebrow` 标签。详见 `docs/CAVI 报告式页面重构方案.md` v2.0。
 
 ## 约束规则
 
@@ -54,10 +56,10 @@ output:
 
 ## 工作流程
 
-### Step 1: 读取标准模板 v2.0
+### Step 1: 读取标准模板 v3.0
 
 ```bash
-读取 assets/standard-template-v2.md
+读取 assets/standard-template-v3.md
 ```
 
 ### Step 2: 确定文件名
@@ -90,8 +92,8 @@ GET /api/v1/series/{series_id}
 
 ### Step 4: 按模板填充数据
 
-1. 读取 `assets/standard-template-v2.md`
-2. 按照 Tab 顺序逐个填充章节
+1. 读取 `assets/standard-template-v3.md`
+2. 按照 8 段顺序逐个填充章节（首屏 + 02..08）
 3. 替换 `{{变量名}}` 为实际数据
 4. 删除未使用的可选区块（如 `{{optional_xxx}}`）
 
@@ -123,9 +125,9 @@ generated_at: 2026-08-27
 ## 快速检查清单
 
 生成报告后确认：
-- [ ] 已读取 `assets/standard-template-v2.md` 骨架
+- [ ] 已读取 `assets/standard-template-v3.md` 骨架
 - [ ] Frontmatter 完整
-- [ ] 9 个 Tab 章节齐全（概览、参数、金融、卖点、口碑、成本、保障、竞品、选购）
+- [ ] **8 段**章节齐全（首屏 + 02 金融 + 03 卖点 + 04 CAVI 口碑 + 05 成本 + 06 保障 + 07 竞品 + 08 行动入口）
 - [ ] 所有 `{{变量}}` 已替换为实际值
 - [ ] 表格格式正确
 - [ ] 行动入口链接有效
@@ -134,27 +136,27 @@ generated_at: 2026-08-27
 
 | 版本 | 文件 | 用途 |
 |------|------|------|
-| v1.0 | `assets/standard-template.md` | 旧版（不推荐） |
-| **v2.0** | `assets/standard-template-v2.md` | **标准版（推荐使用）** |
+| v1.0 | `assets/standard-template.md` | 旧版 9 Tab（不推荐） |
+| v2.0 | `assets/standard-template-v2.md` | 中间版 9 Tab（已被 v3 替代）|
+| **v3.0** | `assets/standard-template-v3.md` | **标准版（推荐使用）** · 8 段结构 + 西语 block-eyebrow |
 
-### v2.0 模板与前端 Tab 映射
+### v3.0 模板与前端 8 段映射
 
 AI 生成时必须遵循此映射关系：
 
-| Tab | MD 章节 | 说明 |
-|-----|---------|------|
-| 概览 | `# {{title}}` + `## 身份识别` | 车型基本信息、适合人群 |
-| 参数 | `## 详细参数` | 基本信息、动力、安全、科技 |
-| 金融 | `## 价格与金融方案` | 版本价格、月供计算 |
-| 卖点 | `## 核心卖点` + `## 版本配置差异` | 亮点、各版本配置 |
-| 口碑 | `## 用户口碑` | 真实用户评价 |
-| 成本 | `## 用车成本` | 油耗、保险、保养 |
-| 保障 | `## 购车保障与服务覆盖` | 质保、售后网络 |
-| 竞品 | `## 竞品车型` | 对比表格、优劣分析 |
-| 选购 | `## 选购指南` + `## 行动入口` | 推荐版本、行动按钮 |
+| 段 | block-eyebrow（西语） | block-title（西语） | MD 章节 | 说明 |
+|----|---------------------|--------------------|---------|------|
+| 首屏 | (Hero 段) | 车名 + Spec strip | `# {{title}}` + `## 身份识别` + `## Spec strip` | 车名、3 核心数据条、版本选择、对比条、Hero CTA |
+| 02 | `02 · PRECIO Y FINANCIAMIENTO` | Precio y planes | `## 价格与金融方案` | 主价卡 + 3 补充卡 + cta-bar "¿Calcular tu cuota?" |
+| 03 | `03 · CORE SELLING POINTS` | Lo que destaca | `## 核心卖点` + `## 版本配置差异` | 3-4 核心数据 + 1 段洞察 |
+| 04 | `04 · CAVI · RESEÑAS` | Reseñas de usuarios | `## CAVI 评分` + `## 维度细分` + `## 精选评论` | CAVI 综合分 + 推荐率 + 4 维度（cajuela/consumo/seguridad/ruido）+ 评论 |
+| 05 | `05 · COST` | Costo anual | `## 用车成本` | 年度总额 + 5 项明细 + 省钱建议 |
+| 06 | `06 · PROTECTION` | Cobertura post-compra | `## 购车保障与服务覆盖` | 质保 + 保养 + 服务网络 |
+| 07 | `07 · COMPETITORS` | ¿Qué comparar? | `## 竞品车型` | 3 张并排卡（ALTERNATIVA / PREMIUM 标签）+ pros/cons |
+| 08 | `08 · SIGUIENTE PASO` | ¿Listo para decidir? | `## 行动入口` | 3 张 next-card：WhatsApp 顾问 / 预约试驾 / Cavi AI |
 
-### 使用 v2.0 模板
+### 使用 v3.0 模板
 
 ```bash
-读取 assets/standard-template-v2.md
+读取 assets/standard-template-v3.md
 ```
