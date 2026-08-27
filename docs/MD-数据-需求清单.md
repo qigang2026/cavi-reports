@@ -1,13 +1,15 @@
 # MD 数据需求清单
 
-**文档版本**：v1.0
+**文档版本**：v1.1
 **创建日期**：2026-08-27
+**修订日期**：2026-08-27（v1.1：删除"模板族"概念，改为单一展现样式 + 设备载体）
 **目的**：MD 生成涉及的所有字段的**权威定义表**——SKILL、模板、质量保证文档都以此为准
 **约定**：
 - `系统` = 来自 CAVI API/销售/银行/评论库（结构化数据，不需 AI）
 - `AI` = 由 AI 生成（自然语言，受风格规范约束）
 - `混合` = 系统给原始值 + AI 润色
-- `?` = 字段由模板族决定，不固定
+
+> **项目只有 1 个展现样式**（西语），不支持多模板族。详见 `docs/MD-生成-展现样式规范.md`。
 
 ---
 
@@ -22,10 +24,10 @@
 | `model` | string | 系统 | 车型名（小写、连字符），如 `nissan-versa` | **必填，无兜底** |
 | `year` | int | 系统 | 年款，4 位数字，如 `2026` | **必填，无兜底** |
 | `market` | enum | 系统 | 市场代码：`MX` / `CN` / `CO` / `AR` | **必填，无兜底** |
-| `lang` | enum | 系统 | 语言代码：`es` / `zh` / `en` | **必填，无兜底** |
+| `lang` | enum | 系统 | 语言代码：`es`（当前唯一支持）| **必填，无兜底** |
 | `energy_type` | enum | 系统 | `燃油` / `混动` / `纯电` / `插混` | **必填，无兜底** |
 | `body_type` | string | 系统 | `Sedán` / `SUV` / `Hatchback` / `Pickup` | **必填，无兜底** |
-| `template_id` | string | 系统 | 模板族 ID，如 `pc-mx-fuel-sedan` | **必填，无兜底** |
+| `device` | enum | 系统 | 渲染设备：`pc` / `h5`（决定加载哪个 HTML 模板）| `pc` |
 | `generated_at` | date | 系统 | 生成时间（ISO 8601）| 自动填 |
 | `source` | string | 系统 | 数据来源标识 | `CAVI (AutoCava AI)` |
 | `cavi_score` | decimal | 系统 | CAVI 综合评分 0-5 | `null` + 兜底文案 |
@@ -63,7 +65,7 @@
 |-----|------|------|------|----------|
 | `version_name` | string | 系统 | 推荐版本名，如 `ADVANCE CVT` | **必填** |
 | `price` | int | 系统 | 推荐版本 MSRP（整数 MXN）| **必填** |
-| `currency` | enum | 系统 | 货币代码：`MXN` / `CNY` / `USD` | `MXN` |
+| `currency` | enum | 系统 | 货币代码：当前 `MXN` | `MXN` |
 | `source` | string | 系统 | 经销价来源 | `precio de lista {品牌} {市场}` |
 | `price_base` | int | 系统 | 基础价（同 price）| = price |
 | `bonus_trade_in` | int | 系统 | 交换补贴（负数）| `0` |
@@ -124,31 +126,34 @@
 
 ### 4.2 `cavi_dimensions`（4 维度细分）
 
-**结构**：4 个键值对，**键名是英文 slug，值是分数 + 标签**。
+**结构**：4 个对象，每个含 slug / label / value / stars / 可选 is_weakness。
 
 ```yaml
 cavi_dimensions:
-  - { slug: cajuela, label_es: "Cajuela", label_zh: "后备厢", value: 4.8, stars: 5 }
-  - { slug: consumo, label_es: "Consumo", label_zh: "油耗", value: 4.6, stars: 5 }
-  - { slug: seguridad, label_es: "Seguridad", label_zh: "安全", value: 4.5, stars: 4 }
-  - { slug: ruido, label_es: "Ruido", label_zh: "噪音", value: 3.9, stars: 3, is_weakness: true }
+  - { slug: cajuela,   label: "Cajuela",   value: 4.8, stars: 5 }
+  - { slug: consumo,   label: "Consumo",   value: 4.6, stars: 5 }
+  - { slug: seguridad, label: "Seguridad", value: 4.5, stars: 4 }
+  - { slug: ruido,     label: "Ruido",     value: 3.9, stars: 3, is_weakness: true }
 ```
 
 | Key | 类型 | 来源 | 说明 | 兜底默认值 |
 |-----|------|------|------|----------|
-| `slug` | enum | ? | 维度标识符（模板族定义）| **必填** |
-| `label_es` | string | ? | 西语标签（西语模板用）| **必填** |
-| `label_zh` | string | ? | 中文标签（中文模板用）| **必填** |
+| `slug` | enum | 系统 | 维度标识符 | **必填** |
+| `label` | string | 系统 | 显示标签（西语，与 `lang=es` 对齐）| **必填** |
 | `value` | decimal | 系统 | 维度评分 0-5 | **必填** |
 | `stars` | int | 系统 | 星级 1-5 | `round(value)` |
 | `is_weakness` | bool | 系统 | 是否短板（用于红色高亮）| `false` |
 
-**已知模板族的 4 维度定义**：
+**当前展现样式的 4 维度**（燃油车 Sedan 类）：
 
-| 模板族 | 4 维度 slug |
-|--------|------------|
-| `pc-mx-fuel-sedan` | `cajuela` / `consumo` / `seguridad` / `ruido` |
-| `pc-cn-ev-suv` | `diseno` / `interior` / `ad_asistente` / `postventa` |
+| slug | 西语 label |
+|------|----------|
+| `cajuela` | Cajuela（后备厢） |
+| `consumo` | Consumo（油耗） |
+| `seguridad` | Seguridad（安全） |
+| `ruido` | Ruido（噪音） |
+
+> **未来扩展**（其他车型类别）：PM 按车型类别评审 4 维度定义。例如电动车 SUV 可能改为"外观/内饰/智驾/售后"。新增维度定义需要 PM 评审。
 
 ### 4.3 `featured_reviews`（精选评论 2-3 条）
 
@@ -289,8 +294,8 @@ next_cards:
 | Key | 类型 | 来源 | 说明 | 兜底默认值 |
 |-----|------|------|------|----------|
 | `type` | enum | 系统 | `whatsapp` / `test_drive` / `cavi_ai` | **必填** |
-| `label` | string | ? | 卡片标题（模板族决定语言）| **必填** |
-| `sub` | text | ? | 卡片副标题 | `null` |
+| `label` | string | 系统 | 卡片标题（西语：`Hablar con un asesor` / `Agendar prueba de manejo` / `Preguntar a Cavi (AI)`）| **必填** |
+| `sub` | text | 系统 | 卡片副标题 | `null` |
 | `url` | url | 系统 | 点击跳转链接 | **必填** |
 
 **type 必含**：3 条必须各覆盖 1 个 type，不能重复。
@@ -364,7 +369,7 @@ hero_cta:
 
 | Key | 类型 | 来源 | 说明 |
 |-----|------|------|------|
-| `text` | string | ? | 按钮文字（西语 / 中文按模板族）|
+| `text` | string | 系统 | 按钮文字（西语：`Consultar planes`）|
 | `url` | url | 系统 | 直链，参数含 seriesId + brandId |
 | `style` | enum | 系统 | `yellow-block`（当前唯一）|
 
@@ -391,11 +396,11 @@ hero_cta:
 |------|------|
 | **段 02..08 必须有** | 8 段是结构骨架，缺一段视为生成失败 |
 | **西语 eyebrow 字面锁定** | `02 · PRECIO Y FINANCIAMIENTO` 等 7 个字符串不能改 |
-| **4 维度是配置化** | 由 `template_id` 决定，MD 模板不硬编码 |
+| **4 维度由 PM 评审** | 不同车型类别（燃油 Sedan / 电动 SUV）可换 4 维度；新增需 PM 评审 |
 | **必填字段缺失 = 失败** | 不允许兜底到 `"Sin datos"` 后还继续生成（除非该段标记为"可选"）|
 | **跨字段一致性** | `cavi_score` 在 frontmatter、Hero、段 04 必须一致 |
 | **价格是整数** | 不要带 `$`/`MXN`/`，` 千分位（这些由模板渲染时加）|
-| **slug 命名规范** | 用 `snake_case`，西语/中文 label 各自键 |
+| **slug 命名规范** | 用 `snake_case` |
 
 ---
 

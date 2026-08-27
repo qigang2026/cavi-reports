@@ -1,11 +1,14 @@
 # MD 生成 · SKILL 调用契约
 
-**文档版本**：v1.0
+**文档版本**：v1.1
 **创建日期**：2026-08-27
+**修订日期**：2026-08-27（v1.1：删除 template_id 参数，改为 device；明确"单一样式"前提）
 **目的**：定义 AI Agent（cavi-guide-gen）调用方与被调用方之间的**接口契约**——输入、输出、错误、并发、幂等
 **关联**：`skills/cavi-guide-gen/SKILL.md`（AI 内部流程）· `docs/MD-数据-需求清单.md`（字段表）
 
 > 本文档是**外部契约**（调用方关心）；`SKILL.md` 是**内部实现**（AI Agent 怎么调）。两者必须保持一致。
+
+> **本项目只有 1 个报告展现样式**（西语）。`template_id` 参数已删除，改为 `device`（`pc` / `h5`）决定渲染载体。详见 `docs/MD-生成-展现样式规范.md`。
 
 ---
 
@@ -44,18 +47,19 @@
 ```yaml
 series_id: int           # 车系 ID，如 356
 market: enum             # 市场代码：MX / CN / CO / AR
-template_id: string      # 模板族 ID，如 pc-mx-fuel-sedan-v1
+device: enum             # 渲染设备：pc / h5（决定加载哪个 HTML 模板）
 ```
 
 **校验**：
 - `series_id` > 0
 - `market` 在白名单
-- `template_id` 在 `template_families.yaml` 已登记
+- `device` ∈ {`pc`, `h5`}
+- `market=MX` 当前唯一支持（其他市场未来扩展）
 
 ### 2.2 可选参数
 
 ```yaml
-lang: enum               # 语言：es / zh / en，默认由 template_id 决定
+lang: enum               # 语言：es（当前唯一支持），默认 es
 force_update: bool       # 强制重生成（忽略缓存），默认 false
 priority: enum           # 任务优先级：high / normal / low，默认 normal
 callback_url: url        # 异步任务完成回调 URL
@@ -68,7 +72,7 @@ metadata: object         # 调用方附加元数据（用于追踪）
 {
   "series_id": 356,
   "market": "MX",
-  "template_id": "pc-mx-fuel-sedan-v1",
+  "device": "pc",
   "lang": "es",
   "force_update": false,
   "priority": "normal",
@@ -177,9 +181,9 @@ metadata: object         # 调用方附加元数据（用于追踪）
 | Code | HTTP 状态 | 含义 | 调用方处理 |
 |------|----------|------|----------|
 | `E001_INVALID_INPUT` | 400 | 输入参数缺失或非法 | 修正参数重试 |
-| `E002_TEMPLATE_NOT_FOUND` | 400 | `template_id` 未登记 | PM 评审新增模板族 |
+| `E002_INVALID_DEVICE` | 400 | `device` 不在白名单（`pc` / `h5`）| 修正参数 |
 | `E003_SERIES_NOT_FOUND` | 404 | `series_id` 不存在 | 校验 series_id |
-| `E004_MARKET_NOT_SUPPORTED` | 400 | 市场未支持 | 暂不支持该市场 |
+| `E004_MARKET_NOT_SUPPORTED` | 400 | 市场未支持（当前仅 MX）| 暂不支持该市场 |
 | `E101_DATA_FETCH_FAILED` | 502 | 数据获取失败（3 次重试后）| 重试或人工介入 |
 | `E102_DATA_INCOMPLETE_CRITICAL` | 422 | 关键字段缺失（价格/版本/CAVI）| 不生成，PM 介入 |
 | `E103_DATA_STALE` | 422 | 数据快照超期（关键字段 2× TTL）| 强制刷新 |
@@ -229,13 +233,13 @@ metadata: object         # 调用方附加元数据（用于追踪）
 
 实现：
 - `data_version` 记录数据快照版本
-- 同一 `data_version` + `template_id` 不重生成
+- 同一 `data_version` + `device` 不重生成
 - `force_update=true` 强制无视幂等
 
 ### 5.2 并发控制
 
 **同一 series_id** 同一时刻**只允许 1 个生成任务**：
-- 任务进入 → 加锁（key = `lock:md-gen:{series_id}:{template_id}`）
+- 任务进入 → 加锁（key = `lock:md-gen:{series_id}:{device}`）
 - 锁 TTL：300s
 - 重复请求 → 返回当前任务 ID（不入队）
 - 任务完成 / 失败 → 释放锁
@@ -364,6 +368,7 @@ URL 路径带版本号：
 
 每次契约变更需更新本文档并标注版本：
 - v1.0（2026-08-27）：初版
+- v1.1（2026-08-27）：删除 `template_id` 参数，改为 `device`；删除 `E002_TEMPLATE_NOT_FOUND`，新增 `E002_INVALID_DEVICE`
 
 ---
 
@@ -394,6 +399,6 @@ URL 路径带版本号：
 - *字段表：`docs/MD-数据-需求清单.md`*
 - *数据源：`docs/MD-生成-数据源与可靠性.md`*
 - *质量保证：`docs/MD-生成-质量保证.md`*
-- *多模板：`docs/MD-生成-多模板适配.md`*
+- *展现样式规范：`docs/MD-生成-展现样式规范.md`*
 - *AI 内部实现：`skills/cavi-guide-gen/SKILL.md`*
 - *AI 骨架：`skills/cavi-guide-gen/assets/standard-template-v3.md`*
