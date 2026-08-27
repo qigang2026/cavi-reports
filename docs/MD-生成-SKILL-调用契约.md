@@ -1,14 +1,14 @@
 # MD 生成 · SKILL 调用契约
 
-**文档版本**：v1.1
+**文档版本**：v1.2
 **创建日期**：2026-08-27
-**修订日期**：2026-08-27（v1.1：删除 template_id 参数，改为 device；明确"单一样式"前提）
+**修订日期**：2026-08-27（v1.2：聚焦 1 个标杆车型 + 4 个真实数据源 + AI 润色不编数）
 **目的**：定义 AI Agent（cavi-guide-gen）调用方与被调用方之间的**接口契约**——输入、输出、错误、并发、幂等
 **关联**：`skills/cavi-guide-gen/SKILL.md`（AI 内部流程）· `docs/MD-数据-需求清单.md`（字段表）
 
 > 本文档是**外部契约**（调用方关心）；`SKILL.md` 是**内部实现**（AI Agent 怎么调）。两者必须保持一致。
 
-> **本项目只有 1 个报告展现样式**（西语）。`template_id` 参数已删除，改为 `device`（`pc` / `h5`）决定渲染载体。详见 `docs/MD-生成-展现样式规范.md`。
+> **当前业务范围**：1 个标杆车型 Versa 2026（series_id=356），MX 西语燃油。详细见 `docs/MD-生成-总览.md` §二。
 
 ---
 
@@ -25,16 +25,16 @@
 │  AI Agent        │  ← 被调用方
 │  (cavi-guide-gen) │
 └────────┬────────┘
-         │ 数据获取
+         │ 数据获取（后端做）
          ↓
 ┌─────────────────┐
-│  CAVI / 销售 / 银行 │  ← 数据源
+│  4 个真实数据源    │  ← CAVI API / CAVI 评分 / 销售 / 金融
 └─────────────────┘
 ```
 
 **调用方典型场景**：
 - 用户在车系页点击"获取购车指南"
-- 后台调度（每日定时刷新所有车系）
+- 后台调度（每日定时刷新 Versa 报告）
 - 数据更新触发（如价格变更）
 - 人工强制重生成
 
@@ -45,21 +45,18 @@
 ### 2.1 必填参数
 
 ```yaml
-series_id: int           # 车系 ID，如 356
-market: enum             # 市场代码：MX / CN / CO / AR
-device: enum             # 渲染设备：pc / h5（决定加载哪个 HTML 模板）
+series_id: int           # 车系 ID，当前固定 356
 ```
 
+> **v1.2 简化**：当前业务只支持 1 个车型（Versa 2026），`series_id` 必填但实际只接受 356。
+
 **校验**：
-- `series_id` > 0
-- `market` 在白名单
-- `device` ∈ {`pc`, `h5`}
-- `market=MX` 当前唯一支持（其他市场未来扩展）
+- `series_id` = 356
+- 未来扩展其他车型时，加 `market` / `device` 等参数
 
 ### 2.2 可选参数
 
 ```yaml
-lang: enum               # 语言：es（当前唯一支持），默认 es
 force_update: bool       # 强制重生成（忽略缓存），默认 false
 priority: enum           # 任务优先级：high / normal / low，默认 normal
 callback_url: url        # 异步任务完成回调 URL
@@ -71,9 +68,6 @@ metadata: object         # 调用方附加元数据（用于追踪）
 ```json
 {
   "series_id": 356,
-  "market": "MX",
-  "device": "pc",
-  "lang": "es",
   "force_update": false,
   "priority": "normal",
   "callback_url": "https://autocava.com.mx/api/v1/callbacks/md-gen",
@@ -102,6 +96,7 @@ metadata: object         # 调用方附加元数据（用于追踪）
     "auto_pass": true,
     "fields_complete": "99.5%",
     "consistency_check": "pass",
+    "ai_compliance_check": "pass",
     "warnings": []
   },
   "snapshot_path": "reports/_snapshots/nissan-versa-2026.20260827-1430.yaml"
@@ -118,7 +113,7 @@ metadata: object         # 调用方附加元数据（用于追踪）
   "estimated_seconds": 60
 }
 
-// 回调时（POST 到 callback_url）
+// 回调时
 {
   "task_id": "task_xyz789",
   "status": "success" | "failed",
@@ -132,24 +127,22 @@ metadata: object         # 调用方附加元数据（用于追踪）
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | `status` | enum | `success` / `failed` / `queued` / `partial` |
-| `md_file_path` | string | 生成的 MD 文件相对路径（相对仓库根）|
+| `md_file_path` | string | 生成的 MD 文件相对路径 |
 | `data_version` | string | 数据快照版本号（用于回放）|
 | `generated_at` | ISO 8601 | 生成时间 |
 | `duration_ms` | int | 耗时（毫秒）|
-| `validation` | object | 校验结果（详见 §3.4）|
+| `validation` | object | 校验结果（含 v1.2 新增 `ai_compliance_check`）|
 | `snapshot_path` | string | 数据快照文件路径 |
 
 ### 3.4 validation 子结构
 
 ```json
 {
-  "auto_pass": true,                  // 自动校验 4 项全过
-  "fields_complete": "99.5%",          // 字段完整率
-  "consistency_check": "pass",        // 跨字段一致
-  "warnings": [                       // 非阻塞警告
-    "C13: 0 dimensions with is_weakness=true (expected 1)",
-    "C14: pct sum = 99.4 (expected 100±1)"
-  ]
+  "auto_pass": true,
+  "fields_complete": "99.5%",
+  "consistency_check": "pass",
+  "ai_compliance_check": "pass",   // v1.2 新增：AI 未篡改数字
+  "warnings": []
 }
 ```
 
@@ -162,15 +155,9 @@ metadata: object         # 调用方附加元数据（用于追踪）
   "status": "partial",
   "missing_fields": ["annual_cost.saving_tips", "competitors[2].image_url"],
   "fallback_applied": ["saving_tips: 跳过该字段", "competitor image: 占位灰卡"],
-  "md_file_path": "...",
-  "validation": { ... }
+  "md_file_path": "..."
 }
 ```
-
-调用方应判断 `status`：
-- `success`：可直接使用
-- `partial`：可用但有兜底（建议 review）
-- `failed`：不可用
 
 ---
 
@@ -181,14 +168,13 @@ metadata: object         # 调用方附加元数据（用于追踪）
 | Code | HTTP 状态 | 含义 | 调用方处理 |
 |------|----------|------|----------|
 | `E001_INVALID_INPUT` | 400 | 输入参数缺失或非法 | 修正参数重试 |
-| `E002_INVALID_DEVICE` | 400 | `device` 不在白名单（`pc` / `h5`）| 修正参数 |
-| `E003_SERIES_NOT_FOUND` | 404 | `series_id` 不存在 | 校验 series_id |
-| `E004_MARKET_NOT_SUPPORTED` | 400 | 市场未支持（当前仅 MX）| 暂不支持该市场 |
-| `E101_DATA_FETCH_FAILED` | 502 | 数据获取失败（3 次重试后）| 重试或人工介入 |
+| `E002_INVALID_SERIES` | 400 | `series_id` 不在白名单（当前仅 356）| 暂不支持其他车型 |
+| `E101_DATA_FETCH_FAILED` | 502 | 数据源获取失败（3 次重试后）| 重试或人工介入 |
 | `E102_DATA_INCOMPLETE_CRITICAL` | 422 | 关键字段缺失（价格/版本/CAVI）| 不生成，PM 介入 |
 | `E103_DATA_STALE` | 422 | 数据快照超期（关键字段 2× TTL）| 强制刷新 |
 | `E201_VALIDATION_FAILED` | 422 | 自动校验不通过 | 查看具体规则失败 |
 | `E202_CROSS_FIELD_INCONSISTENT` | 422 | 跨字段不一致 | 修复数据 |
+| `E203_AI_TAMPERED_DIGITS` | 422 | **AI 润色时篡改了系统数字**（v1.2 新增）| 重生成 + 报警 |
 | `E301_AI_GENERATION_FAILED` | 500 | AI 调用失败 | 重试 |
 | `E302_AI_RESPONSE_INVALID` | 500 | AI 返回非法格式 | 重试并记录 |
 | `E401_TIMEOUT` | 504 | 单次生成超 60s | 重试或降级 |
@@ -201,9 +187,9 @@ metadata: object         # 调用方附加元数据（用于追踪）
   "status": "failed",
   "error": {
     "code": "E101_DATA_FETCH_FAILED",
-    "message": "Failed to fetch cavi:score:356 after 3 retries",
+    "message": "Failed to fetch cavi_score:356 after 3 retries",
     "details": {
-      "endpoint": "GET /api/v1/cavi/score/356",
+      "source": "cavi-rating-system",
       "last_error": "503 Service Unavailable",
       "retry_count": 3
     },
@@ -219,9 +205,10 @@ metadata: object         # 调用方附加元数据（用于追踪）
 |--------|-------|------|
 | `E101` | 是 | 60s |
 | `E201` / `E202` | 否（需修数据）| - |
+| `E203` | 否（AI 改数是 P0）| 立即报警 |
 | `E301` / `E302` | 是 | 30s |
 | `E401` / `E500` | 是 | 60s |
-| `E001-E004` | 否（参数错）| - |
+| `E001-E002` | 否（参数错）| - |
 
 ---
 
@@ -233,20 +220,18 @@ metadata: object         # 调用方附加元数据（用于追踪）
 
 实现：
 - `data_version` 记录数据快照版本
-- 同一 `data_version` + `device` 不重生成
+- 同一 `data_version` + `series_id` 不重生成
 - `force_update=true` 强制无视幂等
 
 ### 5.2 并发控制
 
 **同一 series_id** 同一时刻**只允许 1 个生成任务**：
-- 任务进入 → 加锁（key = `lock:md-gen:{series_id}:{device}`）
+- 任务进入 → 加锁（key = `lock:md-gen:{series_id}`）
 - 锁 TTL：300s
 - 重复请求 → 返回当前任务 ID（不入队）
 - 任务完成 / 失败 → 释放锁
 
 ### 5.3 排队策略
-
-当多个生成任务并发时：
 
 | 任务优先级 | 排队行为 |
 |----------|---------|
@@ -266,7 +251,7 @@ metadata: object         # 调用方附加元数据（用于追踪）
 {
   "timestamp": "2026-08-27T14:30:00Z",
   "task_id": "task_xyz789",
-  "input": { "series_id": 356, "market": "MX", "template_id": "pc-mx-fuel-sedan-v1" },
+  "input": { "series_id": 356 },
   "duration_ms": 4200,
   "status": "success",
   "data_version": "v20260827-1430",
@@ -279,15 +264,15 @@ metadata: object         # 调用方附加元数据（用于追踪）
 
 ### 6.2 关键指标
 
-| 指标 | 公式 | 目标 |
-|------|------|------|
-| **P50 延迟** | 50% 调用耗时 | < 30s |
-| **P99 延迟** | 99% 调用耗时 | < 60s |
-| **成功率** | success / total | > 99% |
-| **AI 调用次数** | avg per generation | < 15 |
-| **缓存命中率** | cache_hits / total_fetches | > 70% |
-| **Token 消耗** | avg per generation | < 10k |
-| **错误码分布** | count(E_*) | - |
+| 指标 | 目标 |
+|------|------|
+| P50 延迟 | < 30s |
+| P99 延迟 | < 60s |
+| 成功率 | > 99% |
+| AI 调用次数 | < 15 |
+| Token 消耗 | < 10k |
+| 缓存命中率 | > 70% |
+| **AI 字段合规率** | **100%** |
 
 ### 6.3 告警
 
@@ -296,6 +281,7 @@ metadata: object         # 调用方附加元数据（用于追踪）
 | P99 延迟超 60s | 持续 5min | 后端 oncall |
 | 成功率 < 95% | 持续 10min | PM + oncall |
 | E102 出现 | 单次 | PM（关键数据问题）|
+| **E203 出现** | **单次** | **PM + oncall**（AI 篡改数字是 P0）|
 | E101 连续 3 次 | 5min 内 | 后端 oncall（数据源故障）|
 | 缓存命中率 < 50% | 持续 1h | 后端 oncall |
 
@@ -368,7 +354,8 @@ URL 路径带版本号：
 
 每次契约变更需更新本文档并标注版本：
 - v1.0（2026-08-27）：初版
-- v1.1（2026-08-27）：删除 `template_id` 参数，改为 `device`；删除 `E002_TEMPLATE_NOT_FOUND`，新增 `E002_INVALID_DEVICE`
+- v1.1（2026-08-27）：删除 template_id，改为 device
+- v1.2（2026-08-27）：聚焦 1 个标杆车型，删除 market/device 等；新增 E203 AI 篡改数字错误码
 
 ---
 

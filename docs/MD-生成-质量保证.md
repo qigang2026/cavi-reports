@@ -1,7 +1,8 @@
 # MD 生成 · 质量保证手册
 
-**文档版本**：v1.0
+**文档版本**：v1.2
 **创建日期**：2026-08-27
+**修订日期**：2026-08-27（v1.2：强化 AI 字段合规校验，聚焦 Versa 标杆 + 完整验证）
 **目的**：定义 MD 文档生成完成后的**验收标准**，确保每份报告合格
 **关联**：`docs/MD-数据-需求清单.md`（字段表）· `docs/MD-生成-数据源与可靠性.md`（数据可靠）
 
@@ -18,7 +19,7 @@
    ↓ pass
 [自动校验 ③ 结构完整性]    ← 8 段都在、西语 eyebrow 字面、变量无残留
    ↓ pass
-[自动校验 ④ 风格合规]      ← 西语 eyebrow、AI 文案长度、敏感词
+[自动校验 ④ AI 字段合规]   ← AI 不得篡改系统数字（新增）
    ↓ pass
 [人工抽样审核 ⑤ 5%]        ← 完整审阅
    ↓ pass
@@ -41,11 +42,10 @@
 | `series_id` | 必填，int |
 | `model` | 必填，string，snake_case |
 | `year` | 必填，int，4 位 |
-| `market` | 必填，enum（MX/CN/CO/AR）|
-| `lang` | 必填，enum（es/zh/en）|
+| `market` | 必填，enum（MX）|
+| `lang` | 必填，enum（es）|
 | `energy_type` | 必填，enum |
 | `body_type` | 必填，string |
-| `template_id` | 必填，string |
 | `cavi_score` | 必填，decimal 0-5（**关键字段**）|
 | `cavi_recommend` | 必填，int 0-100 |
 | `cavi_verdict` | 必填，string |
@@ -55,24 +55,6 @@
 | `competitors` | 必填，list<4> |
 | `next_cards` | 必填，list<3> |
 
-**段字段必填**：
-
-| 段 | 必填字段 | 失败处理 |
-|----|---------|---------|
-| Hero | `title`, `image_url`, `cavi_score` | 阻塞（cavi_score 缺失）|
-| Spec strip | 3 条完整 | 阻塞 |
-| Version | 6 条完整 + 1 个 `is_recommended` | 阻塞 |
-| Price 卡 1（主价）| `price` | **阻塞** |
-| Price 卡 2（银行）| `monthly`, `term`, `rate` | 跳过银行卡位置显示"联系经销商" |
-| Price 卡 3（厂家）| `monthly`, `term`, `rate` | 跳过 |
-| Price 卡 4（交换）| `amount` | 跳过 |
-| CAVI 评分 | `cavi_score` + 4 维度 | 阻塞（cavi 总分缺失）|
-| CAVI 评论 | `featured_reviews[]` | 隐藏评论卡片 |
-| Cost | `annual_cost.total` | 整段跳过 |
-| Protection | `warranty.years` | 整段跳过 |
-| Competitors | 4 条 | 阻塞（无竞品 = 无决策辅助）|
-| Next steps | 3 条 | 阻塞 |
-
 ### 2.2 字段类型校验
 
 | 类型 | 校验规则 |
@@ -80,7 +62,7 @@
 | `int` | 整数；价格类为正整数 |
 | `decimal` | 0-5（CAVI 评分）|
 | `string` | 非空；`title` ≤ 100 字；`cavi_verdict` ≤ 50 字 |
-| `text` | 非空；`hero.desc` 30-100 字；`insight` 30-100 字 |
+| `text` | 非空；`hero.desc` 30-100 字 |
 | `url` | 必须以 `https://` 开头 |
 | `list<N>` | 恰好 N 条 |
 | `list<M-N>` | M-N 条 |
@@ -128,10 +110,9 @@
 | C14 | **annual_cost 占比之和 ≈ 100** | Σ items.pct = 100 ±1 | 警告 |
 | C15 | **价格非负** | 所有 price/amount ≥ 0 | **阻塞** |
 
-### 3.2 自动校验脚本
+### 3.2 自动校验脚本（伪代码）
 
 ```python
-# 简化示意
 def validate_consistency(md_data):
     errors = []
     
@@ -153,8 +134,6 @@ def validate_consistency(md_data):
     rec = rec_versions[0]
     if md_data['finance_cards']['main']['price'] != rec['msrp']:
         errors.append(('C4', 'Main price != recommended version MSRP'))
-    
-    # ... 其他规则
     
     return errors
 ```
@@ -194,12 +173,9 @@ SPANISH_EYEBROWS = {
     '07': '07 · COMPETITORS',
     '08': '08 · SIGUIENTE PASO',
 }
-
-# 校验：模板渲染时，eyebrow 必须从 SPANISH_EYEBROWS 取
-# 任何"PRÉCIO"/"FINANCIAMIENTO 2"等变体 = 失败
 ```
 
-**未来扩展**：中文模板对应 `02 · 价格与金融方案` 等；待中文模板族正式上线后，加入 `CHINESE_EYEBROWS` 字典。
+**校验**：模板渲染时，eyebrow 必须从 `SPANISH_EYEBROWS` 取。**任何"PRÉCIO"/"FINANCIAMIENTO 2"等变体 = 失败**。
 
 ### 4.3 变量残留检测
 
@@ -220,23 +196,87 @@ VARIABLE_PATTERN = r'\{\{[\w_]+\}\}|\{\{optional_[\w_]+\}\}'
 
 ---
 
-## 五、风格合规校验
+## 五、AI 字段合规校验（v1.2 新增 · 关键）
 
-### 5.1 AI 文案长度
+> 这是 v1.2 强化重点：**AI 不得篡改系统原始数字**。
 
-| 字段 | 字数限制 | 校验 |
-|------|---------|------|
-| `title` | ≤ 100 | `len(title) ≤ 100` |
-| `hero.subtitle` | ≤ 50 | |
-| `hero.desc` | 30-100 | |
-| `cavi_verdict` | ≤ 50 | |
-| `insight` | 30-100 | |
-| `saving_tips[]` | 每条 ≤ 50 | |
-| `competitors[].pros` | ≤ 60 | |
-| `competitors[].cons` | ≤ 60 | |
-| `next_cards[].sub` | ≤ 80 | |
+### 5.1 三类 AI 字段
 
-### 5.2 敏感词检测
+| 类型 | AI 权限 | 校验 |
+|------|--------|------|
+| **纯 AI 生成** | 自由写 | 仅长度 + 风格校验 |
+| **混合字段**（系统值 + AI 拼装）| 可改字面，**不许改数字** | 数字溯源校验 |
+| **AI 不可动** | 完全不动 | 字面一致性校验 |
+
+### 5.2 混合字段校验规则
+
+对每个混合字段，提取 AI 输出中的所有数字，跟系统原始值对比：
+
+| 规则 | 说明 |
+|------|------|
+| **数字必须出现** | 系统给的数字必须原样出现在 AI 输出中 |
+| **数字不许变** | 数字的**字面值**必须跟系统一致（"374,990"不许改成"374000"或"375k"）|
+| **可增加语义** | AI 可加修饰词（"Best seller"、"Top #1"）但**不许改数字**|
+| **可改格式** | "MXN 374,990"和"374,990 MXN"都接受（顺序可调）|
+
+**示例**：
+
+| 系统给 | AI 输出 | 结果 |
+|--------|--------|------|
+| `monthly_sales=7486, cavi_score=4.6` | `"7,486 ventas/mes, CAVI 4.6/5"` | ✅ 通过 |
+| `monthly_sales=7486, cavi_score=4.6` | `"7,500 ventas/mes, CAVI 4.6"` | ❌ 阻塞（7486→7500）|
+| `monthly_sales=7486, cavi_score=4.6` | `"Top ventas, CAVI 4.6"` | ✅ 通过（省略数字）|
+| `versions[].msrp=374990` | `"374,990 MXN"` | ✅ 通过（顺序）|
+| `versions[].msrp=374990` | `"375,000"` | ❌ 阻塞（数字变了）|
+
+### 5.3 AI 不可动字段校验
+
+对标记为"AI 不可动"的字段，AI 输出必须 = 系统输入（**完全字面一致**）：
+
+```python
+# 示例：cavi_score = 4.6
+system_score = 4.6
+ai_text = "...CAVI 4.6/5..."  # OK
+ai_text = "...4.6..."         # OK
+ai_text = "...four point six..."  # ❌ 阻塞（不是字面数字）
+ai_text = "...4.60..."        # ❌ 阻塞（精度变了）
+```
+
+### 5.4 实现方式
+
+```python
+def validate_ai_field(ai_output, system_values):
+    """
+    ai_output: 字段值（AI 润色/生成）
+    system_values: dict{数字key: 数字value}
+    """
+    for key, sys_val in system_values.items():
+        sys_str = str(sys_val)
+        # 1. 数字必须出现（除非字段被标记为"可省略"）
+        if sys_str not in ai_output:
+            return False, f"{key}={sys_str} missing in AI output"
+    return True, None
+```
+
+---
+
+## 六、风格合规校验
+
+### 6.1 AI 文案长度
+
+| 字段 | 字数限制 |
+|------|---------|
+| `title` | ≤ 100 |
+| `hero.subtitle` | ≤ 50 |
+| `hero.desc` | 30-100 |
+| `cavi_verdict` | ≤ 50 |
+| `insight` | 30-100 |
+| `saving_tips[]` | 每条 ≤ 50 |
+| `competitors[].pros` | ≤ 60 |
+| `competitors[].cons` | ≤ 60 |
+| `next_cards[].sub` | ≤ 80 |
+
+### 6.2 敏感词检测
 
 **禁止词**（西语 + 中文 + 英文）：
 
@@ -252,28 +292,28 @@ engañar         智商                  sucker
 
 检测 → 阻塞 + 告警。
 
-### 5.3 客观性校验（竞品对比）
+### 6.3 客观性校验（竞品对比）
 
 - 竞品 `pros` 和 `cons` 必须**同时存在**（每个竞品卡片有优有缺）
 - 不允许 `pros` 含绝对化词汇："最好"、"最强"、"完美"等
-- 不允许贬低性词汇（见 §5.2 列表）
+- 不允许贬低性词汇（见 §6.2 列表）
 
-### 5.4 翻译一致性
+### 6.4 翻译一致性
 
-- 同一概念在 MD 中必须用同一翻译（"月供"不能一会儿"monthly payment"一会儿"cuota mensual"）
+- 同一概念在 MD 中必须用同一翻译
 - 数字格式统一：千分位 `,` / 小数 `.` / 货币符号
 
 ---
 
-## 六、人工审核规范
+## 七、人工审核规范
 
-### 6.1 抽样规则
+### 7.1 抽样规则
 
 - **每批 5%**（最少 1 份）由人工完整审阅
 - 抽样优先：高 CAVI 评分车 / 新上线车 / 重大更新后
 - 抽样触发：自动校验任一 warning 即进入必抽
 
-### 6.2 审核清单（人工）
+### 7.2 审核清单（人工）
 
 | 维度 | 关注点 |
 |------|--------|
@@ -281,10 +321,11 @@ engañar         智商                  sucker
 | **可读性** | 文案是否通顺？AI 翻译是否别扭？ |
 | **完整性** | 段 02..08 是否有缺漏？字段是否填全？ |
 | **客观性** | 竞品对比是否公正？pros/cons 是否合理？ |
+| **AI 合规** | **重点：AI 润色是否改动了系统数字？** |
 | **风格** | 是否符合"专业但亲切"语气？ |
 | **业务** | 是否符合 AUTOCAVA 业务定位？ |
 
-### 6.3 审核结果分类
+### 7.3 审核结果分类
 
 | 类别 | 处理 |
 |------|------|
@@ -294,59 +335,53 @@ engañar         智商                  sucker
 
 ---
 
-## 七、失败案例库
+## 八、失败案例库
 
-### 7.1 案例格式
+### 8.1 案例格式
 
 ```yaml
 case_id: C-2026-08-27-001
 discovered_at: 2026-08-27
 discovered_by: 人工审核 / 自动校验
 severity: P0 / P1 / P2
-title: 主价卡与推荐版本 MSRP 不一致
+title: ...
 
 context:
   series_id: 356
   market: MX
-  template_id: pc-mx-fuel-sedan
   generation_date: 2026-08-27
 
 what_happened: |
-  finance_cards.main.price = 374900
-  versions[is_recommended=true].msrp = 374990
-  差额 90 MXN
+  ...
 
 root_cause: |
-  finance API 返回的价格包含交换补贴，versions API 返回的是 MSRP。
-  二者计算口径不同。
+  ...
 
 fix: |
-  finance_cards.main.price 改为 versions[recommended].msrp
-  优惠项在 main.price_base / bonus_trade_in / price_effective 体现
+  ...
 
 prevention: |
-  在 SKILL 中显式声明：main.price = versions[recommended].msrp
-  增加单元测试覆盖此 case
+  ...
 
 status: 已修复 / 待修复 / 已知
 ```
 
-### 7.2 已知 case 列表（待建）
+### 8.2 已知 case 列表
 
-> 启动初期暂无历史 case。后续每次失败都录入此库，作为团队学习材料。
+> 启动初期暂无历史 case。后续每次失败都录入此库。
 
 ---
 
-## 八、发布准入
+## 九、发布准入
 
-### 8.1 发布条件（同时满足）
+### 9.1 发布条件（同时满足）
 
-- ✅ 自动校验 ①②③④ 全部 pass
+- ✅ 自动校验 ①②③④⑤ 全部 pass
 - ✅ 抽样审核（5%）全部通过
 - ✅ 失败案例库中无 P0 未修复 case 命中本份报告
 - ✅ 数据快照保存完整
 
-### 8.2 发布失败处理
+### 9.2 发布失败处理
 
 | 失败级别 | 处理 |
 |---------|------|
@@ -354,9 +389,10 @@ status: 已修复 / 待修复 / 已知
 | 跨字段不一致 | 修复数据 → 重生成 |
 | 西语 eyebrow 错 | 修复模板 → 重生成 |
 | AI 文案违规 | AI 重写该字段 |
+| AI 篡改数字 | **重生成 + 报警**（P0 级别）|
 | 风格不通过 | AI 重写 → 重新校验 |
 
-### 8.3 回滚
+### 9.3 回滚
 
 发布后 24h 内发现 P0 问题：
 - 立即下线该报告
@@ -366,24 +402,26 @@ status: 已修复 / 待修复 / 已知
 
 ---
 
-## 九、关键指标（验收维度）
+## 十、关键指标（验收维度）
 
-| 指标 | 公式 | 目标 |
-|------|------|------|
-| **自动校验通过率** | 一次通过 / 总生成数 | > 95% |
-| **人工审核通过率** | 人工通过 / 抽样数 | > 90% |
-| **跨字段一致率** | 一致 / 总校验 | > 99.5% |
-| **字段完整率** | 必填非空 / 必填总数 | > 99% |
-| **西语 eyebrow 命中率** | 字面正确 / 总段数 | 100% |
-| **变量残留数** | `{{xxx}}` 出现次数 | 0 |
-| **P0 失败率** | P0 case / 总生成数 | < 0.5% |
-| **回滚率** | 回滚数 / 发布数 | < 0.1% |
+| 指标 | 目标 |
+|------|------|
+| **自动校验通过率** | > 95% |
+| **人工审核通过率** | > 90% |
+| **跨字段一致率** | > 99.5% |
+| **字段完整率** | > 99% |
+| **西语 eyebrow 命中率** | 100% |
+| **变量残留数** | 0 |
+| **AI 字段合规率** | **100%**（v1.2 强化指标）|
+| **P0 失败率** | < 0.5% |
+| **回滚率** | < 0.1% |
 
 ---
 
-## 十、相关文档
+## 十一、相关文档
 
 - *字段定义：`docs/MD-数据-需求清单.md`*
 - *数据来源：`docs/MD-生成-数据源与可靠性.md`*
 - *端到端流程：`docs/MD-生成-总览.md`*
+- *展现样式规范：`docs/MD-生成-展现样式规范.md`*
 - *AI 骨架：`skills/cavi-guide-gen/assets/standard-template-v3.md`*

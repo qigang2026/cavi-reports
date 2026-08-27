@@ -1,21 +1,26 @@
-# CAVI 购车手册示例
+# CAVI 购车报告示例（v3.0）
 
-基于 Nissan Versa 2026 生成的完整示例，演示如何按 v3.0 模板填充数据。
+基于 Nissan Versa 2026 生成的完整示例，演示如何按 v3.0 模板填充数据（8 段结构）。
 
-## 示例：生成 Nissan Versa 2026 购车手册
+> v3.0 关键变化：9 Tab → 8 段（首屏含参数 + 02..08 七段内容），章节命名对齐西语 `block-eyebrow`。
+
+---
+
+## 示例：生成 Nissan Versa 2026 购车报告
 
 ### 输入
 
 ```yaml
 series_id: 356
-market: MX
-lang: zh
+force_update: false
 ```
+
+> 当前仅支持 Versa 2026 一个标杆车系。
 
 ### 输出文件
 
 ```
-reports/zh/nissan-versa-2026.md
+reports/es/nissan-versa-2026.md
 ```
 
 ---
@@ -24,372 +29,323 @@ reports/zh/nissan-versa-2026.md
 
 ```markdown
 ---
-title: 日产 Versa 2026 购车指南
+title: Nissan Versa 2026 购车指南
 series_id: 356
 model: nissan-versa
 year: 2026
 market: MX
-lang: zh
+lang: es
 energy_type: 燃油
-body_type: 轿车
+body_type: Sedán
+device: pc
 generated_at: 2026-08-27
+source: CAVI (AutoCava AI)
+cavi_score: 4.6
+cavi_recommend: 89
+cavi_verdict: Balance precio/espacio/seguridad inmejorable
+spec_strip:
+  - { label: "Mejor consumo", value: "18.81", unit: "km/L",  sub: "SENSE MT",   icon: "fuel" }
+  - { label: "Cajuela",       value: "482",   unit: "L",     sub: "2 maletas",  icon: "trunk" }
+  - { label: "Ventas julio",  value: "7,486", unit: "unid.", sub: "sedán #1 MX", icon: "trending" }
+key_specs:
+  - { label: "马 力",     value: "118 HP" }
+  - { label: "油 耗",     value: "5.3 L/100km" }
+  - { label: "后备厢",    value: "480 L" }
+  - { label: "中控屏",    value: "7 寸" }
+annual_cost: 17300
+finance_cards:
+  main:     { version_name: "ADVANCE CVT", price: 374990, currency: "MXN", source: "distribuidor" }
+  bank:     { monthly: 6244, term: 36, rate: "12.9%", loan_ratio: "70%" }
+  factory:  { monthly: 5899, term: 48, rate: "0%",  tag: "0% primer año" }
+  trade_in: { amount: 15000, condition: "Si entregas tu auto actual" }
+competitors:
+  - { tag: "SELF",        name: "Nissan Versa",  price: 309990, pros: "Mejor precio · cajuela 482L · 6 airbags", cons: "Ruido carretera" }
+  - { tag: "ALTERNATIVA", name: "VW Virtus",     price: 322490, pros: "Calidad alemana · 126 HP",                cons: "Consumo mayor" }
+  - { tag: "ALTERNATIVA", name: "Kia K3 Sedán",  price: 304900, pros: "Garantía 5 años",                          cons: "Resale inferior" }
+  - { tag: "PREMIUM",     name: "Mazda 2 Sedán", price: 301900, pros: "Skyactiv KODO",                            cons: "Cajuela 440L" }
+next_cards:
+  - { type: "whatsapp",   label: "Hablar con un asesor",   sub: "WhatsApp · < 5 min" }
+  - { type: "test_drive", label: "Agendar prueba de manejo", sub: "280+ distribuidores" }
+  - { type: "cavi_ai",    label: "Preguntar a Cavi (AI)",    sub: "Asistente 24/7" }
 ---
 
-# 日产 Versa 2026
+# Nissan Versa 2026 购车指南
 
-轿车 · 118马力 · 5.3L/100km · 月销 7,486 台
+> CAVI 智能解读 · 真实数据来源
+> "Balance precio/espacio/seguridad inmejorable" — CAVI
 
-## 车型概览
+---
 
-### 车型定位
+## 身份识别
 
-**经济实用型轿车**
-
-日产 Versa 是入门级紧凑型轿车，核心定位是**城市通勤首选**。面向首次购车、年轻消费者以及注重实用性的家庭用户。通过**低价格、低油耗、低保养成本**形成综合竞争力。
-
-### 综合评分
-
-| 维度 | 评分 |
+| 维度 | 数据 |
 |------|------|
-| 性价比 | 4.8 |
-| 油耗 | 4.6 |
-| 空间 | 4.4 |
-| 安全 | 4.5 |
-| 品质 | 4.3 |
-| **综合** | **4.5/5.0** |
+| 品牌 | Nissan |
+| 车系 | Versa |
+| 年款 | 2026 |
+| 能源类型 | 燃油 (Gasolina) |
+| 车身形式 | Sedán |
+| 座位数 | 5 人 |
+| 后备箱空间 | 482 L |
+| 发动机 | 1.6L 4-cyl |
+| 最大功率 | 118 HP |
 
-### AI顾问一句话推荐
+### 用户价值定位
 
-如果你注重燃油经济性、安全配置和市场口碑，Versa 是明智之选。推荐选择 **ADVANCE CVT** 版本，配置均衡性价比最高，适合城市通勤和家庭使用。
-
----
-
-## 详细参数
-
-### 基本信息
-
-| 参数 | 数值 |
-|------|------|
-| 车型 | 紧凑型轿车 |
-| 长×宽×高(mm) | 4495 x 1740 x 1465 |
-| 轴距(mm) | 2620 |
-| 整备质量(kg) | 1100-1180 |
-| 油箱容积(L) | 41 |
-| 后备箱容积(L) | 482 |
-
-### 动力系统
-
-| 参数 | 数值 |
-|------|------|
-| 发动机 | 1.5L 自然吸气 HR15DE |
-| 最大马力 | 118 HP / 6300 rpm |
-| 最大扭矩 | 149 N·m / 4400 rpm |
-| 变速箱 | 5MT / CVT |
-| 综合油耗 | 5.3 L/100km (MT) / 5.5 L/100km (CVT) |
-| 排放标准 | 国VI B |
-
-### 安全配置
-
-6安全气囊 · ABS防抱死 · 车身稳定系统ESC · 牵引力控制TCS · 上坡辅助HAC · 倒车影像 · 胎压监测
-
-### 科技配置
-
-9英寸中控屏 · 智能语音助手 · GPS导航 · 车联网 · 手机互联 · 无钥匙进入 · 一键启动 · 定速巡航
+!!! success "适合人群"
+- 城市通勤为主的家用买家
+- 看重月供 + 油费总成本
+- 需要 5 座 + 大后备厢的家庭
+- 对二手保值率敏感的实用派
 
 ---
 
-## 价格与金融方案
+## Spec strip
 
-### 首付30% · 72期（推荐方案）
-
-| 项目 | 金额 |
-|------|------|
-| 裸车价 | ¥144,400 |
-| 首付 | ¥43,320 |
-| 贷款额 | ¥101,080 |
-| 利率 | 8% |
-| **月供** | **¥2,673/月** |
-
-### 首付20% · 60期
-
-| 项目 | 金额 |
-|------|------|
-| 首付 | ¥28,880 |
-| 贷款额 | ¥115,520 |
-| **月供** | **¥2,336/月** |
-
-### 贷款材料
-
-身份证 · 收入证明 · 居住证明 · 银行流水
-
-### 购车礼包
-
-交强险 · 第三者责任险 · 脚垫+座垫 · 太阳膜
-
----
-
-## 核心卖点
-
-### 超低油耗
-
-**手动挡仅5.3L/100km**
-
-采用日产新一代 HR15DE 发动机，匹配5MT或CVT变速箱，综合油耗低至5.3L/100km，城市路况也能保持优秀的燃油经济性。同级车中油耗表现领先。
-
-### 安全配置丰富
-
-**全系标配6安全气囊**
-
-配备ABS防抱死、车身稳定系统、牵引力控制、上坡辅助等主动安全配置，加上6安全气囊的全方位保护，安全性能在同级车中表现优秀。
-
-### 保值率高
-
-**二手车残值有保障**
-
-日产品牌保值率在同级车中表现优秀，3年保值率约65%，5年保值率约50%，二手市场流通性好，换车时损失相对较小。
-
-### 服务网络完善
-
-**全国1,500+网点**
-
-日产售后服务网点覆盖广，平均3公里内即可找到服务站。配件供应链稳定，维修技术成熟，售后服务有保障。
-
----
-
-## 用户口碑
-
-### 综合评分：4.6 · 推荐度：89%
-
----
-
-### 张先生
-
-**2024款 SENSE 手动 · 行驶8,000km**
-
-⭐⭐⭐⭐⭐
-
-"开了快一年了，综合油耗5.5L/100km左右，比同事的威驰还省油。空间家用足够，后排座椅能放倒很实用。维修保养是真的便宜，小保养300多搞定。"
-
-> 省油 · 保养便宜 · 空间够用
-
----
-
-### 李女士
-
-**2024款 ADVANCE CVT · 行驶15,000km**
-
-⭐⭐⭐⭐
-
-"外观时尚，内饰设计也不错。CVT开起来很平顺，城市里代步很舒服。唯一缺点就是高速上胎噪有点大，不过这个价位也能接受。"
-
-> 操控好 · 外观好看 · 舒适
-
----
-
-### 王先生
-
-**2023款 EXCLUSIVE · 行驶25,000km**
-
-⭐⭐⭐⭐⭐
-
-"顶配版的真皮座椅和无线充电很实用。安全配置齐全，开起来很放心。打算长期持有，等孩子长大了再换大一点的车。"
-
-> 配置高 · 安全 · 舒适
-
----
-
-## 用车成本
-
-### 综合油耗
-
-按年行驶15,000km计算
-
-**¥9,000 /年**
-
-> 油耗成本低于87%的同级车型
-
-### 年度用车费用明细
-
-| 项目 | 金额 |
-|------|------|
-| 燃油费 | ¥9,000 |
-| 保险费用 | ¥4,500 |
-| 保养费用 | ¥800 |
-| 停车费用 | ¥2,400 |
-| 洗车费用 | ¥600 |
-| **合计** | **¥17,300/年** |
-
-### 保养周期
-
-每5,000km或6个月
-
-| 保养项目 | 费用 |
+| 核心数据 | 数值 |
 |----------|------|
-| 小保养（机油+机滤） | ¥300-400 |
-| 大保养 | ¥600-800 |
-| 刹车片（前） | ¥400-500 |
-| 轮胎（4条） | ¥1,600-2,000 |
+| **18.81** km/L | SENSE MT · Mejor consumo |
+| **482** L | 2 maletas grandes + equipaje de mano |
+| **7,486** unidades | Ventas julio · sedán #1 en México |
+
+---
+
+## Versiones
+
+| Versión | MSRP | Recomendado |
+|---------|------|-------------|
+| SENSE BASE MT | $309,990 | - |
+| SENSE MT | $316,990 | - |
+| SENSE CVT | $341,990 | - |
+| ADVANCE MT | $363,990 | - |
+| **ADVANCE CVT** | **$374,990** | ⭐ RECOMENDADO |
+| EXCLUSIVE CVT | $406,990 | - |
+
+---
+
+## 02 · PRECIO Y FINANCIAMIENTO
+
+> Precio y planes
+> Distribuidor + bancos + financiación de marca + bono de intercambio
+
+### 主价卡（distribuidor）
+
+> **Precio sugerido · ADVANCE CVT** · $374,990 MXN
+
+| 项目 | 金额 |
+|------|------|
+| Precio base | $374,990 |
+| Bono intercambio | −$15,000 |
+| Precio efectivo | $359,990 |
+
+### 银行方案（BBVA 36 个月）
+
+> **$6,244 /mes** · Enganche 30% · Tasa 12.9% APR
+
+| 项目 | 数值 |
+|------|------|
+| Enganche | $112,497 |
+| Monto a financiar | $262,493 |
+| Interés total | $39,768 |
+
+### 厂家金融（Nissan Credissan 48 个月）
+
+> **$5,899 /mes** · 0% intereses primer año
+
+| 项目 | 数值 |
+|------|------|
+| Enganche | $93,748 |
+| Plan | Credissan 48 cuotas |
+| CAT | 14.8% sin IVA |
+
+### 交换补贴
+
+> **−$15,000** · Si entregas tu auto actual
+
+---
+
+## 03 · CORE SELLING POINTS
+
+> Lo que destaca
+> 三段洞察：动力够用 + 油耗省 + 安全配置厚道
+
+### 核心数据
+
+- **118 HP** · 城市通勤动力足
+- **5.3 L/100km** · 油耗低，月油费约 $2,000 MXN
+- **480 L** · 后备厢可装 2 大行李箱 + 手提
+- **6 airbags** · 全系标配
+
+---
+
+## 04 · CAVI · RESEÑAS
+
+> Reseñas de usuarios
+> 3,240 propietarios · corte julio 2026
+
+### CAVI 综合评分
+
+> **CAVI 4.6 / 5.0** · 89% recomienda
+>
+> "Balance precio/espacio/seguridad inmejorable" — CAVI
+>
+> Sobresale: **cajuela 4.8**, **consumo 4.6**, **seguridad 4.5**. Áreas: ruido (3.9).
+
+### 元信息
+
+| 指标 | 数值 |
+|------|------|
+| 评论人数 | 3,240 propietarios |
+| 月销量 | 7,486 ventas |
+| 排名 | #1 sedán en México |
+
+### 4 维度细分
+
+| 维度 | 评分 | 星级 |
+|------|------|------|
+| Cajuela | 4.8 | ★★★★★ |
+| Consumo | 4.6 | ★★★★★ |
+| Seguridad | 4.5 | ★★★★☆ |
+| Ruido | 3.9 | ★★★☆☆ (短板) |
+
+### 精选评论
+
+> "Llevo casi un año y consumo 18 km/L. Mantenimiento muy económico, servicio menor $650 MXN."
+> — 2024 ADVANCE CVT · 15,000 km · CDMX
+
+> "Diseño atractivo, CVT muy suave en ciudad. Solo el ruido de carretera es notable, pero aceptable por el precio."
+> — 2025 SENSE CVT · 8,200 km · Guadalajara
+
+---
+
+## 05 · COST
+
+> Costo anual
+> 按年行驶 15,000 km 计算
+
+### 年度用车成本
+
+> **$17,300 /年** （约 $1,442 /月）
+
+### 5 项明细
+
+| 项目 | 金额 | 占比 |
+|------|------|------|
+| Combustible | $8,000 | 46% |
+| Seguro | $4,000 | 23% |
+| Mantenimiento | $2,500 | 14% |
+| Depreciación | $2,000 | 12% |
+| Tenencia | $800 | 5% |
 
 ### 省钱建议
 
-- 选择手动挡可节省¥5,000
-- 在4S店外保养更便宜
-- 油价波动时错峰加油
+- Mantén presión de neumáticos en 32 PSI — ahorra 3% combustible
+- Compara seguros en línea cada año — diferencia típica 15%
 
 ---
 
-## 购车保障与服务覆盖
+## 06 · PROTECTION
+
+> Cobertura post-compra
+> 全国 1,500+ 网点
 
 ### 整车质保
 
-**3年或10万公里**
+> **3 年 / 100,000 km**
 
-- 全国联保
-- 免费道路救援
-- 首保免费
+### 保养包含
 
-### 售后服务网络
+> **12 次 / 24,000 km** (Nissan México plan)
 
-**全国1,500+网点**
+### 支持项目
 
-- 3公里内有网点
-- 配件充足
-- 预约优先
-
-### 车主权益
-
-- 车机系统OTA升级
-- 积分兑换礼品
-- 生日礼遇
-
-### 智能互联
-
-- 手机远程控制
-- 车辆定位
-- 远程启动
-- 车辆状态查看
-- 故障提醒
+- [全车保修]
+- [电池保修]
+- [软件OTA]
+- [24h 道路救援]
 
 ---
 
-## 竞品车型
+## 07 · COMPETITORS
 
-> "如果你追求性价比，Versa 和 威驰 是同价位最均衡的选择。"
+> ¿Qué comparar?
+> 4 sedanes subcompactos · mismo rango de precio
 
-### Nissan Versa（日产 Versa）
+### 4 张并排卡
 
-**本品**
+#### TU ELECCIÓN · Nissan Versa
+> Desde **$309,990** MXN
+- **+** Mejor precio · cajuela 482L · 6 airbags std
+- **−** Ruido carretera · garantía 3 años
 
-- 118马力 · 5.3L/100km
-- ¥144,400（约¥2,673/月起，72期）
+#### ALTERNATIVA · VW Virtus
+> Desde **$322,490** MXN
+- **+** Calidad de manejo alemana · 126 HP
+- **−** Consumo ligeramente mayor · ensamble India
 
-| 亮点 | 待提升 |
-|------|--------|
-| 同价位油耗最低 | 高速胎噪略大 |
-| 价格优势明显 | 内饰用料一般 |
-| 维修保养成本低 | |
+#### ALTERNATIVA · Kia K3 Sedán
+> Desde **$304,900** MXN
+- **+** Garantía 5 años · 8 versiones · ensamble MX
+- **−** Resale inferior al Versa
 
----
-
-### Toyota Vios（丰田 威驰）
-
-1.5L · 112马力 · 5.4L/100km · ¥149,800
-
-> 约¥2,774/月（72期）
-
-适合：注重品牌和长期使用的用户
-
-| 亮点 | 待提升 |
-|------|--------|
-| 品牌可靠性高 | 价格略高 |
-| 保值率优秀 | 动力略弱 |
+#### PREMIUM · Mazda 2 Sedán
+> Desde **$301,900** MXN
+- **+** Manejo Skyactiv · ensamble MX · diseño KODO
+- **−** Cajuela 440L · garantía 3 años
 
 ---
 
-### Honda City（本田 锋范）
+## 08 · SIGUIENTE PASO
 
-1.5L · 131马力 · 5.5L/100km · ¥159,800
+> ¿Listo para decidir?
+> Elige cómo continuar
 
-> 约¥2,959/月（72期）
+### 3 张 next-card
 
-适合：追求动力的用户
+#### Hablar con un asesor
+> WhatsApp directo · < 5 min respuesta
+> [Abrir chat →](https://wa.me/525527419019)
 
-| 亮点 | 待提升 |
-|------|--------|
-| 动力更强 | 价格较高 |
-| 空间不错 | 油耗略高 |
+#### Agendar prueba de manejo
+> 280+ distribuidores en México
+> [Reservar horario →](https://www.autocava.com.mx/test-drive)
 
----
-
-### Mazda 3（马自达3 轿车）
-
-2.0L · 158马力 · 6.2L/100km · ¥188,200
-
-> 约¥3,485/月（72期）
-
-适合：追求驾驶品质的用户
-
-| 亮点 | 待提升 |
-|------|--------|
-| 操控好 | 价格高 |
-| 设计精致 | 油耗高 |
-| 品质高 | |
+#### Preguntar a Cavi (AI)
+> Asistente inteligente 24/7
+> [Abrir Cavi →](https://www.autocava.com.mx/cavi)
 
 ---
 
-### 对比项
-
-| 对比项 | Versa | 威驰 |
-|--------|-------|------|
-| 价格 | ¥144,400 | ¥149,800 |
-| 油耗 | 5.3L | 5.4L |
-| 马力 | 118HP | 112HP |
-| 安全气囊 | 6个 | 4个 |
-| 质保 | 3年/10万km | 3年/10万km |
-
----
-
-## 选购指南
-
-> "根据你的需求和预算，选择最适合你的版本。"
-
-### 按需求推荐
-
-| 需求 | 推荐版本 |
-|------|----------|
-| 预算敏感、追求最低门槛 | **Versa SENSE MT** |
-| 城市通勤为主、自动挡优先 | **Versa ADVANCE CVT** |
-| 追求配置和舒适性 | **Versa EXCLUSIVE** |
-| 注重品牌和可靠性 | 丰田 威驰 |
-| 追求驾驶乐趣和品质 | 马自达3 |
-
-### 按预算推荐
-
-| 预算 | 推荐车型 |
-|------|----------|
-| ¥10-15万 | Versa SENSE MT（最低门槛） |
-| ¥15-18万 | Versa ADVANCE CVT（推荐） |
-| ¥18-20万 | Versa EXCLUSIVE（高配） |
-| ¥20万+ | 威驰高配 / 马自达3 |
-
-### 选车建议
-
-1. **手动挡 vs 自动挡**：城市通勤选CVT，省油约0.2L/100km
-2. **贷款方案**：首付30%+72期是最佳平衡点
-3. **购车时机**：月底、季度末、年底促销力度更大
-4. **保养建议**：首保后可在正规修理厂保养，节省30%费用
-
----
-
-## AI购车顾问总结
-
-**一句话推荐：**如果你预算有限，又希望买一辆省油、安全、保值的经济型轿车，Versa 是这个价位非常值得关注的选择。
-
-**推荐版本：**ADVANCE CVT，配置均衡，性价比最高。
-
-**注意事项：**如果更看重品牌和驾驶品质，可以考虑加点预算选择威驰或马自达3。
-
----
-
-*📊 数据来源：[AutoCava CAVI](https://www.autocava.com.mx/cavi) · Nissan Versa Series ID: 356 · 生成时间: 2026-08-27*
+*📊 数据来源：[AutoCava CAVI](https://www.autocava.com.mx/cavi) · Versa Series ID: 356 · 生成时间: 2026-08-27*
 ```
+
+---
+
+## 关键说明
+
+### AI 字段 vs 系统字段
+
+| 类型 | 在示例中的体现 |
+|------|--------------|
+| **系统字段**（原样填入）| 价格、销量、CAVI 分、版本 msrp |
+| **AI 润色**（系统值 + 自然语言）| "Balance precio/espacio/seguridad inmejorable" 这类洞察句 |
+| **AI 自由生成** | "省钱建议"、"城市通勤为主的家用买家"（不涉数字）|
+| **AI 不可触碰** | 价格 / 评分 / 销量 / 评论原文 — AI 不许改 |
+
+### 西语 block-eyebrow 字面（必须字面一致）
+
+- `02 · PRECIO Y FINANCIAMIENTO`
+- `03 · CORE SELLING POINTS`
+- `04 · CAVI · RESEÑAS`
+- `05 · COST`
+- `06 · PROTECTION`
+- `07 · COMPETITORS`
+- `08 · SIGUIENTE PASO`
+
+---
+
+*参考文档：*
+- *字段表：`docs/MD-数据-需求清单.md`*
+- *AI 骨架：`assets/standard-template-v3.md`*
+- *SKILL：`SKILL.md`（v3.1）*
+- *质量保证：`docs/MD-生成-质量保证.md`*
