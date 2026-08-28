@@ -265,11 +265,11 @@
     }
     .share-btn svg { display: block; }
 
-    /* ---------- Cavi 悬浮助手 ---------- */
+    /* ---------- Cavi 悬浮助手（顶部右侧，参考官网位置） ---------- */
     .cavi-fab {
       position: fixed;
       right: 24px;
-      bottom: 24px;
+      top: 72px; /* header 56px + 16px gap */
       z-index: 900;
     }
     .cavi-btn {
@@ -298,8 +298,8 @@
     }
     .cavi-popup {
       position: absolute;
-      right: 76px;
-      bottom: 0;
+      right: 0;
+      top: 76px; /* 在按钮下方 */
       width: 320px;
       background: #fff;
       border-radius: 16px;
@@ -1171,7 +1171,7 @@
     </nav>
     <div class="right">
       <span class="report-date" id="reportDate">车型报告 · 2026-08-24</span>
-      <span class="freshness" id="freshness" data-publish-date="2026-08-24" data-expire-days="7" data-version="V5">
+      <span class="freshness" id="freshness" data-publish-date="2026-07-15" data-expire-days="7" data-version="V5">
         <span class="dot"></span>
         <span class="txt">—</span>
       </span>
@@ -1845,28 +1845,57 @@
   var caviClose = document.getElementById('caviClose');
   var caviCta = document.getElementById('caviCta');
   if (caviFab && caviToggle && caviPopup) {
+    var userInteracted = false;
+    var autoShowTimer = null;
+    var autoHideTimer = null;
+    function caviShow() { caviPopup.hidden = false; caviToggle.classList.add('active'); }
+    function caviHide() { caviPopup.hidden = true;  caviToggle.classList.remove('active'); }
+    function stopAutoLoop() {
+      userInteracted = true;
+      if (autoShowTimer) { clearTimeout(autoShowTimer); autoShowTimer = null; }
+      if (autoHideTimer) { clearTimeout(autoHideTimer); autoHideTimer = null; }
+    }
+    function scheduleNextShow() {
+      if (userInteracted) return;
+      autoShowTimer = setTimeout(function() {
+        if (userInteracted) return;
+        caviShow();
+        autoHideTimer = setTimeout(function() {
+          if (userInteracted) return;
+          caviHide();
+          scheduleNextShow();
+        }, 3000);
+      }, 3000);
+    }
+    autoShowTimer = setTimeout(function() {
+      if (userInteracted) return;
+      caviShow();
+      autoHideTimer = setTimeout(function() {
+        if (userInteracted) return;
+        caviHide();
+        scheduleNextShow();
+      }, 3000);
+    }, 3000);
+
     caviToggle.addEventListener('click', function(e) {
       e.stopPropagation();
-      caviPopup.hidden = !caviPopup.hidden;
-      caviToggle.classList.toggle('active', !caviPopup.hidden);
+      stopAutoLoop();
+      if (caviPopup.hidden) caviShow(); else caviHide();
     });
     if (caviClose) {
       caviClose.addEventListener('click', function(e) {
         e.stopPropagation();
-        caviPopup.hidden = true;
-        caviToggle.classList.remove('active');
+        stopAutoLoop();
+        caviHide();
       });
     }
-    // 点击外部关闭
-    document.addEventListener('click', function(e) {
-      if (!caviFab.contains(e.target)) {
-        caviPopup.hidden = true;
-        caviToggle.classList.remove('active');
-      }
-    });
     if (caviCta) {
+      caviCta.addEventListener('click', function() { stopAutoLoop(); });
       caviCta.href = 'https://wa.me/525527419019?text=Hola%2C%20me%20interesa%20comparar%20el%20XPENG%20G6%20con%20otros%20modelos.%20%C2%BFMe%20ayudan%20con%20m%C3%A1s%20informaci%C3%B3n%3F';
     }
+    document.addEventListener('click', function(e) {
+      if (!caviFab.contains(e.target)) caviHide();
+    });
   }
 
   /* ---------------- Data freshness ---------------- */
@@ -1881,6 +1910,11 @@
     var today = new Date();
     today.setHours(0, 0, 0, 0);
     var daysLeft = Math.ceil((expireAt - today) / 86400000);
+    // 严重过期：直接重定向到专门的过期引导页（除非 URL 带 ?nostaleness 参数）
+    if (daysLeft < 0 && !/[?&]nostaleness(=1)?(&|$)/.test(location.search)) {
+      location.replace('xpeng-g6-2026-expired.html');
+      return;
+    }
     var txt = fresh.querySelector('.txt');
 
     fresh.classList.remove('fresh', 'warn', 'expired');
