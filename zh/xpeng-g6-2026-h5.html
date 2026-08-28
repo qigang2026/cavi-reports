@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1929">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>XPENG G6 2026 — 购车解读报告 | AUTOCAVA · CAVA · H5</title>
+  <meta name="description" content="续航 510 km · 487 hp · 80.2 kWh · 800V 高压平台 · Full Insurance 参考价 $869,900 MXN。CAVA 4.05/5。">
+  <meta property="og:title" content="XPENG G6 2026 — 购车解读报告 | AUTOCAVA">
+  <meta property="og:description" content="续航 510 km · 487 hp · 80.2 kWh · 800V · 参考价 $869,900 MXN · CAVA 4.05/5。">
+  <meta property="og:type" content="product">
+  <meta property="og:site_name" content="AutoCava · México">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       CAVA 报告 · H5 (基于 PC 20260827-142004 适配)
+       8 段: 1) Hero  2) 价格金融  3) 核心卖点  4) 用户口碑
+              5) 用车成本  6) 购车保障  7) 主要竞品  8) 进一步了解
+       设计原则:
+         - 单列流式,无 min-width 锁死
+         - 16px 基础字号(避免 iOS 自动缩放)
+         - 触控目标 ≥ 44pt
+         - 卡片间距 12px,section 上下 padding 36-48px
+         - 横向滚动(判断卡 / 10 年序列)用渐隐遮罩
+         - 浮动 WhatsApp 按钮
+       ============================================================ */
+    :root {
+      --navy: #0a1929;
+      --navy-2: #11233a;
+      --navy-3: #1a2e4a;
+      --line: rgba(255,255,255,0.08);
+      --line-strong: rgba(255,255,255,0.14);
+      --amber: #ffc422;
+      --amber-soft: #fde9a8;
+      --amber-deep: #b59317;
+      --text: #ffffff;
+      --text-soft: #c5cdd9;
+      --text-mute: #8a93a6;
+      --green: #199e70;
+      --red: #d03b3b;
+      --wa-green: #25d366;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: "Inter", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--navy);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .mono { font-family: "Chakra Petch", "Inter", sans-serif; font-weight: 500; letter-spacing: 0.02em; }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+
+    /* ---------- Header (logo only, 隐藏 nav) ---------- */
+    .site-header { border-bottom: 1px solid var(--line); background: var(--navy); position: sticky; top: 0; z-index: 50; }
+    .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 48px; }
+    .site-header .logo img { height: 18px; }
+    .site-header .right { font-size: 10px; color: var(--text-mute); letter-spacing: 0.04em; }
+
+    /* ---------- Hero ---------- */
+    .hero { padding: 16px 0 28px; background: linear-gradient(180deg, #0d1f33 0%, var(--navy) 100%); }
+    .hero .hero-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .hero .hero-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text-soft);
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .hero .kicker {
+      font-family: "Chakra Petch", monospace;
+      font-size: 12px; font-weight: 600;
+      color: var(--amber);
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+    .hero h1 {
+      font-size: 30px; line-height: 1.15; font-weight: 700;
+      letter-spacing: -0.01em; margin-bottom: 14px;
+    }
+    .hero h1 .hl { color: var(--amber); }
+    .hero .lede { color: var(--text-soft); font-size: 14px; line-height: 1.65; margin-bottom: 14px; }
+    .hero .hero-conclusion {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 14px;
+      border-left: 3px solid var(--amber);
+      background: rgba(255, 196, 34, 0.06);
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+    .hero .hero-conclusion .lbl {
+      font-size: 10px; color: var(--text-mute);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      white-space: nowrap; padding-top: 2px; flex-shrink: 0;
+    }
+    .hero .hero-conclusion .t {
+      font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.5;
+    }
+    .hero .row-3 {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; padding: 14px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 18px;
+    }
+    .hero .row-3 .item { font-size: 10px; color: var(--text-mute); text-align: center; }
+    .hero .row-3 .item b { display: block; color: var(--text); font-weight: 700; font-size: 15px; margin-top: 4px; font-family: "Chakra Petch", monospace; }
+    .hero .row-3 .item b .unit { color: var(--text-mute); font-size: 10px; font-weight: 400; margin-left: 1px; }
+
+    /* Hero 车图 + 评分圆环 */
+    .hero-visual { position: relative; margin: 0 -16px; padding: 24px 16px 8px; }
+    .hero-visual .car-img { width: 100%; max-width: 100%; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.45)); }
+    .hero-visual .car-sub { text-align: center; font-size: 10px; color: var(--text-mute); margin-top: 8px; letter-spacing: 0.04em; }
+    .hero-score {
+      position: absolute; right: 24px; top: 12px;
+      width: 88px; height: 88px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: radial-gradient(circle at 30% 30%, #ffe27a 0%, var(--amber) 60%, var(--amber-deep) 100%);
+      border-radius: 50%;
+      color: #1a1f3a;
+      box-shadow: 0 8px 28px rgba(255, 196, 34, 0.45);
+    }
+    .hero-score .l { font-size: 7px; font-weight: 700; letter-spacing: 0.1em; }
+    .hero-score .v { font-family: "Chakra Petch", monospace; font-size: 28px; font-weight: 700; line-height: 1; margin-top: 1px; }
+    .hero-score .r { font-size: 7px; opacity: 0.7; margin-top: 1px; }
+
+    /* ---------- 5 列判断卡 → 横向滚动 ---------- */
+    .judge-row {
+      display: flex; gap: 10px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      margin: 0 -16px; padding: 4px 16px 8px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      position: relative;
+      mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 24px), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 24px), transparent 100%);
+    }
+    .judge-row::-webkit-scrollbar { display: none; }
+    .judge-card {
+      background: var(--navy-2);
+      border-top: 3px solid var(--amber);
+      border-radius: 8px;
+      padding: 14px 14px;
+      min-width: 200px; max-width: 220px; flex-shrink: 0;
+      scroll-snap-align: start;
+    }
+    .judge-card.strong { border-top-color: var(--amber); background: linear-gradient(180deg, rgba(255,196,34,0.08) 0%, var(--navy-2) 100%); }
+    .judge-card.conditional { border-top-color: #c5cdd9; }
+    .judge-card.weak { border-top-color: #8a93a6; }
+    .judge-card .tag {
+      font-size: 9px; color: var(--amber);
+      letter-spacing: 0.1em; font-weight: 600;
+      margin-bottom: 6px; text-transform: uppercase;
+    }
+    .judge-card.conditional .tag, .judge-card.weak .tag { color: var(--text-mute); }
+    .judge-card .t { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.35; }
+    .judge-card .d { font-size: 11px; color: var(--text-soft); line-height: 1.5; }
+
+    /* ---------- Section common ---------- */
+    .section { padding: 40px 0; border-top: 1px solid var(--line); }
+    .section.section-light { background: #f5f6f8; border-top-color: rgba(0,0,0,0.06); }
+    .section.section-light .sec-title { color: #0a1929; }
+    .section.section-light .sec-sub { color: rgba(10,25,41,0.6); }
+    .section.section-light .num { color: #0a1929; background: transparent; }
+    .section.section-light .price-card.light {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .section.section-light .price-card.light .h .brand { color: #0a1929; }
+    .section.section-light .price-card.light .h .policy { color: rgba(10,25,41,0.5); }
+    .section.section-light .price-card.light .price { color: #0a1929; }
+    .section.section-light .price-card.light .price small { color: rgba(10,25,41,0.5); }
+    .section.section-light .price-card.light .sub { color: rgba(10,25,41,0.6); }
+    .section.section-light .price-card.light .row { color: #0a1929; }
+    .section.section-light .price-card.light .row .k { color: rgba(10,25,41,0.5); }
+    .section.section-light .price-card.light .row .v { color: #0a1929; }
+    .section.section-light .price-card.light .note { color: rgba(10,25,41,0.6); }
+    .section.section-light .price-card.light .rows { border-top-color: rgba(0,0,0,0.08); }
+    .section.section-light .security-callout { background: #1a2c45; color: #fff; }
+    .section.section-light .cavi-dim { background: #fff; border: 1px solid rgba(0,0,0,0.08); }
+    .section.section-light .cavi-dim .dim-title { color: #0a1929; }
+    .section.section-light .cavi-dim .dim-text { color: rgba(10,25,41,0.6); }
+    .section.section-light .stats-row { background: #fff; }
+    .section.section-light .highlight-grid.light .highlight-item { background: #fff; border: 1px solid rgba(0,0,0,0.08); }
+    .section.section-light .highlight-grid.light .highlight-item .body .t { color: #0a1929; }
+    .section.section-light .highlight-grid.light .highlight-item .body .s { color: #0a1929; font-weight: 600; }
+    .section.section-light .highlight-grid.light .highlight-item .body .note { color: rgba(10,25,41,0.5); }
+    .section.section-light .dim-title { font-size: 13px; color: #0a1929; font-weight: 600; margin-bottom: 10px; }
+    .sec-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; letter-spacing: 0.16em; font-weight: 600;
+      color: var(--amber); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .sec-tag .num {
+      font-family: "Chakra Petch", monospace; font-size: 10px;
+      background: rgba(255, 196, 34, 0.12); padding: 3px 6px; border-radius: 4px;
+    }
+    .sec-title {
+      font-size: 22px; font-weight: 700; line-height: 1.25; margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .sec-sub {
+      color: var(--text-mute); font-size: 13px; line-height: 1.6; margin-bottom: 20px;
+    }
+
+    /* ---------- Section 01 价格金融 ---------- */
+    .price-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .price-card {
+      background: var(--navy-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .price-card.dark { background: linear-gradient(180deg, #1a2c45 0%, var(--navy-2) 100%); }
+    .price-card .h {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .price-card .h .logo {
+      width: 26px; height: 26px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+    }
+    .price-card .h .logo.bj { background: var(--green); color: #fff; }
+    .price-card .h .logo.zx { background: var(--red); color: #fff; }
+    .price-card .h .brand { font-size: 13px; color: var(--text); font-weight: 600; }
+    .price-card .h .policy { font-size: 10px; color: var(--text-mute); display: block; margin-top: 2px; }
+    .price-card .price {
+      font-family: "Chakra Petch", monospace;
+      font-size: 28px; font-weight: 700; color: var(--amber);
+      line-height: 1; margin-bottom: 4px;
+    }
+    .price-card .price small { font-size: 12px; color: var(--text-mute); font-weight: 400; margin-left: 3px; }
+    .price-card .sub { color: var(--text-mute); font-size: 12px; margin-bottom: 12px; }
+    .price-card .rows { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+    .price-card .row { display: flex; justify-content: space-between; font-size: 11px; }
+    .price-card .row .k { color: var(--text-mute); }
+    .price-card .row .v { color: var(--text); font-family: "Chakra Petch", monospace; }
+    .price-card .full-tag { display: block; font-size: 11px; color: var(--amber); margin-top: 4px; font-weight: 500; }
+    .price-card .note { font-size: 11px; color: var(--text-mute); line-height: 1.5; margin-top: 10px; }
+
+    .security-callout {
+      margin-top: 14px; padding: 14px 16px;
+      background: #1a2c45; color: #fff;
+      border-radius: 10px;
+    }
+    .security-callout .lbl { font-size: 12px; line-height: 1.5; margin-bottom: 10px; }
+    .security-callout .lbl b { color: var(--text); }
+    .security-callout .btn {
+      background: var(--amber); color: #1a1f3a;
+      padding: 11px 16px; border-radius: 6px;
+      font-size: 13px; font-weight: 600;
+      display: inline-block; min-height: 44px;
+      line-height: 22px;
+    }
+    .sec-foot {
+      font-size: 11px; color: var(--text-mute);
+      margin-top: 12px; line-height: 1.6;
+    }
+
+    /* ---------- Section 02 核心卖点 4 大参数 → 2x2 ---------- */
+    .stats-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px;
+      background: #fff; margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .stats-row .stat { padding: 16px; border-right: 1px solid rgba(0,0,0,0.08); border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .stats-row .stat:nth-child(2n) { border-right: 0; }
+    .stats-row .stat:nth-last-child(-n+2) { border-bottom: 0; }
+    .stats-row .stat .num {
+      font-family: "Chakra Petch", monospace;
+      font-size: 10px; color: rgba(10,25,41,0.4);
+      margin-bottom: 4px; letter-spacing: 0.06em;
+    }
+    .stats-row .stat .k { font-size: 12px; color: #0a1929; font-weight: 600; margin-bottom: 6px; }
+    .stats-row .stat .v { font-family: "Chakra Petch", monospace; font-size: 28px; font-weight: 700; color: #0a1929; line-height: 1; margin-bottom: 6px; }
+    .stats-row .stat .v small { font-size: 12px; color: rgba(10,25,41,0.5); font-weight: 400; margin-left: 3px; }
+    .stats-row .stat .note { font-size: 10px; color: rgba(10,25,41,0.6); line-height: 1.45; }
+
+    /* lifestyle-split → 上下 */
+    .lifestyle-split {
+      background: #0a1929; border-radius: 12px;
+      overflow: hidden;
+    }
+    .lifestyle-split .img {
+      background-size: cover; background-position: center;
+      min-height: 200px;
+    }
+    .lifestyle-split .copy {
+      padding: 24px 20px;
+      background: #0a1929; color: #fff;
+    }
+    .lifestyle-split .copy .kicker {
+      font-family: "Chakra Petch", monospace;
+      font-size: 12px; color: var(--amber);
+      letter-spacing: 0.04em; margin-bottom: 10px;
+    }
+    .lifestyle-split .copy h3 { font-size: 19px; font-weight: 700; line-height: 1.3; margin-bottom: 10px; color: #fff; }
+    .lifestyle-split .copy h3 .hl { color: var(--amber); }
+    .lifestyle-split .copy p { font-size: 13px; color: var(--text-soft); line-height: 1.65; }
+
+    /* ---------- Section 03 用户口碑 ---------- */
+    .cavi-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .cavi-score {
+      background: linear-gradient(180deg, #ffe9a8 0%, var(--amber) 100%);
+      border-radius: 12px; padding: 24px 20px;
+      color: #1a1f3a;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .cavi-score .lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+    .cavi-score .v { font-family: "Chakra Petch", monospace; font-size: 56px; font-weight: 700; line-height: 1; margin: 4px 0; }
+    .cavi-score .v small { font-size: 20px; opacity: 0.7; font-weight: 500; }
+    .cavi-score .bar { width: 100%; height: 4px; background: rgba(0,0,0,0.15); border-radius: 2px; overflow: hidden; margin: 8px 0; }
+    .cavi-score .bar i { display: block; height: 100%; background: #1a1f3a; width: 81%; }
+    .cavi-score .meta { font-size: 10px; opacity: 0.75; text-align: center; }
+    .cavi-rec {
+      background: var(--navy-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .cavi-rec .top { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .cavi-rec .top .label { font-size: 10px; color: var(--text-mute); letter-spacing: 0.1em; text-transform: uppercase; }
+    .cavi-rec .top .score { font-family: "Chakra Petch", monospace; font-size: 16px; color: var(--amber); font-weight: 700; }
+    .cavi-rec h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; line-height: 1.35; }
+    .cavi-rec p { font-size: 13px; color: var(--text-soft); line-height: 1.65; }
+
+    .cavi-dims {
+      display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 14px;
+    }
+    .cavi-dim {
+      background: var(--navy-2); border: 1px solid var(--line);
+      border-radius: 10px; padding: 16px;
+    }
+    .cavi-dim .dim-tag {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--amber);
+      margin-bottom: 6px;
+    }
+    .cavi-dim .dim-title {
+      font-size: 15px; font-weight: 700; color: var(--text);
+      line-height: 1.35; margin-bottom: 6px;
+    }
+    .cavi-dim .dim-text {
+      font-size: 12px; color: var(--text-soft); line-height: 1.6;
+    }
+
+    /* ---------- Section 04 用车成本 ---------- */
+    .cost-hero-row {
+      display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 14px;
+    }
+    .cost-hero-row .main {
+      background: #0a1929; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 20px 20px;
+      color: #fff;
+    }
+    .cost-hero-row .main .lbl { font-size: 10px; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .cost-hero-row .main .v { font-family: "Chakra Petch", monospace; font-size: 36px; font-weight: 700; color: var(--amber); line-height: 1; margin-bottom: 8px; }
+    .cost-hero-row .main .v small { font-size: 12px; color: rgba(255,255,255,0.6); font-weight: 400; margin-left: 6px; }
+    .cost-hero-row .main .sub { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+    /* 等式分解 */
+    .cost-hero-row .formula {
+      display: flex; align-items: center; gap: 6px;
+      background: #fff; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 14px 12px;
+    }
+    .cost-hero-row .f-item { flex: 1; text-align: center; }
+    .cost-hero-row .f-lbl { font-size: 9px; color: rgba(10,25,41,0.5); letter-spacing: 0.02em; margin-bottom: 3px; }
+    .cost-hero-row .f-v { font-family: "Chakra Petch", monospace; font-size: 14px; font-weight: 700; color: #0a1929; }
+    .cost-hero-row .f-op { font-size: 14px; color: rgba(10,25,41,0.4); font-weight: 600; }
+
+    .cost-cards-row {
+      display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 12px;
+    }
+    .cost-card {
+      border-radius: 10px; padding: 18px 20px;
+    }
+    .cost-card.dark { background: #0a1929; color: #fff; border: 1px solid rgba(0,0,0,0.08); }
+    .cost-card.light { background: #fff; color: #0a1929; border: 1px solid rgba(0,0,0,0.08); }
+    .cost-card.amber { background: linear-gradient(180deg, #ffe9a8 0%, #ffc422 100%); color: #0a1929; border: 1px solid rgba(255,196,34,0.3); }
+    .cost-card .lbl { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; opacity: 0.7; }
+    .cost-card.dark .lbl { color: rgba(255,255,255,0.6); }
+    .cost-card.amber .lbl { color: #0a1929; opacity: 0.65; }
+    .cost-card.light .lbl { color: rgba(10,25,41,0.5); }
+    .cost-card .v { font-family: "Chakra Petch", monospace; font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+    .cost-card .v small { font-size: 12px; font-weight: 400; margin-left: 4px; opacity: 0.7; }
+    .cost-card .note { font-size: 11px; line-height: 1.5; opacity: 0.7; }
+
+    .cost-cells-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .cost-cell {
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .cost-cell.amber { background: linear-gradient(180deg, #ffe9a8 0%, #ffc422 100%); color: #0a1929; border: 1px solid rgba(255,196,34,0.3); }
+    .cost-cell.light { background: #fff; color: #0a1929; border: 1px solid rgba(0,0,0,0.08); }
+    .cost-cell .lbl { font-size: 9px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; opacity: 0.7; }
+    .cost-cell .v { font-family: "Chakra Petch", monospace; font-size: 19px; font-weight: 700; line-height: 1.15; margin-bottom: 6px; }
+    .cost-cell .v small { font-size: 10px; font-weight: 400; margin-left: 3px; opacity: 0.7; }
+    .cost-cell .note { font-size: 10px; line-height: 1.45; opacity: 0.7; }
+
+    /* 10 年保养序列 (横滚) */
+    .yearly-cost-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 14px; padding: 14px 16px;
+      background: var(--navy-3);
+      border-radius: 10px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 24px), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 24px), transparent 100%);
+    }
+    .yearly-cost-row::-webkit-scrollbar { display: none; }
+    .yearly-cost-row .lbl {
+      font-size: 10px; color: var(--text-mute);
+      letter-spacing: 0.04em; text-transform: uppercase;
+      white-space: nowrap; flex-shrink: 0; max-width: 100px; line-height: 1.4;
+    }
+    .yearly-cost-row .years {
+      display: flex; gap: 14px;
+      font-size: 11px; color: var(--text-soft);
+    }
+    .yearly-cost-row .years span { white-space: nowrap; }
+    .yearly-cost-row .years b { color: var(--amber); margin-right: 4px; font-weight: 600; display: block; }
+    .yearly-cost-row .years .total {
+      padding-left: 14px; margin-left: 2px;
+      border-left: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    /* ---------- Section 05 购车保障 ---------- */
+    .warranty-section { margin-bottom: 20px; }
+    .highlight-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .highlight-item {
+      background: var(--navy-2); border: 1px solid var(--line);
+      border-radius: 10px; padding: 14px;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .highlight-item .ic { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,196,34,0.12); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .highlight-item .body .t { font-size: 12px; font-weight: 600; margin-bottom: 2px; color: var(--text); }
+    .highlight-item .body .s { font-size: 11px; color: var(--text-soft); font-weight: 500; }
+    .highlight-item .body .note { font-size: 10px; color: var(--text-mute); margin-top: 4px; line-height: 1.4; }
+
+    /* 2 项权益 - 浅色 */
+    .benefits-list {
+      display: grid; grid-template-columns: 1fr; gap: 10px;
+      background: #fff; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 10px; padding: 16px;
+    }
+    .benefit-item { display: flex; flex-direction: column; gap: 4px; }
+    .benefit-item .bn {
+      font-family: "Chakra Petch", monospace;
+      font-size: 11px; color: var(--amber); font-weight: 700;
+    }
+    .benefit-item .bt { font-size: 15px; font-weight: 700; color: #0a1929; }
+    .benefit-item .bd { font-size: 11px; color: rgba(10,25,41,0.55); }
+    .btn-outline {
+      display: inline-block;
+      padding: 11px 18px;
+      border: 1px solid var(--amber);
+      color: #0a1929;
+      border-radius: 8px;
+      font-size: 12px; font-weight: 600;
+      background: #fff;
+      min-height: 44px; line-height: 20px;
+    }
+
+    /* 服务网点 banner → 上下结构 */
+    .service-banner {
+      background: #0a1929; color: #fff;
+      border-radius: 12px; padding: 20px;
+      margin-top: 6px;
+    }
+    .service-banner .sb-left { text-align: center; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 14px; }
+    .service-banner .sb-left .lbl { font-size: 10px; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
+    .service-banner .sb-left .big {
+      font-family: "Chakra Petch", monospace;
+      font-size: 44px; font-weight: 700; color: var(--amber); line-height: 1;
+    }
+    .service-banner .sb-left .sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+    .service-banner .sb-center .t { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .service-banner .sb-center .cities { font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
+    .service-banner .sb-center .note { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5; margin-bottom: 14px; }
+    .service-banner .btn-banner {
+      display: inline-block;
+      padding: 11px 16px;
+      border: 1px solid var(--amber);
+      color: var(--amber);
+      border-radius: 8px;
+      font-size: 12px; font-weight: 600;
+      background: transparent;
+      min-height: 44px; line-height: 20px;
+    }
+
+    /* ---------- Section 06 主要竞品 → 1 列堆叠 ---------- */
+    .comp-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .comp {
+      background: var(--navy-2); border: 1px solid var(--line);
+      border-radius: 14px; padding: 22px 20px 20px;
+      position: relative;
+      display: flex; flex-direction: column;
+    }
+    .comp.dark {
+      background: #0a1929; color: #fff; border: 1px solid rgba(0,0,0,0.08);
+    }
+    .comp.light {
+      background: #fff; color: #0a1929; border: 1px solid rgba(0,0,0,0.08);
+    }
+    .comp .badge {
+      position: absolute; top: -10px; left: 18px;
+      background: var(--amber); color: #1a1f3a;
+      font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 4px;
+      letter-spacing: 0.1em;
+    }
+    .comp .car {
+      background: linear-gradient(180deg, #f8f8f8 0%, #e6e8ee 100%);
+      border-radius: 10px; height: 150px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 12px 0 18px; overflow: hidden;
+    }
+    .comp .car img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .comp .brand {
+      font-family: "Chakra Petch", monospace;
+      font-size: 11px; letter-spacing: 0.08em;
+    }
+    .comp.dark .brand { color: rgba(255,255,255,0.55); }
+    .comp.light .brand { color: rgba(10,25,41,0.5); }
+    .comp .model {
+      font-family: "Chakra Petch", monospace;
+      font-size: 28px; font-weight: 700; line-height: 1.1; margin: 4px 0 10px;
+      letter-spacing: -0.01em;
+    }
+    .comp.dark .model { color: #fff; }
+    .comp.light .model { color: #0a1929; }
+    .comp .price {
+      font-family: "Chakra Petch", monospace;
+      font-size: 16px; font-weight: 700; line-height: 1.2; margin-bottom: 4px;
+    }
+    .comp.dark .price { color: #fff; }
+    .comp.light .price { color: #0a1929; }
+    .comp .price small {
+      display: block; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 11px; font-weight: 400; margin-top: 4px;
+    }
+    .comp.dark .price small { color: rgba(255,255,255,0.55); }
+    .comp.light .price small { color: rgba(10,25,41,0.55); }
+
+    .comp .suit {
+      margin-top: 14px; padding-top: 12px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+    .comp.dark .suit { border-top-color: rgba(255,255,255,0.12); }
+    .comp .suit-lbl {
+      font-size: 10px; letter-spacing: 0.1em; margin-bottom: 4px; font-weight: 600; text-transform: uppercase;
+    }
+    .comp.dark .suit-lbl { color: rgba(255,255,255,0.55); }
+    .comp.light .suit-lbl { color: rgba(10,25,41,0.5); }
+    .comp .suit-txt { font-size: 12px; line-height: 1.6; }
+    .comp.dark .suit-txt { color: rgba(255,255,255,0.85); }
+    .comp.light .suit-txt { color: rgba(10,25,41,0.75); }
+
+    .comp .strengths, .comp .cautions {
+      margin-top: 10px; padding: 12px 14px; border-radius: 8px;
+    }
+    .comp .strengths-title, .comp .cautions-title {
+      font-size: 12px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.04em;
+    }
+    .comp .strengths ul, .comp .cautions ul { list-style: none; padding: 0; margin: 0; }
+    .comp .strengths li, .comp .cautions li {
+      font-size: 12px; line-height: 1.55; padding: 2px 0 2px 14px;
+      position: relative;
+    }
+    .comp .strengths li::before, .comp .cautions li::before {
+      content: ""; position: absolute; left: 0; top: 10px;
+      width: 4px; height: 4px; border-radius: 50%;
+    }
+    .comp.dark .strengths { background: rgba(255, 196, 34, 0.14); border: 1px solid rgba(255, 196, 34, 0.32); }
+    .comp.dark .strengths-title { color: var(--amber); }
+    .comp.dark .strengths li { color: rgba(255,255,255,0.88); }
+    .comp.dark .strengths li::before { background: var(--amber); }
+    .comp.dark .cautions { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+    .comp.dark .cautions-title { color: rgba(255,255,255,0.65); }
+    .comp.dark .cautions li { color: rgba(255,255,255,0.7); }
+    .comp.dark .cautions li::before { background: rgba(255,255,255,0.5); }
+    .comp.light .strengths { background: #fdf3d6; border: 1px solid #f3e3a4; }
+    .comp.light .strengths-title { color: #8a6d10; }
+    .comp.light .strengths li { color: rgba(10,25,41,0.78); }
+    .comp.light .strengths li::before { background: #c89a1d; }
+    .comp.light .cautions { background: #fbeee5; border: 1px solid #f1dccb; }
+    .comp.light .cautions-title { color: #a55a2a; }
+    .comp.light .cautions li { color: rgba(10,25,41,0.72); }
+    .comp.light .cautions li::before { background: #c87a3a; }
+    .comp .comp-link {
+      display: block; margin-top: 14px;
+      font-size: 12px; font-weight: 600;
+    }
+    .comp.dark .comp-link { color: #fff; }
+    .comp.light .comp-link { color: #0a1929; }
+
+    /* ---------- Section 07 进一步了解 → 1 列堆叠 ---------- */
+    .cta-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .cta {
+      background: #fff; border: 1px solid rgba(10,25,41,0.08);
+      border-radius: 12px; padding: 22px 20px;
+      display: block; color: #0a1929; min-height: 44px;
+    }
+    .cta:active { background: #f5f6f8; }
+    .cta .num {
+      font-family: "Chakra Petch", monospace;
+      font-size: 12px; font-weight: 700; color: var(--amber);
+      letter-spacing: 0.1em; margin-bottom: 12px;
+    }
+    .cta .t { font-size: 17px; font-weight: 700; margin-bottom: 6px; color: #0a1929; }
+    .cta .s { font-size: 13px; color: rgba(10,25,41,0.6); line-height: 1.55; margin-bottom: 14px; }
+    .cta .arrow { color: #1e6bd6; font-size: 13px; font-weight: 600; }
+
+    /* ---------- Footer ---------- */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 24px 0 32px;
+      color: var(--text-mute); font-size: 11px; line-height: 1.7;
+    }
+    .site-footer .container > div + div { margin-top: 14px; }
+    .site-footer a { color: var(--text-soft); margin-right: 14px; }
+    .site-footer a:last-child { margin-right: 0; }
+
+    /* ---------- 浮动 WhatsApp 按钮 ---------- */
+    .fab-wa {
+      position: fixed; right: 16px; bottom: max(16px, env(safe-area-inset-bottom));
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--wa-green);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+      z-index: 100;
+      transition: transform 0.15s;
+    }
+    .fab-wa:active { transform: scale(0.92); }
+    .fab-wa svg { width: 30px; height: 30px; fill: #fff; }
+
+    /* ---------- 桌面端居中显示 (>= 768 容器上限 720) ---------- */
+    @media (min-width: 768px) {
+      .hero .row-3 .item b { font-size: 17px; }
+      .cavi-grid { grid-template-columns: 0.7fr 1.3fr; }
+      .cavi-dims { grid-template-columns: repeat(3, 1fr); }
+      .cost-cards-row { grid-template-columns: repeat(3, 1fr); }
+      .stats-row { grid-template-columns: repeat(4, 1fr); }
+      .stats-row .stat { border-bottom: 0; }
+      .stats-row .stat:nth-child(2n) { border-right: 1px solid rgba(0,0,0,0.08); }
+      .stats-row .stat:nth-child(4) { border-right: 0; }
+      .comp-grid { grid-template-columns: repeat(3, 1fr); }
+      .highlight-grid { grid-template-columns: repeat(4, 1fr); }
+      .cta-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============ Header ============ -->
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="https://www.autocava.com.mx">
+      <img src="https://cdn.autocava.com.mx/_nuxt/asset/logo.v3.mLItLIXo.svg" alt="AUTOCAVA">
+    </a>
+    <div class="right">车型报告 · 2026-08-24</div>
+  </div>
+</header>
+
+<!-- ============ Hero ============ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-tags">
+      <span class="hero-tag">纯电中型 SUV</span>
+      <span class="hero-tag">墨西哥市场</span>
+      <span class="hero-tag">标准报告</span>
+    </div>
+
+    <div class="kicker">XPENG / G6</div>
+    <h1>一眼看懂<br>它<span class="hl">是否适合你</span></h1>
+    <p class="lede">G6 的价值来自续航、800 V 平台、空间和舒适配置的组合。购车时应把版本价格、当前金融方案、服务覆盖与充电环境一起判断。</p>
+    <div class="hero-conclusion">
+      <div class="lbl">结论</div>
+      <div class="t">产品力均衡，家充用户的综合价值更突出</div>
+    </div>
+
+    <div class="row-3">
+      <div class="item">续航里程<b>510 <span class="unit">km</span></b></div>
+      <div class="item">高压平台<b>800 <span class="unit">V</span></b></div>
+      <div class="item">装载空间<b>571 <span class="unit">L</span></b></div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-score">
+        <span class="l">CAVA SCORE</span>
+        <span class="v">4.05</span>
+        <span class="r">/ 5</span>
+      </div>
+      <img class="car-img" src="https://cdn.autocava.com.mx/img/car/serial/wg/9bb84140cc64449aaa4f860892bb0f4c.jpg" alt="XPENG G6" loading="eager" decoding="async">
+      <div class="car-sub">XPENG G6 · PERFORMANCE AWD</div>
+    </div>
+
+    <!-- 5 列底部判断卡 (横滚) -->
+    <div class="judge-row">
+      <div class="judge-card">
+        <div class="tag">适用场景</div>
+        <div class="t">先看你的日常，再看参数</div>
+      </div>
+      <div class="judge-card strong">
+        <div class="tag">非常适合</div>
+        <div class="t">城市通勤 + 家充</div>
+        <div class="d">日常补能方便，能更充分发挥纯电车型的成本与便利优势。</div>
+      </div>
+      <div class="judge-card strong">
+        <div class="tag">非常适合</div>
+        <div class="t">家庭主力用车</div>
+        <div class="d">五座空间、571 L 后备厢和舒适配置适合高频家庭出行。</div>
+      </div>
+      <div class="judge-card conditional">
+        <div class="tag">视情况</div>
+        <div class="t">跨城与长途</div>
+        <div class="d">车辆能力足够，建议权衡认领用路线的快充覆盖。</div>
+      </div>
+      <div class="judge-card weak">
+        <div class="tag">需考虑</div>
+        <div class="t">没有固定充电条件</div>
+        <div class="d">长依赖公共充电会削弱便利性和能源成本优势。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 01 价格与金融方案 ============ -->
+<section class="section section-light" id="precio">
+  <div class="container">
+    <div class="sec-tag"><span class="num mono">01</span> PRICE & FINANCE</div>
+    <h2 class="sec-title">价格与金融方案</h2>
+    <p class="sec-sub">先确认车价，再根据申请条件与月度预算选择方案。以下展示两项当前金融产品，方便比较适用人群、月供与期限。</p>
+
+    <div class="price-grid">
+      <!-- 当前参考车价 -->
+      <div class="price-card dark">
+        <div class="h">
+          <span class="brand">当前参考车价</span>
+        </div>
+        <div class="price">$869,900<small>MXN</small></div>
+        <span class="full-tag">Performance AWD 2026</span>
+        <div class="note">价格、库存和审批结果以最终方案为准。</div>
+      </div>
+
+      <!-- MStar 灵活审批方案 -->
+      <div class="price-card light">
+        <div class="h">
+          <div class="logo bj">M</div>
+          <div>
+            <span class="brand">MStar</span>
+            <span class="policy">灵活审批方案</span>
+          </div>
+        </div>
+        <div class="price">$12,873<small>/月</small></div>
+        <div class="sub">Sin compromisos flexible · 适合各类申请人</div>
+        <div class="rows">
+          <div class="row"><span class="k">首付</span><span class="v">30% · $260,970</span></div>
+          <div class="row"><span class="k">期限</span><span class="v">72 期</span></div>
+          <div class="row"><span class="k">参考年利率</span><span class="v">14.99% 起</span></div>
+        </div>
+        <div class="note">资料要求相对灵活，适合希望简化申请流程、保留现金流的用户。</div>
+      </div>
+
+      <!-- Banorte 高额度方案 -->
+      <div class="price-card light">
+        <div class="h">
+          <div class="logo zx">B</div>
+          <div>
+            <span class="brand">GRUPO FINANCIERO BANORTE</span>
+            <span class="policy">高额度方案</span>
+          </div>
+        </div>
+        <div class="price">$11,432<small>/月</small></div>
+        <div class="sub">Alto monto crédito · 适合企业主与受薪人士</div>
+        <div class="rows">
+          <div class="row"><span class="k">首付</span><span class="v">30% · $260,970</span></div>
+          <div class="row"><span class="k">期限</span><span class="v">72 期</span></div>
+          <div class="row"><span class="k">参考年利率</span><span class="v">以审批结果为准</span></div>
+        </div>
+        <div class="note">月供参考更低，适合收入稳定并希望申请较高融资额度的用户。</div>
+      </div>
+    </div>
+
+    <div class="security-callout">
+      <div class="lbl">每个人的置换、资质与审批结果都不同 — 联系销售，获取更适合你的具体方案</div>
+      <a class="btn" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20XPENG%20G6%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F" target="_blank" rel="noopener">联系销售顾问 →</a>
+    </div>
+    <p class="sec-foot">月供为测算参考，不含保险、手续费及其他可能产生的费用。最终方案以金融机构审批结果为准。</p>
+  </div>
+</section>
+
+<!-- ============ 02 核心卖点 ============ -->
+<section class="section section-light" id="ventajas">
+  <div class="container">
+    <div class="sec-tag"><span class="num mono">02</span> CORE STRENGTHS</div>
+    <h2 class="sec-title">核心卖点</h2>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="num">01</div>
+        <div class="k">纯电续航</div>
+        <div class="v">510<small>km</small></div>
+        <div class="note">真实续航受路况、气温和驾驶方式影响</div>
+      </div>
+      <div class="stat">
+        <div class="num">02</div>
+        <div class="k">最大功率</div>
+        <div class="v">487<small>hp</small></div>
+        <div class="note">动力参数不能直接代表日常能耗</div>
+      </div>
+      <div class="stat">
+        <div class="num">03</div>
+        <div class="k">电池容量</div>
+        <div class="v">80.2<small>kWh</small></div>
+        <div class="note">与补能时间、车辆效率共同影响使用体验</div>
+      </div>
+      <div class="stat">
+        <div class="num">04</div>
+        <div class="k">高压平台</div>
+        <div class="v">800<small>V</small></div>
+        <div class="note">补能效率是 G6 的重要产品优势</div>
+      </div>
+    </div>
+
+    <div class="lifestyle-split">
+      <div class="img" style="background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200'); background-size: cover; background-position: center;"></div>
+      <div class="copy">
+        <div class="kicker">571 L / 1,374 L</div>
+        <h3>空间价值不是参数，是家庭出行时少做取舍</h3>
+        <p>标准状态可覆盖日常使用，后排放倒后适合大件行李；实际装载仍应关注后排乘坐人数。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 用户口碑评价 ============ -->
+<section class="section section-light" id="opiniones">
+  <div class="container">
+    <div class="sec-tag"><span class="num mono">03</span> USER REPUTATION</div>
+    <h2 class="sec-title">用户口碑评价 <span style="color: var(--text-mute); font-size: 14px; font-weight: 500;">· CAVA 指数</span></h2>
+    <p class="sec-sub">基于 Autocava 真实用户评论 · 综合评分 4.05/5</p>
+
+    <div class="cavi-grid">
+      <div class="cavi-score">
+        <div class="lbl">CAVA 综合口碑分</div>
+        <div class="v">4.05<small>/5</small></div>
+        <div class="bar"><i></i></div>
+        <div class="meta">301 位车主参与评价</div>
+      </div>
+      <div class="cavi-rec">
+        <div class="top">
+          <span class="label">口碑结论</span>
+          <span class="score">CAVA 指数</span>
+        </div>
+        <h3>产品力均衡，家充用户的综合价值更突出</h3>
+        <p>G6 的价值来自续航、800 V 平台、空间和舒适配置的组合。购车时把版本价格、当前金融方案、服务覆盖与充电环境一起判断。</p>
+      </div>
+    </div>
+
+    <div class="cavi-dims">
+      <div class="cavi-dim">
+        <div class="dim-tag">主要认可</div>
+        <div class="dim-title">续航、空间与舒适配置</div>
+        <div class="dim-text">作为家庭纯电 SUV，产品组合相对均衡。</div>
+      </div>
+      <div class="cavi-dim">
+        <div class="dim-tag">更适合</div>
+        <div class="dim-title">具备稳定充电条件</div>
+        <div class="dim-text">能够充分发挥便利性与能源成本优势。</div>
+      </div>
+      <div class="cavi-dim">
+        <div class="dim-tag">需要关注</div>
+        <div class="dim-title">服务半径与权益期限</div>
+        <div class="dim-text">购车前建议确认所在城市的网点和活动条件。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 用车成本 ============ -->
+<section class="section section-light" id="costo">
+  <div class="container">
+    <div class="sec-tag"><span class="num mono">04</span> OWNERSHIP COST</div>
+    <h2 class="sec-title">用车成本</h2>
+    <p class="sec-sub">以下按每年 12,000 km 估算能源成本，并同时呈现计划保养费用。保险、停车、轮胎、事故维修与车辆折旧不包含在内。</p>
+
+    <!-- 大行：全年基础使用成本 + 等式分解 -->
+    <div class="cost-hero-row">
+      <div class="main">
+        <div class="lbl">全年基础使用成本</div>
+        <div class="v">$7,280<small> 约 $607 / 月</small></div>
+        <div class="sub">用于日常预算的基础汇总，不包含保险、停车、轮胎、维修和车辆折旧。</div>
+      </div>
+      <div class="formula">
+        <div class="f-item">
+          <div class="f-lbl">年度家充电费</div>
+          <div class="f-v">$3,768</div>
+        </div>
+        <span class="f-op">+</span>
+        <div class="f-item">
+          <div class="f-lbl">年度计划保养</div>
+          <div class="f-v">$3,512</div>
+        </div>
+        <span class="f-op">=</span>
+        <div class="f-item">
+          <div class="f-lbl">全年合计</div>
+          <div class="f-v">$7,280</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 张大卡:家充电费 / 燃油参考 / 能源费用差 -->
+    <div class="cost-cards-row">
+      <div class="cost-card dark">
+        <div class="lbl">G6 家充电费估算</div>
+        <div class="v">$3,768<small> / 年</small></div>
+        <div class="note">15.7 kWh/100 km · 电价按 $2 / kWh</div>
+      </div>
+      <div class="cost-card light">
+        <div class="lbl">同级燃油 SUV 油费参考</div>
+        <div class="v">$22,733<small> / 年</small></div>
+        <div class="note">8 L/100 km · Regular 汽油按 $24 / L</div>
+      </div>
+      <div class="cost-card amber">
+        <div class="lbl">年度能源费用差</div>
+        <div class="v">$18,965<small> / 年</small></div>
+        <div class="note">用于理解纯电与燃油使用成本的量级差异，不代表实际节省承诺。</div>
+      </div>
+    </div>
+
+    <!-- 4 格:年均保养(amber) / 前 5 年(白) / 5 年合计(白) / 权益后(白) -->
+    <div class="cost-cells-row">
+      <div class="cost-cell amber">
+        <div class="lbl">年均计划保养成本</div>
+        <div class="v">$3,512<small> · 约 $293 / 月</small></div>
+        <div class="note">按 10 年保养周期平均，实际支出将根据服务项目与到店时间发生。</div>
+      </div>
+      <div class="cost-cell light">
+        <div class="lbl">前 5 年年均保养</div>
+        <div class="v">$3,016<small> / 年</small></div>
+        <div class="note">前五年计划保养合计除以五；实际支出按到期年份发生。</div>
+      </div>
+      <div class="cost-cell light">
+        <div class="lbl">5 年计划保养标价</div>
+        <div class="v">$15,080<small> · 官方 2026 价目</small></div>
+        <div class="note">满足首批活动条件时，5 年 / 100,000 km 计划保养包含。</div>
+      </div>
+      <div class="cost-cell light">
+        <div class="lbl">权益后保养支出</div>
+        <div class="v">$0<small> · 符合活动时</small></div>
+        <div class="note">不包含耗材、事故、非计划维修及活动排除项。</div>
+      </div>
+    </div>
+
+    <!-- 10 年计划保养序列 (横滚) -->
+    <div class="yearly-cost-row">
+      <div class="lbl">10 年计划保养 (MXN)</div>
+      <div class="years">
+        <span><b>第1年</b> $2,465</span>
+        <span><b>第2年</b> $3,285</span>
+        <span><b>第3年</b> $2,465</span>
+        <span><b>第4年</b> $4,400</span>
+        <span><b>第5年</b> $2,465</span>
+        <span><b>第6年</b> $7,425</span>
+        <span><b>第7年</b> $2,465</span>
+        <span><b>第8年</b> $3,285</span>
+        <span><b>第9年</b> $2,465</span>
+        <span><b>第10年</b> $4,400</span>
+        <span class="total"><b>合计</b> $36,720</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 购车保障与服务覆盖 ============ -->
+<section class="section section-light" id="garantia">
+  <div class="container">
+    <div class="sec-tag"><span class="num mono">05</span> WARRANTY & BENEFITS</div>
+    <h2 class="sec-title">购车保障与服务覆盖</h2>
+    <p class="sec-sub">整车 + 三电 + 服务网络 · Autocava 担保可追溯</p>
+
+    <!-- 质保与服务 2x2 -->
+    <div class="warranty-section">
+      <h3 class="dim-title">质保与服务</h3>
+      <div class="highlight-grid light">
+        <div class="highlight-item">
+          <div class="ic">🛡️</div>
+          <div class="body"><div class="t">整车质保</div><div class="s">5 年 / 120,000 km</div><div class="note">时间或里程以先到者为准</div></div>
+        </div>
+        <div class="highlight-item">
+          <div class="ic">🔋</div>
+          <div class="body"><div class="t">高压电池</div><div class="s">8 年 / 160,000 km</div><div class="note">时间或里程以先到者为准</div></div>
+        </div>
+        <div class="highlight-item">
+          <div class="ic">🚙</div>
+          <div class="body"><div class="t">车身锈蚀</div><div class="s">12 年 / 不限里程</div><div class="note">以 XPENG México 官方质保政策适用范围为准</div></div>
+        </div>
+        <div class="highlight-item">
+          <div class="ic">🛟</div>
+          <div class="body"><div class="t">道路救援</div><div class="s">5 年 · 全国 · 24/7</div><div class="note">XPENG XCARE 道路救助</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 当前购车权益 (2 项) - 浅色 -->
+    <div class="warranty-section">
+      <h3 class="dim-title">当前购车权益</h3>
+      <div class="benefits-list">
+        <div class="benefit-item">
+          <span class="bn">01</span>
+          <div class="bt">5 年 / 100,000 km 保养包含</div>
+          <div class="bd">限时权益 · 首批 100 位符合活动条件的客户</div>
+        </div>
+        <div class="benefit-item">
+          <span class="bn">02</span>
+          <div class="bt">首年 XPENG SHIELD 保险</div>
+          <div class="bd">限时权益 · 指定金融机构及活动条款适用</div>
+        </div>
+      </div>
+      <div style="margin-top: 12px;">
+        <a class="btn-outline" href="https://www.autocava.com.mx/service?seriesId=677">查看服务详情 →</a>
+      </div>
+    </div>
+
+    <!-- 服务网点 - 深色 navy 整块 -->
+    <div class="service-banner">
+      <div class="sb-left">
+        <div class="lbl">服务网点</div>
+        <div class="big">6</div>
+        <div class="sub">个经销商及服务点</div>
+      </div>
+      <div class="sb-center">
+        <div class="t">覆盖 5 个主要都会区域</div>
+        <div class="cities">CDMX · Estado de México · Guadalajara · Monterrey · Morelia</div>
+        <div class="note">覆盖范围持续扩展，建议购车前确认所在城市的网点与售后便利性。</div>
+        <a class="btn-banner" href="https://www.autocava.com.mx/service?seriesId=677">查看附近网点 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 主要竞品怎么选 ============ -->
+<section class="section section-light" id="competidores">
+  <div class="container">
+    <div class="sec-tag"><span class="num mono">06</span> COMPETITOR SERIES</div>
+    <h2 class="sec-title">主要竞品怎么选</h2>
+    <p class="sec-sub">从价格、产品取向和使用条件出发,对比 G6 与主要非中国品牌纯电 SUV。没有绝对最好的车型,关键是优势是否匹配你的真实需求。</p>
+
+    <div class="comp-grid">
+      <!-- G6 (本车系 - 深色 navy 背景) -->
+      <div class="comp dark recommend">
+        <span class="badge ours">本车系</span>
+        <div class="car"><img src="https://cdn.autocava.com.mx/img/car/serial/wg/9bb84140cc64449aaa4f860892bb0f4c.jpg" alt="XPENG G6" loading="lazy"></div>
+        <div class="brand">XPENG</div>
+        <div class="model">G6</div>
+        <div class="price">$869,900<small> · Performance AWD 2026</small></div>
+        <div class="suit">
+          <div class="suit-lbl">适合谁</div>
+          <div class="suit-txt">重视 800 V 补能、配置组合和价格平衡的家庭用户。</div>
+        </div>
+        <div class="strengths">
+          <div class="strengths-title">主要优势</div>
+          <ul>
+            <li>510 km 续航、487 hp 与 800 V 平台组合均衡</li>
+            <li>价格低于多数传统品牌高性能纯电 SUV</li>
+          </ul>
+        </div>
+        <div class="cautions">
+          <div class="cautions-title">需要考虑</div>
+          <ul>
+            <li>品牌与服务网络仍在扩展</li>
+            <li>没有稳定充电条件时优势会减弱</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Model Y (同级竞品 - 白底) -->
+      <div class="comp light">
+        <span class="badge alt">同级竞品</span>
+        <div class="car"><img src="https://cdn.autocava.com.mx/series/white/0430.png" alt="Tesla Model Y" loading="lazy"></div>
+        <div class="brand">Tesla</div>
+        <div class="model">MODEL Y</div>
+        <div class="price">$799,000 – $1,129,000<small> · 1 个可选版本 · 参考月供 $13,303 起</small></div>
+        <div class="suit">
+          <div class="suit-lbl">适合谁</div>
+          <div class="suit-txt">价格覆盖面最广,适合看重续航选择与成熟智能生态的用户。</div>
+        </div>
+        <div class="strengths">
+          <div class="strengths-title">主要优势</div>
+          <ul>
+            <li>四个 2026 版本可选,续航覆盖 492–575 km</li>
+            <li>入门价格低于 G6,版本梯度更完整</li>
+          </ul>
+        </div>
+        <div class="cautions">
+          <div class="cautions-title">需要考虑</div>
+          <ul>
+            <li>高配价格明显上探</li>
+            <li>座舱与操作逻辑更强调极简,需要适应</li>
+          </ul>
+        </div>
+        <a class="comp-link" href="https://www.autocava.com.mx/series/tesla-model-y">查看车系详情 ↗</a>
+      </div>
+
+      <!-- EV6 (同级竞品 - 白底) -->
+      <div class="comp light">
+        <span class="badge alt">同级竞品</span>
+        <div class="car"><img src="https://cdn.autocava.com.mx/series/white/0073.png" alt="Kia EV6" loading="lazy"></div>
+        <div class="brand">Kia</div>
+        <div class="model">EV6</div>
+        <div class="price">$1,174,900 – $1,334,900<small> · 2 个可选版本 · 参考月供 $19,562 起</small></div>
+        <div class="suit">
+          <div class="suit-lbl">适合谁</div>
+          <div class="suit-txt">更强调运动设计与高性能版本,适合预算充足、在意驾驶感受的用户。</div>
+        </div>
+        <div class="strengths">
+          <div class="strengths-title">主要优势</div>
+          <ul>
+            <li>GT Line 与 GT 两个版本,动力上限更高</li>
+            <li>506 km 续航版本兼顾长途与性能</li>
+          </ul>
+        </div>
+        <div class="cautions">
+          <div class="cautions-title">需要考虑</div>
+          <ul>
+            <li>价格与月供明显高于 G6</li>
+            <li>当前对比车型为 2024 年款,产品年份较早</li>
+          </ul>
+        </div>
+        <a class="comp-link" href="https://www.autocava.com.mx/series/kia-ev6">查看车系详情 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 想进一步了解 ============ -->
+<section class="section section-light" id="contacto">
+  <div class="container">
+    <div class="sec-tag"><span class="num mono">07</span> NEXT STEP</div>
+    <h2 class="sec-title">想进一步了解？选择一种方式</h2>
+    <p class="sec-sub">无论是购车方案、试驾体验还是具体问题，我们都会继续协助你。</p>
+
+    <div class="cta-grid">
+      <a class="cta" href="https://www.autocava.com.mx/finance/apply?sourceType=1&seriesId=677&brandId=25">
+        <div class="num">01</div>
+        <div class="t">获取购车方案</div>
+        <div class="s">了解适合你的价格与金融参考</div>
+        <div class="arrow">填写信息 →</div>
+      </a>
+      <a class="cta" href="https://www.autocava.com.mx/test-drive?seriesId=677">
+        <div class="num">02</div>
+        <div class="t">预约试驾</div>
+        <div class="s">选择门店与方便的到店时间</div>
+        <div class="arrow">开始预约 →</div>
+      </a>
+      <a class="cta" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20XPENG%20G6%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B1on%3F" target="_blank" rel="noopener">
+        <div class="num">03</div>
+        <div class="t">WhatsApp 咨询</div>
+        <div class="s">直接联系购车顾问</div>
+        <div class="arrow">打开 WhatsApp →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Footer ============ -->
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <div style="color: var(--text-soft); font-weight: 600; margin-bottom: 4px;">AUTOCAVA 数据研究院</div>
+      <div>本报告信息参考 AutoCava 年型数据、XPENG México 官方资料、CFE 家庭电价场景及 Profeco 全国 Regular 汽油参考价。车型配置、价格、金融方案与能源费用可能变化，请以购车及实际使用时的信息为准。</div>
+      <div style="margin-top: 10px;">
+        <a href="https://www.autocava.com.mx/series/xpeng-g6-2026">车型详情 ↗</a>
+        <a href="https://www.xpeng.com">品牌官网 ↗</a>
+        <a href="https://www.autocava.com.mx/service?seriesId=677">服务网点 ↗</a>
+      </div>
+    </div>
+    <div>
+      <div>XPENG G6 2026 · Series ID 677</div>
+      <div>车型报告：2026-08-24 · 标准车辆解读报告 V5</div>
+    </div>
+  </div>
+</footer>
+
+<!-- 浮动 WhatsApp 按钮 -->
+<a class="fab-wa" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20XPENG%20G6%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B1on%3F" target="_blank" rel="noopener" aria-label="WhatsApp 咨询">
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.413.711 4.659 1.937 6.553L4 29l7.646-1.901A11.945 11.945 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16.001 3zm0 21.6c-1.92 0-3.706-.55-5.22-1.5l-.374-.225-4.537 1.127 1.151-4.413-.244-.382A9.563 9.563 0 0 1 6.4 15c0-5.302 4.298-9.6 9.6-9.6 5.302 0 9.6 4.298 9.6 9.6 0 5.302-4.298 9.6-9.6 9.6zm5.546-7.182c-.302-.151-1.787-.882-2.064-.982-.277-.1-.479-.151-.681.151-.202.302-.78.982-.957 1.184-.176.202-.353.227-.655.076-.302-.151-1.275-.47-2.43-1.5-.898-.802-1.504-1.792-1.681-2.094-.176-.302-.019-.466.132-.617.136-.135.302-.353.453-.53.151-.176.202-.302.302-.504.1-.202.05-.378-.025-.53-.076-.151-.681-1.638-.933-2.243-.246-.59-.496-.51-.681-.52l-.58-.01c-.202 0-.53.076-.807.378s-1.06 1.036-1.06 2.527 1.086 2.932 1.237 3.135c.151.202 2.137 3.264 5.18 4.578.724.313 1.289.5 1.73.64.726.231 1.387.198 1.91.12.582-.087 1.787-.731 2.04-1.436.252-.706.252-1.31.176-1.436-.076-.127-.277-.202-.58-.353z"/></svg>
+</a>
+
+</body>
+</html>
