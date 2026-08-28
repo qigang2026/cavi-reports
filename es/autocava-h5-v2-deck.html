@@ -638,7 +638,7 @@
     .deckbar-meta .v { color: var(--ink); font-weight: 600; }
     .deckbar-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--line); }
 
-    /* S1 封面"有效期"角标 · vintage stamp 风 */
+    /* S1 封面"有效期"角标 */
     .freshness {
       display: inline-flex; align-items: center; gap: 10px;
       margin: 4px 0 22px;
@@ -649,7 +649,6 @@
       font-size: 11px; letter-spacing: .12em;
       color: var(--amber);
       text-transform: uppercase;
-      transform: rotate(-1deg);
       width: fit-content;
     }
     .freshness .ic {
@@ -682,7 +681,7 @@
 
     /* 移动端角标调整 */
     @media (max-width: 600px) {
-      .freshness { font-size: 10px; padding: 6px 10px; transform: rotate(0); }
+      .freshness { font-size: 10px; padding: 6px 10px; }
     }
   </style>
 </head>
