@@ -1768,11 +1768,7 @@
     var today = new Date();
     today.setHours(0, 0, 0, 0);
     var daysLeft = Math.ceil((expireAt - today) / 86400000);
-    // 严重过期：直接重定向到专门的过期引导页（除非 URL 带 ?nostaleness 参数）
-    if (daysLeft < 0 && !/[?&]nostaleness(=1)?(&|$)/.test(location.search)) {
-      location.replace('xpeng-g6-2026-expired.html');
-      return;
-    }
+    // 原型图：去掉自动重定向到过期页的逻辑（保留视觉三态展示）
     var txt = fresh.querySelector('.txt');
 
     fresh.classList.remove('fresh', 'warn', 'expired');
