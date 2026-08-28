@@ -51,21 +51,21 @@
     .mono { font-family: "Chakra Petch", "Inter", sans-serif; font-weight: 500; letter-spacing: 0.02em; }
     .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
 
-    /* ---------- Header (top tabs) ---------- */
-    .site-header { border-bottom: 1px solid var(--line); background: var(--navy); }
+    /* ---------- Header (top tabs) — AUTOCAVA 品牌琥珀色 ---------- */
+    .site-header { background: var(--amber); border-bottom: 1px solid #e6b020; }
     .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 56px; }
-    .site-header .logo img { height: 22px; }
+    .site-header .logo img { height: 24px; }
     .site-nav { display: flex; gap: 0; }
     .site-nav a {
-      font-size: 13px; color: var(--text-mute);
-      padding: 8px 18px; position: relative;
-      transition: color 0.2s;
+      font-size: 13px; color: #0a1929; font-weight: 500;
+      padding: 8px 16px; position: relative;
+      transition: all 0.2s;
     }
-    .site-nav a:hover { color: var(--text-soft); }
-    .site-header .right { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--text-mute); }
+    .site-nav a:hover { color: #1a1f3a; font-weight: 700; }
+    .site-header .right { display: flex; align-items: center; gap: 12px; font-size: 12px; color: rgba(10,25,41,0.7); }
 
-    /* Report date + freshness pill */
-    .report-date { color: var(--text-mute); font-size: 11px; }
+    /* Report date + freshness pill (on amber bg, need white pill) */
+    .report-date { color: rgba(10,25,41,0.75); font-size: 11px; font-weight: 500; }
     .freshness {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 4px 10px;
@@ -73,6 +73,7 @@
       font-size: 11px; font-weight: 600;
       letter-spacing: 0.02em;
       border: 1px solid transparent;
+      background: #fff;
       transition: all 0.2s;
     }
     .freshness .dot {
@@ -81,19 +82,19 @@
       box-shadow: 0 0 0 0 currentColor;
     }
     .freshness.fresh {
-      color: #4ade80;
-      background: rgba(74, 222, 128, 0.08);
-      border-color: rgba(74, 222, 128, 0.25);
+      color: #16a34a;
+      background: rgba(34, 197, 94, 0.12);
+      border-color: rgba(34, 197, 94, 0.35);
     }
     .freshness.warn {
-      color: var(--amber);
-      background: rgba(255, 196, 34, 0.1);
-      border-color: rgba(255, 196, 34, 0.3);
+      color: #b59317;
+      background: rgba(255, 196, 34, 0.25);
+      border-color: rgba(181, 147, 23, 0.45);
     }
     .freshness.expired {
-      color: #ff6b6b;
-      background: rgba(255, 107, 107, 0.1);
-      border-color: rgba(255, 107, 107, 0.3);
+      color: #d63d3d;
+      background: rgba(255, 107, 107, 0.12);
+      border-color: rgba(214, 61, 61, 0.4);
     }
     .freshness.expired .dot {
       animation: pulseExpired 1.6s ease-in-out infinite;
@@ -135,24 +136,244 @@
       box-shadow: 0 4px 14px rgba(255, 196, 34, 0.4);
     }
 
-    /* Share button (header) */
+    /* Expired overlay (full screen) */
+    /* When report is expired, grey out the main content */
+    body.report-expired .hero,
+    body.report-expired .section,
+    body.report-expired .site-header { filter: grayscale(0.75) opacity(0.4); pointer-events: none; }
+    body.report-expired .expired-banner { filter: none; }
+    body.report-expired { overflow: hidden; }
+
+    .expired-overlay {
+      position: fixed; inset: 0; z-index: 1100;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(10, 25, 41, 0.72);
+      backdrop-filter: blur(8px);
+      padding: 24px;
+      animation: expiredFade 0.3s ease;
+    }
+    .expired-overlay[hidden] { display: none; }
+    @keyframes expiredFade { from { opacity: 0; } to { opacity: 1; } }
+
+    .expired-card {
+      position: relative;
+      width: 100%; max-width: 480px;
+      background: #fff;
+      border-radius: 18px;
+      padding: 36px 32px 24px;
+      color: #0a1929;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+      animation: expiredScale 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: center;
+    }
+    @keyframes expiredScale {
+      from { transform: scale(0.92); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .expired-icon {
+      width: 64px; height: 64px;
+      margin: 0 auto 18px;
+      background: rgba(255, 107, 107, 0.12);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #ff6b6b;
+    }
+    .expired-title {
+      font-size: 22px; font-weight: 700;
+      margin: 0 0 8px; letter-spacing: -0.01em;
+    }
+    .expired-subtitle {
+      font-size: 13px;
+      color: rgba(10, 25, 41, 0.55);
+      margin: 0 0 20px; line-height: 1.5;
+    }
+    .expired-subtitle .pub-date { color: #ffc422; font-weight: 600; }
+    .expired-reasons {
+      display: flex; flex-direction: column; gap: 8px;
+      background: #f7f8fa;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .reason {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; color: rgba(10, 25, 41, 0.78);
+    }
+    .reason .ri { font-size: 16px; line-height: 1; width: 20px; text-align: center; }
+    .expired-desc {
+      font-size: 13px;
+      color: rgba(10, 25, 41, 0.62);
+      line-height: 1.65;
+      margin: 0 0 22px;
+    }
+    .expired-actions {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .btn-wa {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px 22px;
+      background: #25D366; color: #fff;
+      border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .btn-wa:hover {
+      background: #1ebe57;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
+    }
+    .btn-dismiss {
+      padding: 10px 16px;
+      background: transparent;
+      color: rgba(10, 25, 41, 0.5);
+      border: none;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: underline;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+    .btn-dismiss:hover { color: #0a1929; }
+    .expired-foot {
+      margin: 18px 0 0;
+      font-size: 11px;
+      color: rgba(10, 25, 41, 0.4);
+      border-top: 1px solid rgba(10, 25, 41, 0.08);
+      padding-top: 14px;
+    }
+
+    /* Share button (header) — 适配琥珀色背景 */
     .share-btn {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 6px 12px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: #0a1929;
+      border: 1px solid #0a1929;
       border-radius: 6px;
-      color: var(--text-soft);
-      font-size: 12px; font-weight: 500;
+      color: #ffc422;
+      font-size: 12px; font-weight: 600;
       cursor: pointer; transition: all 0.2s;
       font-family: inherit;
     }
     .share-btn:hover {
-      background: rgba(255,196,34,0.12);
-      border-color: rgba(255,196,34,0.4);
-      color: var(--amber);
+      background: #1a2e4a;
+      border-color: #1a2e4a;
+      color: #ffd34a;
     }
     .share-btn svg { display: block; }
+
+    /* ---------- Cavi 悬浮助手 ---------- */
+    .cavi-fab {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 900;
+    }
+    .cavi-btn {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff8a8a 0%, #c87aff 50%, #8a9aff 100%);
+      border: 3px solid #fff;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-family: "Chakra Petch", monospace;
+      font-size: 19px; font-weight: 700;
+      letter-spacing: -0.5px;
+      box-shadow: 0 8px 24px rgba(200, 122, 255, 0.4);
+      transition: all 0.2s;
+      animation: caviPulse 2.5s ease-in-out infinite;
+    }
+    .cavi-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 30px rgba(200, 122, 255, 0.55);
+    }
+    .cavi-btn.active { animation: none; }
+    @keyframes caviPulse {
+      0%, 100% { box-shadow: 0 8px 24px rgba(200, 122, 255, 0.4); }
+      50%      { box-shadow: 0 8px 24px rgba(200, 122, 255, 0.4), 0 0 0 10px rgba(200, 122, 255, 0); }
+    }
+    .cavi-popup {
+      position: absolute;
+      right: 76px;
+      bottom: 0;
+      width: 320px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+      padding: 18px 18px 16px;
+      color: #0a1929;
+      animation: caviPopupIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cavi-popup[hidden] { display: none; }
+    @keyframes caviPopupIn {
+      from { transform: translateY(10px) scale(0.95); opacity: 0; }
+      to   { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .cavi-close {
+      position: absolute;
+      top: 6px; right: 8px;
+      width: 26px; height: 26px;
+      border: none; background: transparent;
+      font-size: 22px; line-height: 1;
+      color: rgba(10, 25, 41, 0.5);
+      cursor: pointer;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .cavi-close:hover { background: #f3f5f8; color: #0a1929; }
+    .cavi-head {
+      font-size: 13px;
+      color: rgba(10, 25, 41, 0.7);
+      margin-bottom: 12px;
+      line-height: 1.5;
+      padding-right: 24px;
+    }
+    .cavi-head strong {
+      color: #0a1929;
+      font-size: 16px;
+      font-weight: 700;
+      margin-right: 2px;
+    }
+    .cavi-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .cavi-card {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px;
+      background: #f7f8fa;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #0a1929;
+      transition: all 0.15s;
+    }
+    .cavi-card:hover { background: #eef0f4; transform: translateX(2px); }
+    .cavi-card-img {
+      width: 60px; height: 40px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 6px;
+      padding: 2px;
+      flex-shrink: 0;
+    }
+    .cavi-card-info { flex: 1; min-width: 0; }
+    .cavi-card-name { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+    .cavi-card-price { font-size: 11px; color: rgba(10, 25, 41, 0.6); font-family: "Chakra Petch", monospace; }
+
+    .cavi-cta {
+      display: block;
+      text-align: center;
+      padding: 11px 14px;
+      background: #ffc422;
+      color: #1a1f3a;
+      border-radius: 8px;
+      font-size: 13px; font-weight: 700;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .cavi-cta:hover { background: #ffd34a; transform: translateY(-1px); }
 
     /* ---------- Share sheet (bottom drawer) ---------- */
     .share-sheet {
@@ -976,6 +1197,44 @@
   </div>
 </div>
 
+<!-- ============ 过期全屏蒙层（灰化报告 + 引导联系销售） ============ -->
+<div class="expired-overlay" id="expiredOverlay" hidden role="dialog" aria-labelledby="expiredTitle" aria-modal="true">
+  <div class="expired-card">
+    <div class="expired-icon">
+      <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </div>
+    <h2 class="expired-title" id="expiredTitle">本报告已过期</h2>
+    <p class="expired-subtitle">数据采集于 <span class="pub-date">2026-08-24</span> · 已过期 <span class="days-over">0</span> 天</p>
+
+    <div class="expired-reasons">
+      <div class="reason">
+        <span class="ri">📈</span>
+        <span>价格可能已调整</span>
+      </div>
+      <div class="reason">
+        <span class="ri">💰</span>
+        <span>金融政策与月供可能已更新</span>
+      </div>
+      <div class="reason">
+        <span class="ri">📦</span>
+        <span>现车库存与版本可能已变化</span>
+      </div>
+    </div>
+
+    <p class="expired-desc">为避免基于过期信息做决策，建议联系销售获取最新报告与当前可申请方案。</p>
+
+    <div class="expired-actions">
+      <a class="btn-wa" id="expiredCta" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M17.6 6.3A7.85 7.85 0 0 0 12 4a7.9 7.9 0 0 0-6.74 12.04L4 20l4.07-1.21A7.9 7.9 0 0 0 12 19.9a7.9 7.9 0 0 0 7.9-7.9 7.85 7.85 0 0 0-2.3-5.7zM12 18.55a6.55 6.55 0 0 1-3.34-.91l-.24-.14-2.42.72.73-2.36-.16-.25A6.56 6.56 0 1 1 18.55 12 6.57 6.57 0 0 1 12 18.55zm3.6-4.92c-.2-.1-1.16-.57-1.34-.64s-.31-.1-.45.1-.5.64-.62.77-.23.15-.43.05a5.4 5.4 0 0 1-1.59-.98 5.96 5.96 0 0 1-1.1-1.37c-.12-.2 0-.31.09-.41s.2-.23.3-.34a1.27 1.27 0 0 0 .2-.34.36.36 0 0 0 0-.34c0-.1-.45-1.09-.62-1.49s-.33-.34-.45-.34h-.38a.74.74 0 0 0-.54.25 2.25 2.25 0 0 0-.7 1.67 3.9 3.9 0 0 0 .82 2.08 8.97 8.97 0 0 0 3.44 3.04c.48.21.86.34 1.15.43a2.78 2.78 0 0 0 1.27.08 2.07 2.07 0 0 0 1.36-.96 1.7 1.7 0 0 0 .12-.96c-.05-.09-.18-.14-.38-.24z"/></svg>
+        通过 WhatsApp 联系销售
+      </a>
+      <button class="btn-dismiss" id="expiredDismiss" type="button">继续查看此版本（数据已过期）</button>
+    </div>
+
+    <p class="expired-foot">本报告由 <strong>AUTOCAVA 数据研究院</strong> 出品 · Reporte V5</p>
+  </div>
+</div>
+
 <!-- ============ Hero ============ -->
 <section class="hero">
   <div class="container">
@@ -1502,6 +1761,38 @@
   </div>
 </footer>
 
+<!-- ============ Cavi 悬浮助手（用户交流引导） ============ -->
+<div class="cavi-fab" id="caviFab">
+  <div class="cavi-popup" id="caviPopup" hidden role="dialog" aria-labelledby="caviHead">
+    <button class="cavi-close" id="caviClose" type="button" aria-label="关闭">×</button>
+    <div class="cavi-head" id="caviHead">
+      <strong>487</strong> 位用户也对比过
+    </div>
+    <div class="cavi-list">
+      <a class="cavi-card" href="https://www.autocava.com.mx/series/tesla-model-y" target="_blank" rel="noopener">
+        <img class="cavi-card-img" src="https://cdn.autocava.com.mx/series/white/0430.png" alt="Tesla Model Y" loading="lazy">
+        <div class="cavi-card-info">
+          <div class="cavi-card-name">Tesla MODEL Y</div>
+          <div class="cavi-card-price">$799,000 – $1,129,000</div>
+        </div>
+      </a>
+      <a class="cavi-card" href="https://www.autocava.com.mx/series/kia-ev6" target="_blank" rel="noopener">
+        <img class="cavi-card-img" src="https://cdn.autocava.com.mx/series/white/0073.png" alt="Kia EV6" loading="lazy">
+        <div class="cavi-card-info">
+          <div class="cavi-card-name">Kia EV6</div>
+          <div class="cavi-card-price">$1,174,900 – $1,334,900</div>
+        </div>
+      </a>
+    </div>
+    <a class="cavi-cta" id="caviCta" href="#" target="_blank" rel="noopener">
+      咨询销售对比 →
+    </a>
+  </div>
+  <button class="cavi-btn" id="caviToggle" type="button" aria-label="Cavi 助手">
+    <span class="cavi-btn-text">CA</span>
+  </button>
+</div>
+
 <!-- ============ 分享弹层 ============ -->
 <div class="share-sheet" id="shareSheet" hidden>
   <div class="share-overlay" id="shareOverlay"></div>
@@ -1547,6 +1838,37 @@
 
 <script>
 (function() {
+  /* ---------------- Cavi 悬浮助手 ---------------- */
+  var caviFab = document.getElementById('caviFab');
+  var caviToggle = document.getElementById('caviToggle');
+  var caviPopup = document.getElementById('caviPopup');
+  var caviClose = document.getElementById('caviClose');
+  var caviCta = document.getElementById('caviCta');
+  if (caviFab && caviToggle && caviPopup) {
+    caviToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      caviPopup.hidden = !caviPopup.hidden;
+      caviToggle.classList.toggle('active', !caviPopup.hidden);
+    });
+    if (caviClose) {
+      caviClose.addEventListener('click', function(e) {
+        e.stopPropagation();
+        caviPopup.hidden = true;
+        caviToggle.classList.remove('active');
+      });
+    }
+    // 点击外部关闭
+    document.addEventListener('click', function(e) {
+      if (!caviFab.contains(e.target)) {
+        caviPopup.hidden = true;
+        caviToggle.classList.remove('active');
+      }
+    });
+    if (caviCta) {
+      caviCta.href = 'https://wa.me/525527419019?text=Hola%2C%20me%20interesa%20comparar%20el%20XPENG%20G6%20con%20otros%20modelos.%20%C2%BFMe%20ayudan%20con%20m%C3%A1s%20informaci%C3%B3n%3F';
+    }
+  }
+
   /* ---------------- Data freshness ---------------- */
   var fresh = document.getElementById('freshness');
   var banner = document.getElementById('expiredBanner');
@@ -1598,6 +1920,38 @@
       } else {
         banner.hidden = true;
       }
+    }
+
+    /* ---------------- Expired overlay (full screen) ---------------- */
+    var overlay = document.getElementById('expiredOverlay');
+    var expiredCta = document.getElementById('expiredCta');
+    var expiredDismiss = document.getElementById('expiredDismiss');
+    // Wire dismiss button once
+    if (expiredDismiss && !expiredDismiss._wired) {
+      expiredDismiss._wired = true;
+      expiredDismiss.addEventListener('click', function() {
+        var o = document.getElementById('expiredOverlay');
+        if (o) o.hidden = true;
+        document.body.classList.remove('report-expired');
+      });
+    }
+    if (overlay && daysLeft < 0) {
+      // Populate overlay content
+      var oPubEl = overlay.querySelector('.pub-date');
+      var oDaysEl = overlay.querySelector('.days-over');
+      if (oPubEl) oPubEl.textContent = fresh.dataset.publishDate;
+      if (oDaysEl) oDaysEl.textContent = (-daysLeft);
+      if (expiredCta) {
+        var waText2 = 'Hola%2C%20mi%20informe%20del%20XPENG%20G6%202026%20' +
+                      '(Reporte%20' + encodeURIComponent(version) + ')%20est%C3%A1%20vencido%20' +
+                      '(%20recolectado%20' + fresh.dataset.publishDate + ').%20' +
+                      '%C2%BFMe%20puedes%20compartir%20la%20versi%C3%B3n%20m%C3%A1s%20reciente%20' +
+                      'con%20precio%20y%20stock%20actualizados%3F';
+        expiredCta.href = 'https://wa.me/525527419019?text=' + waText2;
+      }
+      // Show overlay & grey out report
+      overlay.hidden = false;
+      document.body.classList.add('report-expired');
     }
   }
 
