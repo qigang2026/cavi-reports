@@ -66,7 +66,166 @@
     .site-header { border-bottom: 1px solid var(--line); background: var(--navy); position: sticky; top: 0; z-index: 50; }
     .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 48px; }
     .site-header .logo img { height: 18px; }
-    .site-header .right { font-size: 10px; color: var(--text-mute); letter-spacing: 0.04em; }
+    .site-header .right { display: flex; align-items: center; gap: 8px; }
+
+    /* ---------- Report freshness pill (Hero 顶部状态标签) ---------- */
+    .report-date { color: var(--text-mute); font-size: 10px; letter-spacing: 0.04em; }
+    .freshness {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.02em;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    .freshness .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: currentColor;
+    }
+    .freshness.fresh {
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.08);
+      border-color: rgba(74, 222, 128, 0.25);
+    }
+    .freshness.warn {
+      color: var(--amber);
+      background: rgba(255, 196, 34, 0.1);
+      border-color: rgba(255, 196, 34, 0.3);
+    }
+    .freshness.expired {
+      color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.1);
+      border-color: rgba(255, 107, 107, 0.3);
+    }
+    .freshness.expired .dot {
+      animation: pulseExpired 1.6s ease-in-out infinite;
+    }
+    @keyframes pulseExpired {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.6); }
+      50%      { box-shadow: 0 0 0 5px rgba(255, 107, 107, 0); }
+    }
+
+    /* ---------- Expired banner (顶部横条, 过期时显示) ---------- */
+    .expired-banner {
+      background: linear-gradient(90deg, rgba(255, 107, 107, 0.18) 0%, rgba(255, 196, 34, 0.08) 100%);
+      border-bottom: 1px solid rgba(255, 107, 107, 0.3);
+      color: #ffe9e9;
+    }
+    .expired-banner[hidden] { display: none; }
+    .expired-banner .container {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 10px 16px;
+    }
+    .expired-banner .msg { display: flex; align-items: flex-start; gap: 8px; font-size: 11px; line-height: 1.5; flex: 1; }
+    .expired-banner .msg > svg { color: #ff6b6b; flex-shrink: 0; margin-top: 1px; }
+    .expired-banner strong { color: #ff9b9b; margin-right: 4px; }
+    .expired-banner .d { color: rgba(255, 233, 233, 0.8); }
+    .expired-banner .pub-date { color: #ffc422; font-weight: 600; }
+    .expired-banner .banner-cta {
+      display: inline-flex; align-items: center; flex-shrink: 0;
+      padding: 8px 12px;
+      background: var(--amber); color: #1a1f3a;
+      border-radius: 6px;
+      font-size: 11px; font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      min-height: 32px;
+    }
+    .expired-banner .banner-cta:active { background: #ffd34a; }
+
+    /* ---------- Share button (header 图标) ---------- */
+    .share-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      color: var(--text-soft);
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .share-btn:active {
+      background: rgba(255,196,34,0.15);
+      border-color: rgba(255,196,34,0.5);
+      color: var(--amber);
+    }
+    .share-btn svg { display: block; }
+
+    /* ---------- Share sheet (bottom drawer) ---------- */
+    .share-sheet {
+      position: fixed; inset: 0; z-index: 200;
+      display: flex; align-items: flex-end; justify-content: center;
+      animation: sheetFade 0.2s ease;
+    }
+    .share-sheet[hidden] { display: none; }
+    @keyframes sheetFade { from { opacity: 0; } to { opacity: 1; } }
+    .share-overlay {
+      position: absolute; inset: 0;
+      background: rgba(10,25,41,0.55);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+    .share-content {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 520px;
+      background: #fff;
+      border-top-left-radius: 18px; border-top-right-radius: 18px;
+      padding: 10px 20px calc(24px + env(safe-area-inset-bottom));
+      color: #0a1929;
+      box-shadow: 0 -16px 50px rgba(0,0,0,0.25);
+      animation: sheetSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes sheetSlide { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .share-handle {
+      width: 40px; height: 4px;
+      background: rgba(10,25,41,0.15);
+      border-radius: 2px;
+      margin: 0 auto 16px;
+    }
+    .share-title {
+      font-size: 17px; font-weight: 700; margin: 0 0 6px;
+      text-align: center; letter-spacing: -0.01em;
+    }
+    .share-desc {
+      font-size: 12px; color: rgba(10,25,41,0.6);
+      text-align: center; margin: 0 0 20px; line-height: 1.55;
+    }
+    .share-channels {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+    .share-channel {
+      background: transparent; border: none; padding: 8px 4px 6px;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      cursor: pointer; border-radius: 10px;
+      font-family: inherit;
+      min-height: 44px;
+    }
+    .share-channel:active { background: #f3f5f8; }
+    .share-channel:focus { outline: none; background: #f3f5f8; }
+    .share-channel .icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+    }
+    .share-channel .name { font-size: 12px; font-weight: 600; color: #0a1929; }
+    .share-channel .hint { font-size: 10px; color: rgba(10,25,41,0.55); line-height: 1.3; min-height: 13px; }
+    .share-channel.copied .hint { color: #1a8a3a; font-weight: 600; }
+    .icon-wa { background: #25D366; }
+    .icon-fb { background: #1877F2; }
+    .icon-ms { background: #0084FF; }
+    .icon-cp { background: #5a6470; }
+    .share-close {
+      position: absolute; top: 14px; right: 14px;
+      width: 32px; height: 32px;
+      background: transparent; border: none;
+      color: rgba(10,25,41,0.5);
+      cursor: pointer; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .share-close:active { background: #f3f5f8; color: #0a1929; }
 
     /* ---------- Hero ---------- */
     .hero { padding: 16px 0 28px; background: linear-gradient(180deg, #0d1f33 0%, var(--navy) 100%); }
@@ -680,9 +839,27 @@
     <a class="logo" href="https://www.autocava.com.mx">
       <img src="https://cdn.autocava.com.mx/_nuxt/asset/logo.v3.mLItLIXo.svg" alt="AUTOCAVA">
     </a>
-    <div class="right">车型报告 · 2026-08-24</div>
+    <div class="right">
+      <button class="share-btn" id="shareBtn" type="button" aria-label="分享这份报告">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+    </div>
   </div>
 </header>
+
+<!-- ============ 数据过期提示（仅过期时显示） ============ -->
+<div class="expired-banner" id="expiredBanner" hidden role="status" aria-live="polite">
+  <div class="container">
+    <div class="msg">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>
+        <strong>本报告已过期</strong>
+        <span class="d">数据采集于 <span class="pub-date">2026-08-24</span>，价格、金融政策与库存可能已变化。建议获取最新版本后再做决定。</span>
+      </div>
+    </div>
+    <a class="banner-cta" id="bannerCta" href="#" target="_blank" rel="noopener">获取最新报告 →</a>
+  </div>
+</div>
 
 <!-- ============ Hero ============ -->
 <section class="hero">
@@ -691,6 +868,10 @@
       <span class="hero-tag">纯电中型 SUV</span>
       <span class="hero-tag">墨西哥市场</span>
       <span class="hero-tag">标准报告</span>
+      <span class="freshness" id="freshness" data-publish-date="2026-08-24" data-expire-days="7" data-version="V5">
+        <span class="dot"></span>
+        <span class="txt">—</span>
+      </span>
     </div>
 
     <div class="kicker">XPENG / G6</div>
@@ -1209,6 +1390,166 @@
 <a class="fab-wa" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20XPENG%20G6%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B1on%3F" target="_blank" rel="noopener" aria-label="WhatsApp 咨询">
   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.413.711 4.659 1.937 6.553L4 29l7.646-1.901A11.945 11.945 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16.001 3zm0 21.6c-1.92 0-3.706-.55-5.22-1.5l-.374-.225-4.537 1.127 1.151-4.413-.244-.382A9.563 9.563 0 0 1 6.4 15c0-5.302 4.298-9.6 9.6-9.6 5.302 0 9.6 4.298 9.6 9.6 0 5.302-4.298 9.6-9.6 9.6zm5.546-7.182c-.302-.151-1.787-.882-2.064-.982-.277-.1-.479-.151-.681.151-.202.302-.78.982-.957 1.184-.176.202-.353.227-.655.076-.302-.151-1.275-.47-2.43-1.5-.898-.802-1.504-1.792-1.681-2.094-.176-.302-.019-.466.132-.617.136-.135.302-.353.453-.53.151-.176.202-.302.302-.504.1-.202.05-.378-.025-.53-.076-.151-.681-1.638-.933-2.243-.246-.59-.496-.51-.681-.52l-.58-.01c-.202 0-.53.076-.807.378s-1.06 1.036-1.06 2.527 1.086 2.932 1.237 3.135c.151.202 2.137 3.264 5.18 4.578.724.313 1.289.5 1.73.64.726.231 1.387.198 1.91.12.582-.087 1.787-.731 2.04-1.436.252-.706.252-1.31.176-1.436-.076-.127-.277-.202-.58-.353z"/></svg>
 </a>
+
+<!-- ============ 分享弹层（bottom drawer） ============ -->
+<div class="share-sheet" id="shareSheet" hidden>
+  <div class="share-overlay" id="shareOverlay"></div>
+  <div class="share-content" role="dialog" aria-labelledby="shareTitle" aria-modal="true">
+    <div class="share-handle"></div>
+    <button class="share-close" id="shareClose" type="button" aria-label="关闭">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+    <h3 class="share-title" id="shareTitle">分享这份报告</h3>
+    <p class="share-desc">选择一款应用或复制链接，分享这份 XPENG G6 2026 的 CAVA 购车解读报告。</p>
+    <div class="share-channels">
+      <button class="share-channel" type="button" data-channel="whatsapp">
+        <div class="icon icon-wa">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="#fff"><path d="M17.6 6.3A7.85 7.85 0 0 0 12 4a7.9 7.9 0 0 0-6.74 12.04L4 20l4.07-1.21A7.9 7.9 0 0 0 12 19.9a7.9 7.9 0 0 0 7.9-7.9 7.85 7.85 0 0 0-2.3-5.7zM12 18.55a6.55 6.55 0 0 1-3.34-.91l-.24-.14-2.42.72.73-2.36-.16-.25A6.56 6.56 0 1 1 18.55 12 6.57 6.57 0 0 1 12 18.55zm3.6-4.92c-.2-.1-1.16-.57-1.34-.64s-.31-.1-.45.1-.5.64-.62.77-.23.15-.43.05a5.4 5.4 0 0 1-1.59-.98 5.96 5.96 0 0 1-1.1-1.37c-.12-.2 0-.31.09-.41s.2-.23.3-.34a1.27 1.27 0 0 0 .2-.34.36.36 0 0 0 0-.34c0-.1-.45-1.09-.62-1.49s-.33-.34-.45-.34h-.38a.74.74 0 0 0-.54.25 2.25 2.25 0 0 0-.7 1.67 3.9 3.9 0 0 0 .82 2.08 8.97 8.97 0 0 0 3.44 3.04c.48.21.86.34 1.15.43a2.78 2.78 0 0 0 1.27.08 2.07 2.07 0 0 0 1.36-.96 1.7 1.7 0 0 0 .12-.96c-.05-.09-.18-.14-.38-.24z"/></svg>
+        </div>
+        <div class="name">WhatsApp</div>
+        <div class="hint">发送给好友</div>
+      </button>
+      <button class="share-channel" type="button" data-channel="facebook">
+        <div class="icon icon-fb">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="#fff"><path d="M24 12a12 12 0 1 0-13.88 11.85v-8.38H7.08V12h3.04V9.36c0-3 1.78-4.67 4.52-4.67a18.4 18.4 0 0 1 2.68.23v2.94h-1.5c-1.5 0-1.96.93-1.96 1.88V12h3.33l-.53 3.47h-2.8v8.38A12 12 0 0 0 24 12z"/></svg>
+        </div>
+        <div class="name">Facebook</div>
+        <div class="hint">发布到你的主页</div>
+      </button>
+      <button class="share-channel" type="button" data-channel="messenger">
+        <div class="icon icon-ms">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="#fff"><path d="M12 2C6.5 2 2 6.2 2 11.4c0 2.9 1.4 5.5 3.6 7.3v3.6l3.3-1.8a11 11 0 0 0 3.1.4c5.5 0 10-4.2 10-9.4S17.5 2 12 2zm1 12.7l-2.6-2.7-5 2.7 5.5-5.7 2.6 2.7 5-2.7-5.5 5.7z"/></svg>
+        </div>
+        <div class="name">Messenger</div>
+        <div class="hint">发送给好友</div>
+      </button>
+      <button class="share-channel" type="button" data-channel="copy">
+        <div class="icon icon-cp">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </div>
+        <div class="name">复制链接</div>
+        <div class="hint">粘贴到任意应用</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  /* ---------------- Data freshness ---------------- */
+  var fresh = document.getElementById('freshness');
+  var banner = document.getElementById('expiredBanner');
+  var bannerCta = document.getElementById('bannerCta');
+  if (fresh) {
+    var pub = new Date(fresh.dataset.publishDate + 'T00:00:00');
+    var validDays = parseInt(fresh.dataset.expireDays, 10) || 30;
+    var version = fresh.dataset.version || '';
+    var expireAt = new Date(pub.getTime() + validDays * 86400000);
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var daysLeft = Math.ceil((expireAt - today) / 86400000);
+    var txt = fresh.querySelector('.txt');
+
+    fresh.classList.remove('fresh', 'warn', 'expired');
+    var warnThreshold = Math.max(2, Math.ceil(validDays / 2));
+    if (daysLeft >= warnThreshold) {
+      fresh.classList.add('fresh');
+      txt.textContent = '数据有效 · 还剩 ' + daysLeft + ' 天';
+    } else if (daysLeft >= 1) {
+      fresh.classList.add('warn');
+      txt.textContent = '即将过期 · 还剩 ' + daysLeft + ' 天';
+    } else {
+      var daysOver = -daysLeft;
+      fresh.classList.add('expired');
+      txt.textContent = daysOver === 0 ? '今日已过期' : '已过期 ' + daysOver + ' 天';
+    }
+    fresh.title = '采集于 ' + fresh.dataset.publishDate + ' · 有效期 ' + validDays + ' 天 · 报告 ' + version;
+
+    if (banner) {
+      if (daysLeft < 0) {
+        var pubDateEl = banner.querySelector('.pub-date');
+        if (pubDateEl) pubDateEl.textContent = fresh.dataset.publishDate;
+        var msgEl = banner.querySelector('.d');
+        if (daysLeft === -1) {
+          msgEl.textContent = '数据采集于 ' + fresh.dataset.publishDate + '，价格、金融政策与库存可能已变化。建议获取最新版本后再做决定。';
+        } else {
+          msgEl.textContent = '数据采集于 ' + fresh.dataset.publishDate + '，已过期 ' + (-daysLeft) + ' 天。价格、金融政策与库存可能已变化，建议获取最新版本。';
+        }
+        if (bannerCta) {
+          var waText = 'Hola%2C%20me%20interesa%20actualizar%20mi%20informe%20del%20XPENG%20G6%202026%20' +
+                       '(Reporte%20' + encodeURIComponent(version) + '%20%C2%B7%20fecha%20original%3A%20' +
+                       fresh.dataset.publishDate + ').%20%C2%BFMe%20puedes%20enviar%20la%20versi%C3%B3n%20m%C3%A1s%20reciente%3F';
+          bannerCta.href = 'https://wa.me/525527419019?text=' + waText;
+        }
+        banner.hidden = false;
+      } else {
+        banner.hidden = true;
+      }
+    }
+  }
+
+  /* ---------------- Share sheet ---------------- */
+  var btn = document.getElementById('shareBtn');
+  var sheet = document.getElementById('shareSheet');
+  var overlay = document.getElementById('shareOverlay');
+  var closeBtn = document.getElementById('shareClose');
+  if (!btn || !sheet) return;
+
+  function openSheet() { sheet.hidden = false; document.body.style.overflow = 'hidden'; }
+  function closeSheet() { sheet.hidden = true; document.body.style.overflow = ''; }
+
+  function getUrl() { return window.location.href; }
+  function getText() {
+    return 'XPENG G6 2026 · CAVA 购车解读报告 | ' +
+           '续航 510 km · 487 hp · 800V 高压平台 · 参考价 $869,900 MXN | ' + getUrl();
+  }
+
+  function showCopied(btn) {
+    var hint = btn.querySelector('.hint');
+    var old = hint.textContent;
+    hint.textContent = '已复制';
+    btn.classList.add('copied');
+    setTimeout(function() { hint.textContent = old; btn.classList.remove('copied'); }, 1800);
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  function handle(channel, btn) {
+    var url = encodeURIComponent(getUrl());
+    var text = encodeURIComponent(getText());
+    if (channel === 'whatsapp') {
+      window.open('https://wa.me/?text=' + text, '_blank', 'noopener');
+    } else if (channel === 'facebook') {
+      window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank', 'noopener');
+    } else if (channel === 'messenger') {
+      window.open('https://www.facebook.com/dialog/send?link=' + url + '&app_id=966242223397117&redirect_uri=' + url, '_blank', 'noopener');
+    } else if (channel === 'copy') {
+      var raw = getUrl();
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(raw).then(function() { showCopied(btn); });
+      } else {
+        fallbackCopy(raw);
+        showCopied(btn);
+      }
+    }
+  }
+
+  btn.addEventListener('click', openSheet);
+  overlay.addEventListener('click', closeSheet);
+  closeBtn.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeSheet(); });
+
+  sheet.querySelectorAll('.share-channel').forEach(function(ch) {
+    ch.addEventListener('click', function() { handle(ch.dataset.channel, ch); });
+  });
+})();
+</script>
 
 </body>
 </html>
