@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1929">
+  <meta name="description" content="XPENG G6 2026 数据已过期，建议联系销售获取最新报告与当前可申请方案。">
+  <title>本报告已过期 · XPENG G6 2026 · AUTOCAVA</title>
+  <style>
+    /* ============================================================
+       报告过期页 · 响应式 (PC + H5)
+       iframe 引用 xpeng-g6-2026-v1.html（响应式主报告）
+       蒙层卡片居中, PC 端放大, H5 端紧凑
+       ============================================================ */
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%; width: 100%;
+      overflow: hidden;
+    }
+
+    /* ============ 背景: 主报告 iframe (灰化 + 半透明) ============ */
+    .report-frame {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      border: none;
+      filter: grayscale(0.75) opacity(0.4);
+      z-index: 0;
+    }
+
+    /* ============ 全屏蒙层 ============ */
+    .expired-overlay {
+      position: fixed; inset: 0; z-index: 1100;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(10, 25, 41, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 16px;
+      animation: expiredFade 0.3s ease;
+    }
+    @keyframes expiredFade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ============ 过期卡片 ============ */
+    .expired-card {
+      position: relative;
+      width: 100%;
+      max-width: 420px;          /* H5 紧凑 */
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 22px 22px;
+      color: #0a1929;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+      animation: expiredScale 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: center;
+      max-height: calc(100vh - 32px);
+      overflow-y: auto;
+    }
+    @keyframes expiredScale {
+      from { transform: scale(0.92); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .expired-icon {
+      width: 56px; height: 56px;
+      margin: 0 auto 14px;
+      background: rgba(255, 107, 107, 0.12);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #ff6b6b;
+    }
+    .expired-title { font-size: 19px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.01em; }
+    .expired-subtitle { font-size: 12px; color: rgba(10, 25, 41, 0.55); margin: 0 0 16px; line-height: 1.5; }
+    .expired-subtitle .pub-date { color: #ffc422; font-weight: 600; }
+    .expired-subtitle .days-over {
+      display: inline-block;
+      background: #ff6b6b;
+      color: #fff;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-weight: 700;
+      margin: 0 2px;
+    }
+    .expired-reasons {
+      display: flex; flex-direction: column; gap: 6px;
+      background: #f7f8fa;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+    .reason { display: flex; align-items: center; gap: 10px; font-size: 12px; color: rgba(10, 25, 41, 0.78); }
+
+    /* reason 编号色块 (替代 emoji) */
+    .reason .ri {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px;
+      font-family: "Chakra Petch", "Inter", sans-serif;
+      font-size: 10px; font-weight: 700;
+      line-height: 1;
+      color: #d63d3d;
+      background: rgba(214, 61, 61, 0.12);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .expired-desc { font-size: 12px; color: rgba(10, 25, 41, 0.62); line-height: 1.6; margin: 0 0 18px; }
+    .expired-actions { display: flex; flex-direction: column; gap: 6px; }
+    .btn-wa {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 20px;
+      background: #25D366; color: #fff;
+      border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .btn-wa:hover { background: #1ebe57; }
+    .btn-wa:active { background: #1ebe57; transform: scale(0.98); }
+    .expired-foot {
+      margin: 16px 0 0;
+      font-size: 10px;
+      color: rgba(10, 25, 41, 0.4);
+      border-top: 1px solid rgba(10, 25, 41, 0.08);
+      padding-top: 12px;
+    }
+
+    /* ============================================================
+       PC 端适配 (>= 769px)
+       - 卡片放大到 520px,文字尺寸+1
+       - 蒙层 padding 加大,留出桌面空间感
+       ============================================================ */
+    @media (min-width: 769px) {
+      .expired-overlay { padding: 40px; }
+      .expired-card {
+        max-width: 520px;
+        padding: 40px 36px 32px;
+        max-height: calc(100vh - 80px);
+      }
+      .expired-icon { width: 64px; height: 64px; margin: 0 auto 18px; }
+      .expired-icon svg { width: 32px; height: 32px; }
+      .expired-title { font-size: 24px; margin: 0 0 10px; }
+      .expired-subtitle { font-size: 13px; margin: 0 0 22px; }
+      .expired-reasons { padding: 16px 18px; gap: 10px; margin-bottom: 22px; }
+      .reason { font-size: 13px; gap: 12px; }
+      .reason .ri { width: 24px; height: 24px; font-size: 11px; }
+      .expired-desc { font-size: 13px; margin: 0 0 24px; line-height: 1.7; }
+      .btn-wa { padding: 16px 24px; font-size: 15px; }
+      .expired-foot { font-size: 11px; margin: 20px 0 0; padding-top: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 主报告作为背景（灰化 + 半透明）—— 引用响应式 v1 版本 -->
+  <iframe class="report-frame" src="xpeng-g6-2026-v1.html" title="本报告"></iframe>
+
+  <!-- 过期全屏蒙层 + 中央卡片 -->
+  <div class="expired-overlay" id="expiredOverlay" role="dialog" aria-labelledby="expiredTitle" aria-modal="true">
+    <div class="expired-card">
+      <div class="expired-icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h2 class="expired-title" id="expiredTitle">本报告已过期</h2>
+      <p class="expired-subtitle">数据采集于 <span class="pub-date">2026-08-24</span> · 已过期 <span class="days-over">2</span> 天</p>
+
+      <div class="expired-reasons">
+        <div class="reason"><span class="ri">01</span><span>价格可能已调整</span></div>
+        <div class="reason"><span class="ri">02</span><span>金融政策与月供可能已更新</span></div>
+        <div class="reason"><span class="ri">03</span><span>现车库存与版本可能已变化</span></div>
+      </div>
+
+      <p class="expired-desc">为避免基于过期信息做决策，建议联系销售获取最新报告与当前可申请方案。</p>
+
+      <div class="expired-actions">
+        <a class="btn-wa" id="expiredCta" href="https://wa.me/525527419019?text=Hola%2C%20mi%20informe%20del%20XPENG%20G6%202026%20(Reporte%20V5)%20est%C3%A1%20vencido%20(recolectado%202026-08-24).%20%C2%BFMe%20puedes%20compartir%20la%20versi%C3%B3n%20m%C3%A1s%20reciente%3F" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M17.6 6.3A7.85 7.85 0 0 0 12 4a7.9 7.9 0 0 0-6.74 12.04L4 20l4.07-1.21A7.9 7.9 0 0 0 12 19.9a7.9 7.9 0 0 0 7.9-7.9 7.85 7.85 0 0 0-2.3-5.7zM12 18.55a6.55 6.55 0 0 1-3.34-.91l-.24-.14-2.42.72.73-2.36-.16-.25A6.56 6.56 0 1 1 18.55 12 6.57 6.57 0 0 1 12 18.55zm3.6-4.92c-.2-.1-1.16-.57-1.34-.64s-.31-.1-.45.1-.5.64-.62.77-.23.15-.43.05a5.4 5.4 0 0 1-1.59-.98 5.96 5.96 0 0 1-1.1-1.37c-.12-.2 0-.31.09-.41s.2-.23.3-.34a1.27 1.27 0 0 0 .2-.34.36.36 0 0 0 0-.34c0-.1-.45-1.09-.62-1.49s-.33-.34-.45-.34h-.38a.74.74 0 0 0-.54.25 2.25 2.25 0 0 0-.7 1.67 3.9 3.9 0 0 0 .82 2.08 8.97 8.97 0 0 0 3.44 3.04c.48.21.86.34 1.15.43a2.78 2.78 0 0 0 1.27.08 2.07 2.07 0 0 0 1.36-.96 1.7 1.7 0 0 0 .12-.96c-.05-.09-.18-.14-.38-.24z"/></svg>
+          通过 WhatsApp 联系销售
+        </a>
+      </div>
+
+      <p class="expired-foot">本报告由 <strong>AUTOCAVA 数据研究院</strong> 出品 · Reporte V5</p>
+    </div>
+  </div>
+</body>
+</html>
