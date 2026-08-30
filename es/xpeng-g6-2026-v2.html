@@ -3898,6 +3898,19 @@
         color: var(--text-dark);
       }
       
+      /* 深色 section 的 block-tag 高亮颜色 - 确保对比度 */
+      .section:not(.section-light) .block-tag.blue .lbl .highlight {
+        color: var(--amber);
+      }
+      
+      .section:not(.section-light) .block-tag.purple .lbl .highlight {
+        color: var(--amber);
+      }
+      
+      .section:not(.section-light) .block-tag.orange .lbl .highlight {
+        color: var(--amber);
+      }
+      
       /* ================================================================
          H5 浅色主题：文本颜色全面修复
          解决 section-light 中文本与背景颜色错位问题
