@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>XPENG G6 2026 — 购车解读报告 | AUTOCAVA · CAVA · 高级重构 v2.1</title>
+  <title>XPENG G6 2026 — 购车解读报告 | AUTOCAVA · CAVA · 高级重构 v2.2</title>
   <meta name="description" content="续航 510 km · 487 hp · 80.2 kWh · 800V 高压平台 · Full Insurance 参考价 $869,900 MXN。CAVA 4.05/5。">
   <meta name="theme-color" content="#0a1929">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,7 +20,7 @@
 
   <style>
     /* ================================================================
-       CAVA 报告 · 高级重构 v2.1 — Bloomberg/Apple 级视觉体验
+       CAVA 报告 · 高级重构 v2.2 — Bloomberg/Apple 级视觉体验
        配色: navy #0a1929 + amber #ffc422
        视觉升级:
          - Glassmorphism 玻璃拟态效果
@@ -30,6 +30,10 @@
          - 渐变填充数据可视化
          - Mono 字体微发光效果
          - 平滑悬浮抬升动画
+       v2.2 修复:
+         - H5 浅色主题文本颜色全面修复（sec-title/sec-sub/so-what/chart-title 等）
+         - ECharts 图表动态主题色支持（自动检测浅色/深色背景）
+         - 深色 section 组件颜色一致性修复
        v2.1 优化:
          - 添加 prefers-reduced-motion 无障碍支持
          - H5 端配色统一为浅色主题
@@ -3893,6 +3897,586 @@
       .section-light .block-tag .lbl {
         color: var(--text-dark);
       }
+      
+      /* ================================================================
+         H5 浅色主题：文本颜色全面修复
+         解决 section-light 中文本与背景颜色错位问题
+         ================================================================ */
+      
+      /* 章节标题 - 浅色化 */
+      .section-light .sec-title {
+        color: var(--text-dark);
+      }
+      
+      /* 章节副标题 - 浅色化 */
+      .section-light .sec-sub {
+        color: var(--text-dark-secondary);
+      }
+      
+      /* 结论框 - 浅色化 */
+      .section-light .so-what {
+        background: rgba(0, 0, 0, 0.04);
+        border-left-color: var(--amber-dark);
+      }
+      
+      .section-light .so-what .lbl {
+        color: var(--amber-dark);
+      }
+      
+      .section-light .so-what p {
+        color: var(--text-dark);
+      }
+      
+      /* 分隔线 - 浅色化 */
+      .section-light .block-divider .badge {
+        background: #f8f9fb;
+        color: var(--text-dark-secondary);
+      }
+      
+      /* 图表标题 - 浅色化 */
+      .section-light .chart-section-title {
+        color: var(--text-dark);
+      }
+      
+      /* 图表标题/徽章 - 浅色化 */
+      .section-light .chart-header {
+        background: rgba(0, 0, 0, 0.02);
+      }
+      
+      .section-light .chart-title {
+        color: var(--text-dark);
+      }
+      
+      .section-light .chart-badge {
+        background: var(--amber-soft);
+        color: var(--amber-dark);
+      }
+      
+      .section-light .chart-badge.low {
+        background: var(--green-soft);
+        color: var(--green);
+      }
+      
+      /* 图表来源 - 浅色化 */
+      .section-light .chart-source {
+        color: var(--text-dark-secondary);
+      }
+      
+      /* 价格对比卡片 - 浅色化 */
+      .section-light .price-compare-card {
+        background: #fff;
+        border-color: var(--border-light);
+      }
+      
+      .section-light .price-compare-card .lbl {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .price-compare-card .v {
+        color: var(--text-dark);
+      }
+      
+      .section-light .price-compare-card .sub {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .price-compare-card.highlight {
+        background: var(--amber-soft);
+        border-color: var(--amber);
+      }
+      
+      /* 质保项目 - 浅色化 */
+      .section-light .highlight-item {
+        background: #fff;
+        border-color: var(--border-light);
+      }
+      
+      .section-light .highlight-item .t {
+        color: var(--text-dark);
+      }
+      
+      .section-light .highlight-item .s {
+        color: var(--text-dark);
+      }
+      
+      .section-light .highlight-item .note {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .highlight-item .ic {
+        background: var(--amber-soft);
+        color: var(--amber-dark);
+      }
+      
+      /* 权益区域 - 浅色化 */
+      .section-light .benefits-section {
+        background: transparent;
+      }
+      
+      .section-light .benefits-title {
+        color: var(--text-dark);
+      }
+      
+      .section-light .benefits-list {
+        border-color: var(--border-light);
+      }
+      
+      .section-light .benefit-item {
+        background: #fff;
+        border-color: var(--border-light);
+      }
+      
+      .section-light .benefit-item .bn {
+        background: var(--amber-soft);
+        color: var(--amber-dark);
+      }
+      
+      .section-light .benefit-item .bt {
+        color: var(--text-dark);
+      }
+      
+      .section-light .benefit-item .bd {
+        color: var(--text-dark-secondary);
+      }
+      
+      /* CAVI 分数区域 - 浅色化 */
+      .section-light .cavi-score {
+        background: #fff;
+        border-color: var(--border-light);
+      }
+      
+      .section-light .cavi-score .lbl {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .cavi-score .v {
+        color: var(--amber-dark);
+        text-shadow: none;
+      }
+      
+      .section-light .cavi-score .meta {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .cavi-score .bar {
+        background: #e2e8f0;
+      }
+      
+      .section-light .cavi-score .bar i {
+        background: var(--amber);
+      }
+      
+      /* CAVI 口碑卡片 - 浅色化 */
+      .section-light .cavi-rec {
+        background: #fff;
+        border-color: var(--border-light);
+      }
+      
+      .section-light .cavi-rec h3 {
+        color: var(--text-dark);
+      }
+      
+      .section-light .cavi-rec p {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .cavi-rec .top {
+        border-bottom-color: var(--border-light);
+      }
+      
+      .section-light .cavi-rec .label {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .cavi-rec .score {
+        color: var(--amber-dark);
+      }
+      
+      /* CAVI 维度卡片 - 浅色化 */
+      .section-light .cavi-dim {
+        background: #fff;
+        border-color: var(--border-light);
+      }
+      
+      .section-light .cavi-dim .dim-tag {
+        background: var(--amber-soft);
+        color: var(--amber-dark);
+      }
+      
+      .section-light .cavi-dim .dim-title {
+        color: var(--text-dark);
+      }
+      
+      .section-light .cavi-dim .dim-text {
+        color: var(--text-dark-secondary);
+      }
+      
+      /* 竞品 G6 卡片 - 浅色化 */
+      .section-light .comp.dark .badge {
+        background: var(--amber);
+        color: var(--navy);
+      }
+      
+      .section-light .comp.dark .brand {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .comp.dark .model {
+        color: var(--text-dark);
+      }
+      
+      .section-light .comp.dark .price {
+        color: var(--text-dark);
+      }
+      
+      .section-light .comp.dark .price small {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .comp.dark .suit-txt {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .comp.dark .strengths {
+        background: #fef3c7;
+        border-color: #fde68a;
+      }
+      
+      .section-light .comp.dark .strengths-title {
+        color: #92400e;
+      }
+      
+      .section-light .comp.dark .strengths ul {
+        color: #78350f;
+      }
+      
+      .section-light .comp.dark .cautions {
+        background: #fef2f2;
+        border-color: #fecaca;
+      }
+      
+      .section-light .comp.dark .cautions-title {
+        color: #991b1b;
+      }
+      
+      .section-light .comp.dark .cautions ul {
+        color: #7f1d1d;
+      }
+      
+      .section-light .comp.dark .comp-link {
+        color: var(--blue);
+      }
+      
+      /* 竞品 亮色卡片 - 浅色化 */
+      .section-light .comp.light .badge {
+        background: rgba(0, 0, 0, 0.05);
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .comp.light {
+        background: #fff;
+        border-color: var(--border-light);
+      }
+      
+      .section-light .comp.light .brand {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .comp.light .model {
+        color: var(--text-dark);
+      }
+      
+      .section-light .comp.light .price {
+        color: var(--text-dark);
+      }
+      
+      .section-light .comp.light .price small {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .comp.light .suit-txt {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .comp.light .strengths {
+        background: #f0fdf4;
+        border-color: #bbf7d0;
+      }
+      
+      .section-light .comp.light .strengths-title {
+        color: #166534;
+      }
+      
+      .section-light .comp.light .strengths ul {
+        color: #14532d;
+      }
+      
+      .section-light .comp.light .cautions {
+        background: #fef2f2;
+        border-color: #fecaca;
+      }
+      
+      .section-light .comp.light .cautions-title {
+        color: #991b1b;
+      }
+      
+      .section-light .comp.light .cautions ul {
+        color: #7f1d1d;
+      }
+      
+      .section-light .comp.light .comp-link {
+        color: var(--blue);
+      }
+      
+      /* 核心卖点统计 - 浅色化 */
+      .section-light .stats-row .stat {
+        background: #fff;
+        border-color: var(--border-light);
+      }
+      
+      .section-light .stats-row .lbl {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .stats-row .v {
+        color: var(--text-dark);
+      }
+      
+      /* 核心卖点标题 - 浅色化 */
+      .section-light .stats-title {
+        color: var(--text-dark);
+      }
+      
+      /* 生活方式图文 - 浅色化 */
+      .section-light .lifestyle-split {
+        background: transparent;
+      }
+      
+      .section-light .lifestyle-img {
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+      }
+      
+      .section-light .lifestyle-text h3 {
+        color: var(--text-dark);
+      }
+      
+      .section-light .lifestyle-text p {
+        color: var(--text-dark-secondary);
+      }
+      
+      /* 避坑指南 - 浅色化 */
+      .section-light .pitfall-card {
+        background: #fff;
+        border-color: var(--border-light);
+      }
+      
+      .section-light .pitfall-card .t {
+        color: var(--text-dark);
+      }
+      
+      .section-light .pitfall-card .d {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .pitfall-card .level-tag {
+        color: var(--text-dark-secondary);
+      }
+      
+      /* 板块 CTA - 浅色化 */
+      .section-light .block-cta {
+        background: rgba(255, 196, 34, 0.08);
+        border-color: rgba(255, 196, 34, 0.2);
+      }
+      
+      .section-light .block-cta .title {
+        color: var(--text-dark);
+      }
+      
+      .section-light .block-cta .sub {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .block-cta .btn {
+        background: var(--amber);
+        color: var(--navy);
+      }
+      
+      .section-light .block-cta .btn:hover {
+        background: var(--amber-light);
+      }
+      
+      /* Footer - 浅色化 */
+      .section-light .site-footer {
+        background: var(--navy);
+        color: var(--text-secondary);
+      }
+      
+      .section-light .site-footer .footer-brand {
+        color: var(--text-secondary);
+      }
+      
+      .section-light .site-footer .footer-desc {
+        color: var(--text-muted);
+      }
+      
+      /* 图表图例 - 浅色化 */
+      .section-light .chart-legend {
+        background: #fff;
+        border-radius: var(--radius-md);
+        padding: var(--space-md);
+      }
+      
+      .section-light .legend-label {
+        color: var(--text-dark-secondary);
+      }
+      
+      .section-light .legend-value {
+        color: var(--text-dark);
+      }
+      
+      /* ================================================================
+         深色 section 中的文本颜色修复（确保可读性）
+         ================================================================ */
+      
+      /* 深色 section 的 block-tag 标签高亮 */
+      .section:not(.section-light) .block-tag .lbl .highlight {
+        color: var(--amber);
+      }
+      
+      /* 深色 section 的 sec-num */
+      .section:not(.section-light) .sec-num {
+        color: var(--amber);
+      }
+      
+      /* 深色 section 的图表标题 */
+      .section:not(.section-light) .chart-section-title {
+        color: var(--text-primary);
+      }
+      
+      /* 深色 section 的图表标题/徽章 */
+      .section:not(.section-light) .chart-header {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      
+      .section:not(.section-light) .chart-title {
+        color: var(--text-primary);
+      }
+      
+      /* 深色 section 的 so-what */
+      .section:not(.section-light) .so-what {
+        background: rgba(255, 196, 34, 0.06);
+        border-left-color: var(--amber);
+      }
+      
+      .section:not(.section-light) .so-what .lbl {
+        color: var(--amber);
+      }
+      
+      .section:not(.section-light) .so-what p {
+        color: var(--text-primary);
+      }
+      
+      /* 深色 section 的 benefits-title */
+      .section:not(.section-light) .benefits-title {
+        color: var(--text-primary);
+      }
+      
+      /* 深色 section 的 cavi-score */
+      .section:not(.section-light) .cavi-score .lbl {
+        color: var(--text-muted);
+      }
+      
+      .section:not(.section-light) .cavi-score .v {
+        color: var(--amber);
+        text-shadow: 0 0 20px var(--amber-glow);
+      }
+      
+      .section:not(.section-light) .cavi-score .meta {
+        color: var(--text-muted);
+      }
+      
+      /* 深色 section 的 cavi-rec */
+      .section:not(.section-light) .cavi-rec .top {
+        border-bottom-color: var(--border-default);
+      }
+      
+      .section:not(.section-light) .cavi-rec .label {
+        color: var(--text-muted);
+      }
+      
+      .section:not(.section-light) .cavi-rec .score {
+        color: var(--amber);
+      }
+      
+      /* 深色 section 的 highlight-item */
+      .section:not(.section-light) .highlight-item .ic {
+        background: var(--amber-soft);
+        color: var(--amber);
+      }
+      
+      .section:not(.section-light) .highlight-item .t {
+        color: var(--text-primary);
+      }
+      
+      .section:not(.section-light) .highlight-item .s {
+        color: var(--text-secondary);
+      }
+      
+      .section:not(.section-light) .highlight-item .note {
+        color: var(--text-muted);
+      }
+      
+      /* 深色 section 的 benefit-item */
+      .section:not(.section-light) .benefit-item .bn {
+        background: var(--amber-soft);
+        color: var(--amber);
+      }
+      
+      .section:not(.section-light) .benefit-item .bt {
+        color: var(--text-primary);
+      }
+      
+      .section:not(.section-light) .benefit-item .bd {
+        color: var(--text-muted);
+      }
+      
+      /* 深色 section 的价格对比卡片 */
+      .section:not(.section-light) .price-compare-card {
+        background: var(--bg-glass);
+      }
+      
+      .section:not(.section-light) .price-compare-card.highlight {
+        background: rgba(255, 196, 34, 0.12);
+        border-color: var(--amber);
+      }
+      
+      .section:not(.section-light) .price-compare-card .lbl {
+        color: var(--text-muted);
+      }
+      
+      .section:not(.section-light) .price-compare-card .v {
+        color: var(--text-primary);
+      }
+      
+      .section:not(.section-light) .price-compare-card .sub {
+        color: var(--text-secondary);
+      }
+      
+      /* 深色 section 的图例 */
+      .section:not(.section-light) .chart-legend {
+        background: var(--bg-glass);
+        border-radius: var(--radius-md);
+        padding: var(--space-md);
+      }
+      
+      .section:not(.section-light) .legend-label {
+        color: var(--text-secondary);
+      }
+      
+      .section:not(.section-light) .legend-value {
+        color: var(--text-primary);
+      }
     }
   </style>
 </head>
@@ -5071,13 +5655,18 @@
   /* ========== 图表 · 价格走势折线图（高级样式）========== */
   var chartPriceTrend = echarts.init(document.getElementById('chartPriceTrend'));
 
-  // 获取当前主题
-  var isDarkMode = true; // 默认深色模式
-
-  // 颜色配置
-  var textColor = '#8a93a6';
-  var axisLineColor = '#2d4a6a';
-  var splitLineColor = 'rgba(255, 255, 255, 0.05)';
+  // 获取当前主题（根据 body 背景色判断）
+  var bodyBg = getComputedStyle(document.body).backgroundColor;
+  var isLightTheme = bodyBg.includes('255') || bodyBg.includes('248') || bodyBg.includes('249') || bodyBg.includes('250');
+  
+  // 根据主题动态设置颜色
+  var textColor = isLightTheme ? '#4a5568' : '#8a93a6';
+  var axisLineColor = isLightTheme ? '#e2e8f0' : '#2d4a6a';
+  var splitLineColor = isLightTheme ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.05)';
+  var tooltipBg = isLightTheme ? 'rgba(255, 255, 255, 0.98)' : 'rgba(10, 25, 41, 0.95)';
+  var tooltipBorder = isLightTheme ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 196, 34, 0.3)';
+  var tooltipText = isLightTheme ? '#1a202c' : '#ffffff';
+  var labelLineColor = isLightTheme ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)';
 
   chartPriceTrend.setOption({
     backgroundColor: 'transparent',
@@ -5089,11 +5678,11 @@
     },
     tooltip: {
       trigger: 'axis',
-      backgroundColor: 'rgba(10, 25, 41, 0.95)',
-      borderColor: 'rgba(255, 196, 34, 0.3)',
+      backgroundColor: tooltipBg,
+      borderColor: tooltipBorder,
       borderWidth: 1,
       textStyle: {
-        color: '#ffffff',
+        color: tooltipText,
         fontSize: 12
       },
       formatter: function(params) {
@@ -5163,12 +5752,12 @@
         type: 'line',
         data: [899900, 899900, 929900, 929900, 929900, 929900],
         lineStyle: {
-          color: '#666',
+          color: isLightTheme ? '#94a3b8' : '#666',
           type: 'dashed',
           width: 2
         },
         itemStyle: {
-          color: '#666'
+          color: isLightTheme ? '#94a3b8' : '#666'
         },
         symbol: 'circle',
         symbolSize: 6,
@@ -5200,7 +5789,7 @@
         smooth: true,
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(255, 196, 34, 0.25)' },
+            { offset: 0, color: isLightTheme ? 'rgba(255, 196, 34, 0.15)' : 'rgba(255, 196, 34, 0.25)' },
             { offset: 1, color: 'rgba(255, 196, 34, 0)' }
           ])
         }
@@ -5249,11 +5838,11 @@
     },
     tooltip: {
       trigger: 'axis',
-      backgroundColor: 'rgba(10, 25, 41, 0.95)',
-      borderColor: 'rgba(255, 196, 34, 0.3)',
+      backgroundColor: tooltipBg,
+      borderColor: tooltipBorder,
       borderWidth: 1,
       textStyle: {
-        color: '#ffffff',
+        color: tooltipText,
         fontSize: 12
       },
       formatter: function(params) {
@@ -5353,11 +5942,11 @@
     backgroundColor: 'transparent',
     tooltip: {
       trigger: 'item',
-      backgroundColor: 'rgba(10, 25, 41, 0.95)',
-      borderColor: 'rgba(255, 196, 34, 0.3)',
+      backgroundColor: tooltipBg,
+      borderColor: tooltipBorder,
       borderWidth: 1,
       textStyle: {
-        color: '#ffffff',
+        color: tooltipText,
         fontSize: 12
       },
       formatter: '{b}: <b>${c}</b> ({d}%)'
@@ -5371,7 +5960,7 @@
         avoidLabelOverlap: false,
         itemStyle: {
           borderRadius: 6,
-          borderColor: '#fff',
+          borderColor: isLightTheme ? '#f8f9fb' : '#fff',
           borderWidth: 3
         },
         label: {
@@ -5385,7 +5974,7 @@
         labelLine: {
           show: true,
           lineStyle: {
-            color: 'rgba(255, 255, 255, 0.3)'
+            color: labelLineColor
           }
         },
         data: [
