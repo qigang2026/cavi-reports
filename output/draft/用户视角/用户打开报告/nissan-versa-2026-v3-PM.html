@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nissan Versa 2026 — 购车解读报告 | AUTOCAVA · CAVI · 燃油版 v3.0</title>
+  <meta name="description" content="百公里油耗 5.32 L · 118 hp · 466 L 后备厢 · 参考价 $309,990 MXN 起。CAVA 3.14/5。">
+  <meta name="theme-color" content="#0a1929">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:title" content="Nissan Versa 2026 — 购车解读报告 | AUTOCAVA">
+  <meta property="og:description" content="百公里油耗 5.32 L · 118 hp · 466 L 后备厢 · 参考价 $309,990 MXN 起。CAVA 3.14/5。">
+  <meta property="og:type" content="product">
+  <meta property="og:site_name" content="AutoCava · México">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+
+  <style>
+    :root {
+      --navy: #0a1929;
+      --navy-2: #11233a;
+      --navy-3: #1a2e4a;
+      --navy-4: #243b55;
+      --navy-light: #2d4a6a;
+      --amber: #d4a41a;
+      --amber-light: #ffe27a;
+      --amber-dark: #b8921a;
+      --amber-soft: rgba(255, 196, 34, 0.1);
+      --green: #16a34a;
+      --green-soft: rgba(22, 163, 74, 0.08);
+      --blue: #2563eb;
+      --blue-soft: rgba(37, 99, 235, 0.08);
+      --purple: #7c3aed;
+      --purple-soft: rgba(124, 58, 237, 0.08);
+      --orange: #ea580c;
+      --orange-soft: rgba(234, 88, 12, 0.08);
+      --red: #d03b3b;
+      --red-soft: rgba(208, 59, 59, 0.08);
+      --bg-primary: #ffffff;
+      --bg-secondary: #f7f8fa;
+      --bg-tertiary: #eef0f4;
+      --bg-card: #ffffff;
+      --bg-card-alt: #f7f8fa;
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --text-dark: #1a1a2e;
+      --text-dark-secondary: rgba(26, 26, 46, 0.7);
+      --border-default: #e2e8f0;
+      --border-hover: #cbd5e0;
+      --border-amber: rgba(212, 164, 26, 0.4);
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-xl: 10px;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+      --space-3xl: 64px;
+      --font-sans: "Inter", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-mono: "Chakra Petch", "Inter", sans-serif;
+      --text-xs: 0.75rem;
+      --text-sm: 0.8125rem;
+      --text-base: 0.9375rem;
+      --text-lg: 1.0625rem;
+      --text-xl: 1.25rem;
+      --text-2xl: 1.5rem;
+      --text-3xl: 2rem;
+      --text-4xl: 2.5rem;
+      --text-5xl: 3.25rem;
+      --block-green: #059669;
+      --block-blue: #1E40AF;
+      --block-purple: #D97706;
+      --block-orange: #E11D48;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font-sans); background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; font-size: var(--text-base); overflow-x: hidden; padding-bottom: 80px; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; }
+    .mono { font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.02em; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 var(--space-xl); }
+
+    .glass-card { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .glass-card-light { background: var(--bg-card-alt); border: 1px solid var(--border-light); border-radius: var(--radius-md); }
+
+    .site-header { position: sticky; top: 0; z-index: 100; background: #ffffff; border-bottom: 1px solid var(--border-default); }
+    .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .site-header .logo img { height: 24px; }
+    .site-nav { display: flex; gap: var(--space-xs); }
+    .site-nav a { font-size: var(--text-sm); color: var(--text-secondary); font-weight: 500; padding: var(--space-sm) var(--space-md); border-radius: var(--radius-sm); }
+    .site-nav a:hover { color: var(--text-primary); background: var(--bg-secondary); }
+    .site-header .right { display: flex; align-items: center; gap: var(--space-md); font-size: var(--text-xs); color: var(--text-muted); }
+
+    .freshness { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: var(--radius-sm); font-size: var(--text-xs); font-weight: 500; border: 1px solid var(--border-default); background: var(--bg-secondary); }
+    .freshness.warn { color: var(--amber-dark); background: var(--amber-soft); border-color: var(--border-amber); }
+    .freshness .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    .share-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-sm); color: var(--text-secondary); font-size: var(--text-xs); font-weight: 500; }
+    .share-btn:hover { background: var(--bg-tertiary); }
+
+    .hero { padding: var(--space-2xl) 0 var(--space-3xl); background: var(--bg-secondary); position: relative; overflow: hidden; }
+    .hero-tags { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xl); }
+    .hero-tag { display: inline-block; padding: 4px 10px; background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-sm); color: var(--text-secondary); font-size: var(--text-xs); font-weight: 500; }
+    .report-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; margin-bottom: var(--space-lg); background: var(--amber-soft); border: 1px solid var(--border-amber); border-radius: var(--radius-md); }
+    .report-badge .badge-text { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+    .value-props-intro { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-xl); }
+    .value-props-intro .hl { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background: var(--amber); color: var(--navy); border-radius: 4px; font-weight: 700; font-size: 12px; margin: 0 4px; vertical-align: middle; }
+    .value-props-intro .vp-money { color: #e67e22; font-weight: 700; font-size: 1.05em; }
+    .value-props-intro .vp-safe { color: #27ae60; font-weight: 700; font-size: 1.05em; }
+    .value-props-intro .vp-time { color: #2980b9; font-weight: 700; font-size: 1.05em; }
+    .value-props-intro .vp-risk { color: #8e44ad; font-weight: 700; font-size: 1.05em; }
+
+    .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-3xl); align-items: center; }
+    .hero .kicker { display: inline-block; font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 600; color: var(--amber-dark); letter-spacing: 0.04em; margin-bottom: var(--space-md); text-transform: uppercase; }
+    .hero h1 { font-size: var(--text-4xl); line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; margin-bottom: var(--space-lg); color: var(--text-dark); }
+    .hero h1 .hl { color: var(--amber-dark); position: relative; }
+    .hero h1 .hl::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background: var(--amber-dark); opacity: 0.3; }
+    .hero .lede { color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7; margin-bottom: var(--space-lg); max-width: 560px; }
+    .hero-conclusion { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md) var(--space-lg); border-left: 3px solid var(--amber-dark); background: var(--amber-soft); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: var(--space-lg); max-width: 560px; }
+    .hero-conclusion .lbl { font-size: var(--text-xs); color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+    .hero-conclusion .t { font-size: var(--text-base); font-weight: 500; color: var(--text-dark); }
+
+    .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); padding: var(--space-lg) 0; border-top: 1px solid var(--border-default); border-bottom: 1px solid var(--border-default); }
+    .row-3 .item { font-size: var(--text-xs); color: var(--text-secondary); text-align: center; padding: var(--space-md); background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-sm); }
+    .row-3 .item b { display: block; color: var(--text-dark); font-weight: 600; font-size: var(--text-base); margin-top: var(--space-xs); }
+    .row-3 .item b .unit { color: var(--text-muted); font-size: var(--text-xs); font-weight: 400; margin-left: 2px; }
+
+    .hero-visual { position: relative; display: flex; align-items: center; justify-content: center; min-height: 360px; }
+    .hero-visual .car-img { width: 100%; max-width: 520px; filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15)); position: relative; z-index: 1; }
+    .hero-score { position: absolute; right: var(--space-lg); top: -10px; width: 100px; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg-card); border: 2px solid var(--border-light); border-radius: var(--radius-md); color: var(--text-dark); box-shadow: var(--shadow-sm); z-index: 3; }
+    .hero-score .v { font-family: var(--font-mono); font-size: 36px; font-weight: 700; line-height: 1; }
+    .hero-score .l { font-size: 9px; font-weight: 600; letter-spacing: 0.1em; margin-top: 2px; }
+    .hero-score .r { font-size: 8px; opacity: 0.7; margin-top: 2px; }
+
+    .section { padding: var(--space-2xl) 0; border-top: 1px solid var(--border-default); scroll-margin-top: 56px; background: var(--bg-primary); }
+    .section:first-of-type { border-top: 0; }
+    .section.section-light { background: var(--bg-secondary); }
+
+    .block-tag { display: inline-flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-xl); padding: 10px 18px; border-radius: var(--radius-md); border: 1px solid; }
+    .block-tag.green { background: var(--green-soft); border-color: rgba(22, 163, 74, 0.25); }
+    .block-tag.blue { background: var(--blue-soft); border-color: rgba(37, 99, 235, 0.25); }
+    .block-tag.purple { background: var(--purple-soft); border-color: rgba(124, 58, 237, 0.25); }
+    .block-tag.orange { background: var(--orange-soft); border-color: rgba(234, 88, 12, 0.25); }
+    .block-tag .lbl { font-size: var(--text-sm); letter-spacing: 0.08em; font-weight: 600; color: var(--text-dark); }
+    .block-tag .lbl .highlight { font-weight: 700; letter-spacing: 0.12em; }
+    .block-tag.green .lbl .highlight { color: var(--block-green); }
+    .block-tag.blue .lbl .highlight { color: var(--block-blue); }
+    .block-tag.purple .lbl .highlight { color: var(--block-purple); }
+    .block-tag.orange .lbl .highlight { color: var(--block-orange); }
+
+    .sec-tag { display: inline-flex; align-items: center; gap: var(--space-sm); font-size: 10px; letter-spacing: 0.16em; font-weight: 600; color: var(--amber-dark); text-transform: uppercase; margin-bottom: var(--space-md); }
+    .sec-title { font-size: var(--text-2xl); font-weight: 700; line-height: 1.25; margin-bottom: var(--space-md); letter-spacing: -0.01em; color: var(--text-dark); }
+    .sec-num { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--amber-dark); margin-right: var(--space-md); background: var(--amber-soft); padding: 4px 10px; border-radius: var(--radius-sm); vertical-align: middle; }
+    .sec-sub { color: var(--text-secondary); font-size: var(--text-base); margin-bottom: var(--space-xl); }
+
+    .so-what { background: var(--amber-soft); border: 1px solid var(--border-amber); border-left: 3px solid var(--amber-dark); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 14px 18px; margin: 20px 0 28px; }
+    .so-what .lbl { display: block; font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber-dark); font-weight: 600; margin-bottom: 6px; }
+    .so-what p { font-size: var(--text-base); line-height: 1.6; color: var(--text-dark); margin: 0; }
+    .so-what strong { color: var(--amber-dark); font-weight: 600; }
+
+    .block-divider { display: flex; align-items: center; gap: var(--space-lg); margin: var(--space-2xl) 0 var(--space-xl); }
+    .block-divider .line { flex: 1; height: 1px; background: var(--border-default); }
+    .block-divider .badge { font-family: var(--font-mono); font-size: 10px; font-weight: 600; padding: 4px 12px; border-radius: var(--radius-sm); letter-spacing: 0.06em; }
+    .block-divider.green .badge { background: var(--green-soft); color: var(--block-green); border: 1px solid rgba(22, 163, 74, 0.2); }
+    .block-divider.blue .badge { background: var(--blue-soft); color: var(--block-blue); border: 1px solid rgba(37, 99, 235, 0.2); }
+    .block-divider.purple .badge { background: var(--purple-soft); color: var(--block-purple); border: 1px solid rgba(124, 58, 237, 0.2); }
+    .block-divider.orange .badge { background: var(--orange-soft); color: var(--block-orange); border: 1px solid rgba(234, 88, 12, 0.2); }
+
+    .block-cta { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); padding: var(--space-lg) var(--space-xl); background: var(--amber-soft); border: 1px solid var(--border-amber); border-radius: var(--radius-md); margin-top: var(--space-xl); }
+    .block-cta .msg .title { font-size: var(--text-base); font-weight: 600; color: var(--text-dark); margin-bottom: var(--space-xs); }
+    .block-cta .msg .sub { font-size: var(--text-sm); color: var(--text-secondary); }
+    .block-cta .btn { display: inline-flex; align-items: center; gap: var(--space-sm); padding: 10px 18px; background: var(--bg-card); color: var(--text-dark); border: 1px solid var(--border-default); border-radius: var(--radius-sm); font-size: var(--text-sm); font-weight: 500; }
+
+    /* 板块一：价格 */
+    .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
+    .price-card { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-lg); box-shadow: var(--shadow-sm); }
+    .price-card.dark { background: var(--bg-card-alt); }
+    .price-card.light { background: #fff; border: 1px solid var(--border-light); }
+    .price-card .h { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-md); }
+    .price-card .h .logo { width: 28px; height: 28px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: var(--text-xs); font-weight: 600; color: #fff; }
+    .price-card .h .logo.bj { background: var(--green); }
+    .price-card .h .logo.zx { background: #004481; }
+    .price-card .h .brand { font-size: var(--text-sm); color: var(--text-dark); font-weight: 600; }
+    .price-card .h .policy { font-size: var(--text-xs); color: var(--text-muted); margin-left: var(--space-sm); }
+    .price-card .price { font-family: var(--font-mono); font-size: 28px; font-weight: 700; color: var(--text-dark); line-height: 1; margin-bottom: var(--space-xs); }
+    .price-card .price small { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-left: 4px; }
+    .price-card .sub { color: var(--text-muted); font-size: var(--text-xs); margin-bottom: var(--space-md); }
+    .price-card .rows { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm) var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--border-default); }
+    .price-card .row { display: flex; justify-content: space-between; font-size: var(--text-xs); }
+    .price-card .row .k { color: var(--text-muted); }
+    .price-card .row .v { color: var(--text-dark); font-family: var(--font-mono); }
+    .price-card .full-tag { display: block; font-size: var(--text-xs); color: var(--amber-dark); margin-top: var(--space-xs); font-weight: 500; }
+    .price-card .note { font-size: var(--text-xs); color: var(--text-muted); margin-top: var(--space-md); line-height: 1.6; }
+
+    /* 用车成本 */
+    .cost-hero-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-md); margin-bottom: var(--space-lg); align-items: stretch; }
+    .cost-hero-row .main { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-xl); display: flex; flex-direction: column; justify-content: center; }
+    .cost-hero-row .main .lbl { font-size: var(--text-xs); color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+    .cost-hero-row .main .v { font-family: var(--font-mono); font-size: 42px; font-weight: 700; color: var(--text-dark); line-height: 1; margin-bottom: var(--space-md); }
+    .cost-hero-row .main .v small { font-size: 14px; color: var(--text-muted); font-weight: 400; margin-left: var(--space-sm); }
+    .cost-hero-row .main .sub { font-size: var(--text-xs); color: var(--text-muted); margin-top: var(--space-sm); line-height: 1.6; }
+    .cost-hero-row .formula { display: flex; align-items: center; gap: var(--space-md); background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-lg) var(--space-xl); }
+    .cost-hero-row .f-item { flex: 1; text-align: center; }
+    .cost-hero-row .f-lbl { font-size: var(--text-xs); color: var(--text-muted); margin-bottom: var(--space-xs); }
+    .cost-hero-row .f-v { font-family: var(--font-mono); font-size: 18px; font-weight: 600; color: var(--text-dark); }
+    .cost-hero-row .f-op { font-size: 18px; color: var(--text-muted); font-weight: 500; }
+
+    .cost-cards-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin-bottom: var(--space-lg); }
+    .cost-card { border-radius: var(--radius-md); padding: var(--space-lg); box-shadow: var(--shadow-sm); }
+    .cost-card.dark { background: var(--bg-card-alt); color: var(--text-dark); border: 1px solid var(--border-default); }
+    .cost-card.light { background: #fff; color: var(--text-dark); border: 1px solid var(--border-light); }
+    .cost-card.amber { background: var(--amber-soft); color: var(--text-dark); border: 1px solid var(--border-amber); }
+    .cost-card .lbl { font-size: var(--text-xs); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-sm); opacity: 0.7; }
+    .cost-card .v { font-family: var(--font-mono); font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: var(--space-sm); }
+    .cost-card .v small { font-size: 12px; font-weight: 400; margin-left: 4px; opacity: 0.65; }
+    .cost-card .note { font-size: var(--text-xs); line-height: 1.6; opacity: 0.7; }
+
+    .cost-cells-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md); }
+    .cost-cell { border-radius: var(--radius-md); padding: var(--space-md); box-shadow: var(--shadow-sm); }
+    .cost-cell.amber { background: var(--amber-soft); color: var(--text-dark); border: 1px solid var(--border-amber); }
+    .cost-cell.light { background: #fff; color: var(--text-dark); border: 1px solid var(--border-light); }
+    .cost-cell .lbl { font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: var(--space-xs); opacity: 0.65; }
+    .cost-cell .v { font-family: var(--font-mono); font-size: 22px; font-weight: 700; line-height: 1.1; margin-bottom: var(--space-sm); }
+    .cost-cell .v small { font-size: 11px; font-weight: 400; margin-left: 4px; opacity: 0.7; }
+    .cost-cell .note { font-size: 10px; line-height: 1.5; opacity: 0.65; }
+
+    .yearly-cost-row { display: flex; align-items: center; gap: var(--space-md); margin-top: var(--space-lg); padding: var(--space-md) var(--space-xl); background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-default); overflow-x: auto; }
+    .yearly-cost-row .lbl { font-size: var(--text-xs); color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
+    .yearly-cost-row .years { display: flex; gap: var(--space-md); flex-wrap: wrap; font-size: var(--text-xs); color: var(--text-secondary); }
+    .yearly-cost-row .years span { white-space: nowrap; padding: var(--space-sm) var(--space-md); background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-sm); }
+    .yearly-cost-row .years b { color: var(--amber-dark); margin-right: var(--space-xs); font-weight: 600; }
+    .yearly-cost-row .years .total { background: var(--amber-soft); border: 1px solid var(--border-amber); }
+
+    /* 用户口碑 */
+    .cavi-grid { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: var(--space-lg); }
+    .cavi-score { background: var(--amber-soft); border: 1px solid var(--border-amber); border-radius: var(--radius-md); padding: var(--space-xl); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .cavi-score .lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+    .cavi-score .v { font-family: var(--font-mono); font-size: 56px; font-weight: 700; line-height: 1; margin: var(--space-sm) 0; }
+    .cavi-score .v small { font-size: 20px; opacity: 0.6; font-weight: 500; }
+    .cavi-score .bar { width: 100%; height: 4px; background: var(--border-default); border-radius: 2px; overflow: hidden; margin: var(--space-md) 0; }
+    .cavi-score .bar i { display: block; height: 100%; background: var(--amber-dark); width: 63%; border-radius: 2px; }
+    .cavi-score .meta { font-size: var(--text-xs); opacity: 0.7; text-align: center; }
+    .cavi-rec { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-xl); display: flex; flex-direction: column; justify-content: center; }
+    .cavi-rec .top { display: flex; align-items: baseline; gap: var(--space-md); margin-bottom: var(--space-md); }
+    .cavi-rec .top .label { font-size: var(--text-xs); color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .cavi-rec .top .score { font-family: var(--font-mono); font-size: var(--text-lg); color: var(--amber-dark); font-weight: 600; }
+    .cavi-rec h3 { font-size: var(--text-xl); font-weight: 700; margin-bottom: var(--space-md); line-height: 1.3; color: var(--text-dark); }
+    .cavi-rec p { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; }
+
+    .cavi-dims { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin-top: var(--space-lg); }
+    .cavi-dim { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-lg); }
+    .cavi-dim .dim-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber-dark); margin-bottom: var(--space-sm); }
+    .cavi-dim .dim-title { font-size: var(--text-base); font-weight: 600; color: var(--text-dark); line-height: 1.35; margin-bottom: var(--space-sm); }
+    .cavi-dim .dim-text { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6; }
+
+    /* 质保 2x2 */
+    .highlight-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md); }
+    .highlight-item { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-md); display: flex; align-items: flex-start; gap: var(--space-md); }
+    .highlight-item .ic { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--amber-soft); border: 1px solid var(--border-amber); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 600; color: var(--text-dark); }
+    .highlight-item .body .t { font-size: var(--text-sm); font-weight: 600; margin-bottom: var(--space-xs); color: var(--text-dark); }
+    .highlight-item .body .s { font-size: var(--text-xs); color: var(--amber-dark); font-weight: 500; }
+    .highlight-item .body .note { font-size: 10px; color: var(--text-muted); margin-top: var(--space-xs); line-height: 1.4; }
+
+    .benefits-list { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: var(--space-lg); }
+    .benefit-item { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-md); background: var(--bg-secondary); border-radius: var(--radius-sm); border: 1px solid var(--border-light); }
+    .benefit-item .bn { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--amber-dark); font-weight: 500; }
+    .benefit-item .bt { font-size: var(--text-base); font-weight: 600; color: var(--text-dark); }
+    .benefit-item .bd { font-size: var(--text-xs); color: var(--text-muted); }
+
+    .service-banner { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: var(--space-xl); align-items: center; background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-xl); margin-top: var(--space-lg); }
+    .service-banner .sb-left { text-align: center; }
+    .service-banner .sb-left .lbl { font-size: var(--text-xs); color: var(--text-muted); margin-bottom: var(--space-xs); }
+    .service-banner .sb-left .big { font-family: var(--font-mono); font-size: 48px; font-weight: 700; color: var(--text-dark); line-height: 1; }
+    .service-banner .sb-left .sub { font-size: var(--text-xs); color: var(--text-muted); margin-top: var(--space-xs); }
+    .service-banner .sb-center .t { font-size: var(--text-base); font-weight: 600; margin-bottom: var(--space-sm); color: var(--text-dark); }
+    .service-banner .sb-center .cities { font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-sm); }
+    .service-banner .sb-center .note { font-size: var(--text-xs); color: var(--text-muted); }
+    .service-banner .btn-banner { display: inline-block; padding: 10px 16px; border: 1px solid var(--border-default); color: var(--text-dark); border-radius: var(--radius-sm); font-size: var(--text-sm); font-weight: 500; background: var(--bg-card); }
+
+    /* 适用场景 */
+    .judge-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-md); margin-top: var(--space-lg); }
+    .judge-card { background: var(--bg-card); border-top: 3px solid var(--amber-dark); border-radius: var(--radius-sm); padding: var(--space-md); }
+    .judge-card.strong { border-top-color: var(--amber-dark); background: var(--amber-soft); }
+    .judge-card.conditional { border-top-color: #c5cdd9; }
+    .judge-card.weak { border-top-color: #8a93a6; }
+    .judge-card .tag { font-size: 10px; color: var(--amber-dark); letter-spacing: 0.1em; font-weight: 600; margin-bottom: var(--space-sm); }
+    .judge-card.conditional .tag, .judge-card.weak .tag { color: var(--text-muted); }
+    .judge-card .t { font-size: var(--text-sm); font-weight: 600; color: var(--text-dark); margin-bottom: var(--space-sm); line-height: 1.35; }
+    .judge-card .d { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.5; }
+
+    /* 竞品 */
+    .comp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); align-items: stretch; }
+    .comp { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-lg) var(--space-md) var(--space-md); position: relative; display: flex; flex-direction: column; }
+    .comp.dark { background: var(--bg-card-alt); }
+    .comp.light { background: #fff; border: 1px solid var(--border-light); }
+    .comp .badge { position: absolute; top: -10px; left: var(--space-lg); background: var(--amber-soft); color: var(--text-dark); border: 1px solid var(--border-amber); font-size: 10px; font-weight: 600; padding: 4px 12px; border-radius: var(--radius-sm); }
+    .comp .car { background: var(--bg-secondary); border-radius: var(--radius-sm); height: 160px; display: flex; align-items: center; justify-content: center; margin: var(--space-md) 0 var(--space-lg); overflow: hidden; }
+    .comp .car img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .comp .brand { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.08em; color: var(--text-muted); }
+    .comp .model { font-family: var(--font-mono); font-size: 32px; font-weight: 700; line-height: 1.1; margin: var(--space-xs) 0 var(--space-md); color: var(--text-dark); }
+    .comp .price { font-family: var(--font-mono); font-size: var(--text-base); font-weight: 600; color: var(--text-dark); }
+    .comp .price small { display: block; font-family: var(--font-sans); font-size: var(--text-xs); font-weight: 400; margin-top: var(--space-xs); color: var(--text-muted); }
+    .comp .suit { margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--border-light); }
+    .comp .suit-lbl { font-size: var(--text-xs); letter-spacing: 0.1em; margin-bottom: var(--space-sm); font-weight: 600; color: var(--text-muted); }
+    .comp .suit-txt { font-size: var(--text-xs); line-height: 1.6; color: var(--text-secondary); }
+    .comp .strengths, .comp .cautions { margin-top: var(--space-md); padding: var(--space-md); border-radius: var(--radius-sm); }
+    .comp .strengths { background: var(--amber-soft); border: 1px solid var(--border-amber); }
+    .comp .strengths-title, .comp .cautions-title { font-size: var(--text-xs); font-weight: 600; margin-bottom: var(--space-sm); }
+    .comp .strengths-title { color: var(--amber-dark); }
+    .comp .strengths ul, .comp .cautions ul { list-style: none; padding: 0; margin: 0; }
+    .comp .strengths li, .comp .cautions li { font-size: var(--text-xs); line-height: 1.55; padding: var(--space-xs) 0 var(--space-xs) var(--space-md); position: relative; color: var(--text-secondary); }
+    .comp .strengths li::before, .comp .cautions li::before { content: ''; position: absolute; left: 0; top: 12px; width: 4px; height: 4px; border-radius: 50%; background: var(--amber-dark); }
+    .comp .cautions { background: var(--bg-secondary); border: 1px solid var(--border-light); }
+    .comp .cautions-title { color: var(--text-muted); }
+    .comp .cautions li::before { background: var(--text-muted); }
+    .comp .comp-link { display: block; margin-top: var(--space-md); font-size: var(--text-xs); color: var(--text-secondary); }
+
+    /* 核心卖点 stats row */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border-default); border-radius: var(--radius-md); background: var(--bg-card); margin-bottom: var(--space-xl); overflow: hidden; }
+    .stats-row .stat { padding: var(--space-xl); border-right: 1px solid var(--border-default); }
+    .stats-row .stat:last-child { border-right: 0; }
+    .stats-row .stat .num { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); margin-bottom: var(--space-sm); }
+    .stats-row .stat .k { font-size: var(--text-sm); color: var(--text-dark); font-weight: 500; margin-bottom: var(--space-md); }
+    .stats-row .stat .v { font-family: var(--font-mono); font-size: 36px; font-weight: 700; color: var(--text-dark); line-height: 1; margin-bottom: var(--space-md); }
+    .stats-row .stat .v small { font-size: 14px; color: var(--text-muted); font-weight: 400; margin-left: 4px; }
+    .stats-row .stat .note { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.5; }
+
+    .lifestyle-split { display: grid; grid-template-columns: 1.1fr 1fr; background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-md); overflow: hidden; min-height: 300px; }
+    .lifestyle-split .img { background-size: cover; background-position: center; min-height: 300px; }
+    .lifestyle-split .copy { padding: var(--space-xl); display: flex; flex-direction: column; justify-content: center; background: var(--bg-card); }
+    .lifestyle-split .copy .kicker { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--amber-dark); margin-bottom: var(--space-md); }
+    .lifestyle-split .copy h3 { font-size: var(--text-xl); font-weight: 700; line-height: 1.3; margin-bottom: var(--space-md); color: var(--text-dark); }
+    .lifestyle-split .copy h3 em { font-style: italic; font-weight: 500; color: var(--amber-dark); }
+    .lifestyle-split .copy p { color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.7; }
+
+    /* 避坑 */
+    .pitfall-list { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-top: var(--space-lg); }
+    .pitfall-card { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-lg); border-left: 3px solid var(--amber-dark); }
+    .pitfall-card .icon { color: var(--amber-dark); margin-bottom: var(--space-md); }
+    .pitfall-card .t { font-size: var(--text-sm); font-weight: 600; color: var(--text-dark); margin-bottom: var(--space-sm); }
+    .pitfall-card .d { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6; }
+    .pitfall-card .tip { margin-top: var(--space-md); padding: var(--space-sm) var(--space-md); background: var(--amber-soft); border-radius: var(--radius-sm); font-size: var(--text-xs); color: var(--text-dark); border: 1px solid var(--border-amber); }
+    .pitfall-card .tip strong { color: var(--amber-dark); font-weight: 600; }
+
+    .pitfall-summary { margin-top: var(--space-lg); padding: var(--space-lg); background: var(--orange-soft); border: 1px solid rgba(234, 88, 12, 0.2); border-radius: var(--radius-md); }
+    .pitfall-summary .title { font-size: var(--text-sm); font-weight: 600; color: var(--text-dark); margin-bottom: var(--space-sm); }
+    .pitfall-summary .d { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; }
+    .pitfall-summary .d strong { color: var(--amber-dark); }
+
+    /* CTA */
+    .cta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
+    .cta { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-xl) var(--space-lg); display: flex; flex-direction: column; color: var(--text-dark); }
+    .cta:hover { background: var(--bg-secondary); }
+    .cta .num { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600; color: var(--amber-dark); margin-bottom: var(--space-md); }
+    .cta .t { font-size: var(--text-lg); font-weight: 600; margin-bottom: var(--space-sm); color: var(--text-dark); }
+    .cta .s { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6; flex: 1; margin-bottom: var(--space-lg); }
+    .cta .arrow { color: var(--text-muted); font-size: var(--text-sm); }
+
+    /* Charts */
+    .chart-canvas { height: 280px; width: 100%; }
+    .chart-wrapper { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-lg); margin: var(--space-lg) 0; }
+    .chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-md); }
+    .chart-title { font-size: var(--text-sm); font-weight: 600; color: var(--text-dark); }
+    .chart-badge { font-size: var(--text-xs); font-weight: 500; padding: 4px 10px; border-radius: var(--radius-sm); }
+    .chart-badge.warn { background: var(--amber-soft); color: var(--amber-dark); }
+    .chart-badge.low { background: var(--green-soft); color: var(--green); }
+    .chart-source { font-size: 10px; color: var(--text-muted); margin-top: var(--space-md); }
+
+    .price-compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-top: var(--space-md); }
+    .price-compare-card { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: var(--space-lg); }
+    .price-compare-card.highlight { background: var(--amber-soft); border-color: var(--border-amber); }
+    .price-compare-card .lbl { font-size: var(--text-xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--space-sm); }
+    .price-compare-card .v { font-family: var(--font-mono); font-size: 28px; font-weight: 700; color: var(--text-dark); line-height: 1; }
+    .price-compare-card .sub { font-size: var(--text-xs); color: var(--text-muted); margin-top: var(--space-xs); }
+
+    .site-footer { border-top: 1px solid var(--border-default); padding: var(--space-xl) 0 var(--space-2xl); color: var(--text-muted); font-size: var(--text-xs); line-height: 1.7; background: var(--bg-secondary); }
+    .site-footer .container { display: flex; justify-content: space-between; gap: var(--space-xl); }
+    .site-footer a { color: var(--text-secondary); }
+
+    .cavi-fab { position: fixed; right: var(--space-lg); top: 72px; z-index: 90; }
+    .cavi-btn { width: 48px; height: 48px; border-radius: var(--radius-md); background: var(--bg-secondary); border: 1px solid var(--border-default); display: flex; align-items: center; justify-content: center; color: var(--text-dark); font-family: var(--font-mono); font-size: 16px; font-weight: 600; box-shadow: var(--shadow-md); }
+    .cavi-popup { position: absolute; right: 0; top: 60px; width: 320px; background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); padding: var(--space-md); }
+    .cavi-popup[hidden] { display: none; }
+    .cavi-close { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border: none; background: transparent; font-size: 24px; line-height: 1; color: var(--text-muted); cursor: pointer; }
+    .cavi-head { font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-md); line-height: 1.5; padding-right: var(--space-xl); }
+    .cavi-head strong { color: var(--text-dark); font-size: 16px; font-weight: 600; margin-right: 4px; }
+    .cavi-list { display: flex; flex-direction: column; gap: var(--space-sm); margin-bottom: var(--space-md); }
+    .cavi-card { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-sm) var(--space-md); background: var(--bg-secondary); border-radius: var(--radius-sm); }
+    .cavi-card-img { width: 64px; height: 44px; object-fit: contain; background: var(--bg-card); border-radius: var(--radius-sm); padding: 4px; flex-shrink: 0; border: 1px solid var(--border-light); }
+    .cavi-card-info { flex: 1; min-width: 0; }
+    .cavi-card-name { font-size: var(--text-sm); font-weight: 600; margin-bottom: 2px; }
+    .cavi-card-price { font-size: var(--text-xs); color: var(--text-muted); font-family: var(--font-mono); }
+    .cavi-cta { display: block; text-align: center; padding: var(--space-md) var(--space-lg); background: var(--amber-soft); color: var(--text-dark); border: 1px solid var(--border-amber); border-radius: var(--radius-sm); font-size: var(--text-sm); font-weight: 600; }
+
+    .fab-wa { display: none; }
+
+    .header-title-h5 { display: none; }
+
+    @media (max-width: 768px) {
+      body { font-size: 16px; padding-bottom: 90px; }
+      .container { max-width: 720px; padding: 0 var(--space-md); }
+      .site-header .container { height: 48px; }
+      .site-header .logo img { height: 22px; }
+      .site-nav, .site-header .report-date { display: none; }
+      .header-title-h5 { display: block; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0; font-size: 15px; font-weight: 700; color: #3a2c1a; letter-spacing: 0.04em; white-space: nowrap; pointer-events: none; }
+      .share-btn { width: 36px; height: 36px; padding: 0; justify-content: center; }
+      .share-btn span { display: none; }
+      .hero { padding: var(--space-xl) 0 var(--space-2xl); }
+      .hero-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+      .hero h1 { font-size: var(--text-3xl); }
+      .hero-visual { min-height: 240px; order: -1; }
+      .hero-score { width: 88px; height: 88px; right: var(--space-sm); top: -10px; }
+      .hero-score .v { font-size: 28px; }
+      .row-3 { grid-template-columns: repeat(3, 1fr); gap: var(--space-sm); }
+      .row-3 .item { font-size: 10px; padding: var(--space-sm); }
+      .hero-conclusion { flex-direction: column; align-items: flex-start; gap: var(--space-sm); padding: var(--space-md); }
+      .price-grid { grid-template-columns: 1fr; }
+      .cost-hero-row { grid-template-columns: 1fr; }
+      .cost-cards-row { grid-template-columns: 1fr; }
+      .cost-cells-row { grid-template-columns: 1fr; }
+      .cavi-grid { grid-template-columns: 1fr; }
+      .cavi-dims { grid-template-columns: 1fr; }
+      .highlight-grid { grid-template-columns: 1fr; }
+      .benefits-list { grid-template-columns: 1fr; }
+      .service-banner { grid-template-columns: 1fr; }
+      .judge-row { display: flex; overflow-x: auto; padding: var(--space-xs) var(--space-md) var(--space-md); margin: var(--space-xl) calc(-1 * var(--space-md)); scroll-snap-type: x mandatory; }
+      .judge-card { flex: 0 0 220px; scroll-snap-align: start; }
+      .comp-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stats-row .stat { border-right: 0; border-bottom: 1px solid var(--border-default); }
+      .lifestyle-split { grid-template-columns: 1fr; }
+      .lifestyle-split .img { min-height: 200px; }
+      .pitfall-list { grid-template-columns: 1fr; }
+      .cta-grid { grid-template-columns: 1fr; }
+      .price-compare-row { grid-template-columns: 1fr; }
+      .yearly-cost-row .years { flex-wrap: nowrap; overflow-x: auto; }
+      .yearly-cost-row .years > span { flex: 0 0 auto; }
+      .block-cta { flex-direction: column; align-items: flex-start; padding: var(--space-lg) var(--space-md); }
+      .block-cta .btn { width: 100%; justify-content: center; }
+      .site-footer .container { flex-direction: column; }
+      .fab-wa { display: flex; position: fixed; bottom: 16px; right: 16px; width: 56px; height: 56px; border-radius: 50%; background: #25D366; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 99; }
+      .fab-wa svg { fill: #fff; width: 32px; height: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="https://www.autocava.com.mx" aria-label="AutoCava 首页">
+      <img src="https://cdn.autocava.com.mx/_nuxt/asset/logo.v3.mLItLIXo.svg" alt="AUTOCAVA">
+    </a>
+    <h1 class="header-title-h5">购车解读报告</h1>
+    <nav class="site-nav">
+      <a href="#block1">省钱</a>
+      <a href="#block2">安心</a>
+      <a href="#block3">省时</a>
+      <a href="#block4">避坑</a>
+      <a href="#contacto">咨询</a>
+    </nav>
+    <div class="right">
+      <a class="freshness warn" id="freshness" href="#">
+        <span class="dot"></span>
+        <span class="txt">数据将在 7 天后过期</span>
+      </a>
+      <button class="share-btn" type="button">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <span>分享</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-tags">
+      <span class="hero-tag">紧凑型 Sedán</span>
+      <span class="hero-tag">墨西哥市场</span>
+      <span class="hero-tag">燃油 · 标准报告</span>
+      <a class="freshness warn"><span class="dot"></span><span class="txt">数据将在 7 天后过期</span></a>
+    </div>
+
+    <div class="report-badge">
+      <span class="badge-icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+      </span>
+      <span class="badge-text">NISSAN / VERSA 车辆解读报告</span>
+    </div>
+
+    <p class="value-props-intro">这份报告，帮你看清 <span class="hl">4</span> 件事：<span class="vp-money">省多少钱</span>、<span class="vp-safe">买得是否安心</span>、<span class="vp-time">决策是否省时</span>、<span class="vp-risk">有哪些坑要避</span>。</p>
+
+    <div class="hero-grid">
+      <div>
+        <div class="kicker">NISSAN / VERSA</div>
+        <h1>实用至上<br>城市通勤<span class="hl">均衡之选</span></h1>
+        <p class="lede">Versa 是 Nissan 在墨西哥市场的入门级轿车，主打空间实用性、低使用成本与日常通勤便利性。购车时应结合家庭出行需求、用车频率与金融服务覆盖综合判断。</p>
+        <div class="hero-conclusion">
+          <div class="lbl">一句话结论</div>
+          <div class="t">实用至上，城市通勤与家庭入门用车的均衡之选</div>
+        </div>
+        <div class="row-3">
+          <div class="item">百公里油耗<b>5.32<span class="unit">L/100km</span></b></div>
+          <div class="item">最大功率<b>118<span class="unit">hp</span></b></div>
+          <div class="item">装载空间<b>466<span class="unit">L</span></b></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-score">
+          <span class="l">CAVA SCORE</span>
+          <span class="v">3.14</span>
+          <span class="r">/ 5</span>
+        </div>
+        <img class="car-img" src="https://cdn.autocava.com.mx/car/serial/wg/bf0245ac0cec45028c0028296c380987.jpg" alt="Nissan Versa 2026" loading="eager">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Block 1: 帮我省钱 -->
+<section class="section section-light" id="block1">
+  <div class="container">
+    <div class="block-tag green">
+      <span class="lbl"><span class="highlight">帮我省钱</span> · 金融方案与用车成本算账</span>
+    </div>
+
+    <h2 class="sec-title"><span class="sec-num">01</span> 金融与购车方案</h2>
+    <p class="sec-sub">先确认车价，再根据申请条件与月度预算选择方案。以下展示两项当前金融产品，方便比较适用人群、月供与期限。</p>
+
+    <div class="so-what">
+      <span class="lbl">结论</span>
+      <p>促销价 <strong>$309,990 MXN</strong> 起（较官方指导价节省 <strong>$64,910</strong>）。MStar 灵活审批适合各类申请人，BBVA 透明利率月供 <strong>$4,242</strong> 更低。</p>
+    </div>
+
+    <div class="price-grid">
+      <div class="price-card dark">
+        <div class="h"><span class="brand">当前促销参考价</span></div>
+        <div class="price">$309,990<small>MXN 起</small></div>
+        <span class="full-tag">SENSE BASE MT 2026 · 较官方价省 $64,910</span>
+        <div class="note">价格、库存和审批结果以最终方案为准。</div>
+      </div>
+
+      <div class="price-card light">
+        <div class="h">
+          <div class="logo bj">M</div>
+          <div><span class="brand">MStar</span><span class="policy">灵活审批方案</span></div>
+        </div>
+        <div class="price">$4,588<small>/月</small></div>
+        <div class="sub">Sin comprobantes flexible · 适合各类申请人</div>
+        <div class="rows">
+          <div class="row"><span class="k">首付</span><span class="v">30% · $92,997</span></div>
+          <div class="row"><span class="k">期限</span><span class="v">72 期</span></div>
+          <div class="row"><span class="k">参考年利率</span><span class="v">以审批结果为准</span></div>
+          <div class="row"><span class="k">融资额</span><span class="v">$216,993</span></div>
+        </div>
+        <div class="note">无需收入证明，资料要求相对宽松，适合希望简化申请流程的用户。</div>
+      </div>
+
+      <div class="price-card light">
+        <div class="h">
+          <div class="logo zx">BB</div>
+          <div><span class="brand">BBVA</span><span class="policy">透明利率方案</span></div>
+        </div>
+        <div class="price">$4,242<small>/月</small></div>
+        <div class="sub">Tasa transparente competitiva · 适合企业主与受薪人士</div>
+        <div class="rows">
+          <div class="row"><span class="k">首付</span><span class="v">30% · $92,997</span></div>
+          <div class="row"><span class="k">期限</span><span class="v">72 期</span></div>
+          <div class="row"><span class="k">参考年利率</span><span class="v">以审批结果为准</span></div>
+          <div class="row"><span class="k">融资额</span><span class="v">$216,993</span></div>
+        </div>
+        <div class="note">月供透明且具有竞争力，适合收入稳定的企业主与受薪人士。</div>
+      </div>
+    </div>
+
+    <div class="block-cta">
+      <div class="msg"><div class="title">想知道哪种方案最适合你的情况？</div><div class="sub">联系销售，提供你的具体情况，获取专属金融建议</div></div>
+      <a class="btn" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.6 6.3A7.85 7.85 0 0 0 12 4a7.9 7.9 0 0 0-6.74 12.04L4 20l4.07-1.21A7.9 7.9 0 0 0 12 19.9a7.9 7.9 0 0 0 7.9-7.9 7.85 7.85 0 0 0-2.3-5.7z"/></svg>
+        获取专属金融方案
+      </a>
+    </div>
+
+    <div class="block-divider green"><div class="line"></div><span class="badge">继续算账 ↓</span><div class="line"></div></div>
+
+    <h2 class="sec-title"><span class="sec-num">02</span> 全生命周期用车成本</h2>
+    <p class="sec-sub">以下按每年 15,000 km 估算燃油成本，并同时呈现计划保养费用。保险、停车、轮胎、事故维修与车辆折旧不包含在内。</p>
+
+    <div class="so-what">
+      <span class="lbl">结论</span>
+      <p>全年基础使用成本约 <strong>$25,416 MXN</strong>（$2,118/月）。Versa 5.32 L/100km 的低油耗让日常能源开支可控，10 年保养合计约 <strong>$65,320</strong>。</p>
+    </div>
+
+    <div class="cost-hero-row">
+      <div class="main">
+        <div class="lbl">全年基础使用成本</div>
+        <div class="v">$25,416<small> 约 $2,118 / 月</small></div>
+        <div class="sub">这是用于日常预算的基础汇总，不包含保险、停车、轮胎、维修和车辆折旧。</div>
+      </div>
+      <div class="formula">
+        <div class="f-item"><div class="f-lbl">年度燃油费</div><div class="f-v">$18,884</div></div>
+        <span class="f-op">+</span>
+        <div class="f-item"><div class="f-lbl">年度计划保养</div><div class="f-v">$6,532</div></div>
+        <span class="f-op">=</span>
+        <div class="f-item"><div class="f-lbl">全年合计</div><div class="f-v">$25,416</div></div>
+      </div>
+    </div>
+
+    <div class="cost-cards-row">
+      <div class="cost-card dark">
+        <div class="lbl">Versa 年油费估算</div>
+        <div class="v">$18,884<small> / 年</small></div>
+        <div class="note">5.32 L/100 km · Regular 汽油按 $23.68 / L</div>
+      </div>
+      <div class="cost-card light">
+        <div class="lbl">前 5 年年均保养</div>
+        <div class="v">$6,642<small> / 年</small></div>
+        <div class="note">5 年计划保养合计 $33,210 除以五</div>
+      </div>
+      <div class="cost-card amber">
+        <div class="lbl">每月使用成本</div>
+        <div class="v">$2,118<small> / 月</small></div>
+        <div class="note">含燃油与保养的全年合计除以 12 月，用于日常预算参考。</div>
+      </div>
+    </div>
+
+    <div class="cost-cells-row">
+      <div class="cost-cell amber">
+        <div class="lbl">年均计划保养成本</div>
+        <div class="v">$6,532<small> · 约 $544 / 月</small></div>
+        <div class="note">按 10 年保养周期平均，实际支出将根据服务项目与到店时间发生。</div>
+      </div>
+      <div class="cost-cell light">
+        <div class="lbl">前 5 年年均保养成本</div>
+        <div class="v">$6,642<small> / 年</small></div>
+        <div class="note">前五年计划保养合计除以五；实际支出按到期年份发生。</div>
+      </div>
+      <div class="cost-cell light">
+        <div class="lbl">5 年计划保养标价合计</div>
+        <div class="v">$33,210<small> · 官方价目</small></div>
+        <div class="note">Nissan México 官方 2026 价目表，前 5 年保养总成本参考。</div>
+      </div>
+      <div class="cost-cell light">
+        <div class="lbl">10 年保养合计</div>
+        <div class="v">$65,320<small> · 完整生命周期</small></div>
+        <div class="note">不包含事故维修、非计划更换和耗材类项目。</div>
+      </div>
+    </div>
+
+    <div class="yearly-cost-row">
+      <div class="lbl">10 年计划保养序列 (MXN)</div>
+      <div class="years">
+        <span><b>第1年</b> $6,200</span>
+        <span><b>第2年</b> $7,305</span>
+        <span><b>第3年</b> $6,200</span>
+        <span><b>第4年</b> $6,200</span>
+        <span><b>第5年</b> $7,305</span>
+        <span><b>第6年</b> $6,200</span>
+        <span><b>第7年</b> $6,200</span>
+        <span><b>第8年</b> $7,305</span>
+        <span><b>第9年</b> $6,200</span>
+        <span><b>第10年</b> $6,200</span>
+        <span class="total"><b>合计</b> $65,320</span>
+      </div>
+    </div>
+
+    <div class="chart-wrapper">
+      <div class="chart-header">
+        <span class="chart-title">Versa 近 6 个月价格走势</span>
+        <span class="chart-badge low">促销优惠持续</span>
+      </div>
+      <div class="chart-canvas" id="chartPriceTrend"></div>
+      <p class="chart-source">数据来源：AutoCava 平台 price_history（mock · 2026-03 ~ 2026-08）</p>
+    </div>
+
+    <div class="price-compare-row">
+      <div class="price-compare-card highlight">
+        <div class="lbl">现在买 vs 官方指导价</div>
+        <div class="v">$64,910</div>
+        <div class="sub">节省 · 较 $374,900 官方指导价</div>
+      </div>
+      <div class="price-compare-card">
+        <div class="lbl">现在买 vs 6 月均价</div>
+        <div class="v">$10,000</div>
+        <div class="sub">节省 · 较 $319,990 月均促销价</div>
+      </div>
+    </div>
+
+    <div class="block-cta">
+      <div class="msg"><div class="title">想了解你的具体用车成本能省多少？</div><div class="sub">联系销售，根据你的年行驶里程定制算账方案</div></div>
+      <a class="btn" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F" target="_blank" rel="noopener">联系 WhatsApp 销售</a>
+    </div>
+  </div>
+</section>
+
+<!-- Block 2: 让我安心 -->
+<section class="section" id="block2">
+  <div class="container">
+    <div class="block-tag blue">
+      <span class="lbl"><span class="highlight">让我安心</span> · 品质口碑与售后保障</span>
+    </div>
+
+    <h2 class="sec-title"><span class="sec-num">03</span> 用户口碑评价</h2>
+    <p class="sec-sub">基于 Autocava 真实用户评论 · 综合评分 3.14/5 · Sedán 销量榜 No.1（INEGI）</p>
+
+    <div class="so-what">
+      <span class="lbl">结论</span>
+      <p>CAVA <strong>3.14/5</strong>（1,331 位车主）。车主认可空间实用性、日常通勤便利性与低使用成本，主要关注动力表现与内饰质感。</p>
+    </div>
+
+    <div class="cavi-grid">
+      <div class="cavi-score">
+        <div class="lbl">CAVA 综合口碑分</div>
+        <div class="v">3.14<small>/5</small></div>
+        <div class="bar"><i style="width: 63%;"></i></div>
+        <div class="meta">1,331 位车主参与评价</div>
+      </div>
+      <div class="cavi-rec">
+        <div class="top"><span class="label">口碑结论</span><span class="score">CAVA 指数</span></div>
+        <h3>实用至上，城市通勤与家庭入门用车的均衡之选</h3>
+        <p>Versa 是 Nissan 在墨西哥市场的入门级轿车，主打空间实用性、低使用成本与日常通勤便利性。</p>
+      </div>
+    </div>
+
+    <div class="cavi-dims">
+      <div class="cavi-dim">
+        <div class="dim-tag">主要认可</div>
+        <div class="dim-title">空间宽敞，乘坐舒适</div>
+        <div class="dim-text">后排腿部空间与后备厢容积在同级别中具备优势，三口之家短途出行无压力。</div>
+      </div>
+      <div class="cavi-dim">
+        <div class="dim-tag">更适合</div>
+        <div class="dim-title">城市通勤与家庭日常</div>
+        <div class="dim-text">作为第一台车或日常代步工具，使用成本低、维保便利。</div>
+      </div>
+      <div class="cavi-dim">
+        <div class="dim-tag">需要关注</div>
+        <div class="dim-title">动力与高速表现</div>
+        <div class="dim-text">1.6L 自然吸气发动机在高速超车或满载爬坡时略显吃力。</div>
+      </div>
+    </div>
+
+    <div class="block-divider blue"><div class="line"></div><span class="badge">再看售后保障 ↓</span><div class="line"></div></div>
+
+    <h2 class="sec-title"><span class="sec-num">04</span> 购车保障与服务覆盖</h2>
+    <p class="sec-sub">整车 + 动力总成 + 服务网络 · Autocava 担保可追溯</p>
+
+    <div class="so-what">
+      <span class="lbl">结论</span>
+      <p>整车 <strong>3 年/10 万 km</strong>，动力总成 <strong>5 年/10 万 km</strong>。Nissan 在墨西哥经销商网络覆盖 8 个主要都会区域，售后便利性优秀。</p>
+    </div>
+
+    <div class="highlight-grid">
+      <div class="highlight-item">
+        <div class="ic">A</div>
+        <div class="body">
+          <div class="t">整车质保</div>
+          <div class="s">3 年 / 100,000 km</div>
+          <div class="note">时间或里程以先到者为准</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="ic">B</div>
+        <div class="body">
+          <div class="t">动力总成</div>
+          <div class="s">5 年 / 100,000 km</div>
+          <div class="note">发动机与变速箱额外保障</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="ic">C</div>
+        <div class="body">
+          <div class="t">车身锈蚀</div>
+          <div class="s">5 年 / 不限里程</div>
+          <div class="note">以 Nissan México 官方质保政策适用范围为准</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="ic">D</div>
+        <div class="body">
+          <div class="t">道路救援</div>
+          <div class="s">3 年 · 全国 · 24/7</div>
+          <div class="note">Nissan ASSIST 道路救助</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size: var(--text-base); color: var(--text-dark); margin: var(--space-xl) 0 var(--space-md); font-weight: 600;">当前购车权益</h3>
+    <div class="benefits-list">
+      <div class="benefit-item">
+        <span class="bn">01</span>
+        <div class="bt">限时促销优惠</div>
+        <div class="bd">促销价较官方指导价节省 $64,910 MXN（约 17.3% 折扣）</div>
+      </div>
+      <div class="benefit-item">
+        <span class="bn">02</span>
+        <div class="bt">低使用成本</div>
+        <div class="bd">按 15,000 km/年计算，年度平均使用成本约 $25,416 MXN</div>
+      </div>
+    </div>
+
+    <div class="service-banner">
+      <div class="sb-left">
+        <div class="lbl">服务网点</div>
+        <div class="big">8</div>
+        <div class="sub">个经销商及服务点</div>
+      </div>
+      <div class="sb-center">
+        <div class="t">覆盖 8 个主要都会区域</div>
+        <div class="cities">CDMX · Estado de México · Guadalajara · Monterrey · Puebla · Querétaro · León · Cancún</div>
+        <div class="note">Nissan 在墨西哥经销商网络覆盖广泛，全国主要城市均有服务点。</div>
+      </div>
+      <div class="sb-right">
+        <a class="btn-banner" href="https://www.autocava.com.mx/service?seriesId=356">查看附近网点 ↗</a>
+      </div>
+    </div>
+
+    <div class="block-cta">
+      <div class="msg"><div class="title">对售后保障还有疑问？</div><div class="sub">联系销售，详细了解质保条款、服务网点覆盖和当前权益</div></div>
+      <a class="btn" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F" target="_blank" rel="noopener">咨询销售顾问</a>
+    </div>
+  </div>
+</section>
+
+<!-- Block 3: 助我省时 -->
+<section class="section section-light" id="block3">
+  <div class="container">
+    <div class="block-tag purple">
+      <span class="lbl"><span class="highlight">助我省时</span> · 快速决策与竞品对比</span>
+    </div>
+
+    <h2 class="sec-title"><span class="sec-num">05</span> 它是否适合你？</h2>
+    <p class="sec-sub">先看你的日常，再看参数。帮助你在 30 秒内判断 Versa 是否匹配你的用车场景。</p>
+
+    <div class="so-what">
+      <span class="lbl">结论</span>
+      <p>适合：城市通勤代步 + 家庭首台车 + 实用派买家。不适合：追求动力性能 + 长途高速为主 + 内饰质感要求高。</p>
+    </div>
+
+    <div class="judge-row">
+      <div class="judge-card"><div class="tag">适用场景</div><div class="t">看你的日常用车模式</div></div>
+      <div class="judge-card strong">
+        <div class="tag">非常适合</div>
+        <div class="t">城市通勤代步</div>
+        <div class="d">1.6L + 手动挡在市区走走停停场景下油耗友好，维保成本低。</div>
+      </div>
+      <div class="judge-card strong">
+        <div class="tag">非常适合</div>
+        <div class="t">家庭首台车</div>
+        <div class="d">后排空间与后备厢容积在紧凑型轿车中具备优势，适合三口之家。</div>
+      </div>
+      <div class="judge-card conditional">
+        <div class="tag">视情况</div>
+        <div class="t">长途高速出行</div>
+        <div class="d">高速油耗略高于综合工况，且 1.6L 发动机在满载爬坡时略显吃力。</div>
+      </div>
+      <div class="judge-card weak">
+        <div class="tag">需考虑</div>
+        <div class="t">追求动力性能</div>
+        <div class="d">自然吸气 + 5MT 动力输出偏温和，对动力有要求的用户建议试驾后再决定。</div>
+      </div>
+    </div>
+
+    <div class="block-divider purple"><div class="line"></div><span class="badge">横向对比 ↓</span><div class="line"></div></div>
+
+    <h2 class="sec-title"><span class="sec-num">06</span> 主要竞品怎么选</h2>
+    <p class="sec-sub">从价格、产品取向和使用条件出发，对比 Versa 与主要非中国品牌紧凑型轿车。没有绝对最好的车型，关键是优势是否匹配你的真实需求。</p>
+
+    <div class="so-what">
+      <span class="lbl">结论</span>
+      <p>相比 Yaris Sedán / Accent，Versa 的核心优势是 <strong>空间实用 + Nissan 全国经销商覆盖</strong>。适合看重维保便利与低使用成本的买家。</p>
+    </div>
+
+    <div class="comp-grid">
+      <div class="comp dark">
+        <span class="badge">本车系</span>
+        <div class="car"><img src="https://cdn.autocava.com.mx/series/white/0250.png" alt="Nissan Versa" loading="lazy"></div>
+        <div class="brand">Nissan</div>
+        <div class="model">VERSA</div>
+        <div class="price">$309,990 – $406,990<small> · 参考月供 $5,162 起</small></div>
+        <div class="suit">
+          <div class="suit-lbl">适合谁</div>
+          <div class="suit-txt">城市通勤与家庭首台车用户，看重空间实用性和使用成本的买家。</div>
+        </div>
+        <div class="strengths">
+          <div class="strengths-title">主要优势</div>
+          <ul>
+            <li>后排空间在紧凑型轿车中领先</li>
+            <li>5.32 L/100km 低油耗，使用成本友好</li>
+            <li>Nissan 全国经销商网络覆盖广</li>
+          </ul>
+        </div>
+        <div class="cautions">
+          <div class="cautions-title">需要考虑</div>
+          <ul>
+            <li>1.6L 自然吸气动力偏温和</li>
+            <li>内饰质感较为基础</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="comp light">
+        <span class="badge">同级竞品</span>
+        <div class="car"><img src="https://cdn.autocava.com.mx/series/white/0042.png" alt="Toyota Yaris Sedán" loading="lazy"></div>
+        <div class="brand">Toyota</div>
+        <div class="model">YARIS SEDÁN</div>
+        <div class="price">$339,900 – $415,900<small> · 参考月供 $5,600 起</small></div>
+        <div class="suit">
+          <div class="suit-lbl">适合谁</div>
+          <div class="suit-txt">看重品牌可靠性和长期保值率的买家。</div>
+        </div>
+        <div class="strengths">
+          <div class="strengths-title">主要优势</div>
+          <ul>
+            <li>Toyota 品牌保值率与可靠性口碑</li>
+            <li>1.5L 发动机油耗表现接近</li>
+            <li>Toyota 经销商服务体系成熟</li>
+          </ul>
+        </div>
+        <div class="cautions">
+          <div class="cautions-title">需要考虑</div>
+          <ul>
+            <li>价格区间略高于 Versa</li>
+            <li>后排空间与 Versa 接近但内饰风格更简约</li>
+          </ul>
+        </div>
+        <a class="comp-link" href="https://www.autocava.com.mx/series/toyota-yaris-sedan">查看车系详情 ↗</a>
+      </div>
+
+      <div class="comp light">
+        <span class="badge">同级竞品</span>
+        <div class="car"><img src="https://cdn.autocava.com.mx/series/white/0058.png" alt="Hyundai Accent" loading="lazy"></div>
+        <div class="brand">Hyundai</div>
+        <div class="model">ACCENT</div>
+        <div class="price">$324,900 – $398,900<small> · 参考月供 $5,400 起</small></div>
+        <div class="suit">
+          <div class="suit-lbl">适合谁</div>
+          <div class="suit-txt">看重配置丰富度与舒适性的买家。</div>
+        </div>
+        <div class="strengths">
+          <div class="strengths-title">主要优势</div>
+          <ul>
+            <li>标配配置比 Versa 更丰富</li>
+            <li>1.6L 发动机最大功率略高</li>
+            <li>内饰设计更具现代感</li>
+          </ul>
+        </div>
+        <div class="cautions">
+          <div class="cautions-title">需要考虑</div>
+          <ul>
+            <li>油耗略高于 Versa</li>
+            <li>经销商密度略低于 Nissan</li>
+          </ul>
+        </div>
+        <a class="comp-link" href="https://www.autocava.com.mx/series/hyundai-accent">查看车系详情 ↗</a>
+      </div>
+    </div>
+
+    <div class="block-divider purple"><div class="line"></div><span class="badge">产品参数附录 ↓</span><div class="line"></div></div>
+
+    <h2 class="sec-title"><span class="sec-num">07</span> 核心参数速览</h2>
+    <p class="sec-sub">作为产品硬核参数的补充附录，帮助你在决策时快速查阅。</p>
+
+    <div class="so-what">
+      <span class="lbl">结论</span>
+      <p>核心亮点：<strong>1.6L</strong> 自吸 + <strong>118 hp</strong> + <strong>5MT</strong> + <strong>466 L</strong> 后备厢 + <strong>3 年/10 万 km</strong> 整车质保。墨西哥制造。</p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="num">01</div>
+        <div class="k">百公里油耗</div>
+        <div class="v">5.32<small>L/100km</small></div>
+        <div class="note">综合工况油耗，城市通勤友好</div>
+      </div>
+      <div class="stat">
+        <div class="num">02</div>
+        <div class="k">最大功率</div>
+        <div class="v">118<small>hp</small></div>
+        <div class="note">1.6L 自然吸气发动机，城市通勤足够</div>
+      </div>
+      <div class="stat">
+        <div class="num">03</div>
+        <div class="k">后排空间</div>
+        <div class="v">充裕<small></small></div>
+        <div class="note">紧凑型轿车中腿部空间领先</div>
+      </div>
+      <div class="stat">
+        <div class="num">04</div>
+        <div class="k">整车质保</div>
+        <div class="v">3<small>年 / 10 万 km</small></div>
+        <div class="note">时间或里程以先到者为准</div>
+      </div>
+    </div>
+
+    <div class="lifestyle-split">
+      <div class="img" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200');"></div>
+      <div class="copy">
+        <div class="kicker">466 L 后备厢</div>
+        <h3>空间价值不是参数，是家庭出行时<em>少做取舍</em></h3>
+        <p>后排腿部空间在紧凑型轿车中领先，三口之家短途出行无压力。日常装载与长途出行都能从容应对。</p>
+      </div>
+    </div>
+
+    <div class="block-cta">
+      <div class="msg"><div class="title">看完对比，还是纠结选哪款？</div><div class="sub">联系销售，获取针对你需求的详细对比分析和选车建议</div></div>
+      <a class="btn" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F" target="_blank" rel="noopener">快速咨询销售</a>
+    </div>
+  </div>
+</section>
+
+<!-- Block 4: 避坑指南 -->
+<section class="section" id="block4">
+  <div class="container">
+    <div class="block-tag orange">
+      <span class="lbl"><span class="highlight">避坑指南</span> · 购车前必看的 6 个关键提醒</span>
+    </div>
+
+    <h2 class="sec-title"><span class="sec-num">08</span> 购车避坑指南</h2>
+    <p class="sec-sub">在决定购买前，这些关键问题需要你认真考虑。避免冲动决策，确保 Versa 真正适合你的使用场景。</p>
+
+    <div class="so-what">
+      <span class="lbl">结论</span>
+      <p>重点关注：高速油耗、动力表现、内饰质感。确认这 3 点后再决定，避免买后后悔。</p>
+    </div>
+
+    <div class="pitfall-list">
+      <div class="pitfall-card">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 22h12M5 22V8h8v14M9 8V4l3-2 3 2v4M14 8h4l2 3v11h-6"/></svg>
+        </div>
+        <div class="t">高速油耗高于综合工况</div>
+        <div class="d">5.32 L/100km 是综合工况油耗。长途高速行驶时油耗会上升 1-1.5 L/100km，对油耗敏感的用户需注意。</div>
+        <div class="tip"><strong>建议：</strong>结合日常通勤与长途比例估算真实用油成本。</div>
+      </div>
+
+      <div class="pitfall-card">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="t">1.6L 动力在满载爬坡偏弱</div>
+        <div class="d">HR16DE 自然吸气发动机在满载爬坡或高速超车时动力输出偏温和，需要提前规划超车时机。</div>
+        <div class="tip"><strong>建议：</strong>若经常满载出行或长途自驾，建议先试驾体验动力表现。</div>
+      </div>
+
+      <div class="pitfall-card">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+        </div>
+        <div class="t">内饰质感偏基础</div>
+        <div class="d">Versa SENSE BASE MT 定位入门，内饰用料与设计相对朴素，部分车主反馈内饰长时间使用后显旧。</div>
+        <div class="tip"><strong>建议：</strong>对内饰质感有要求的用户，建议到店实际体验。</div>
+      </div>
+
+      <div class="pitfall-card">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="t">金融方案月供≠落地成本</div>
+        <div class="d">月供 $4,242 起不包含保险、手续费、税费等。首付 30% + 月供总额才是真实拥车成本。</div>
+        <div class="tip"><strong>建议：</strong>要求销售提供 TCO（总拥车成本）测算，不只看月供数字。</div>
+      </div>
+
+      <div class="pitfall-card">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="t">手动挡维保成本</div>
+        <div class="d">MT 变速箱结构简单、维保频率低，但离合器片和压盘属于易损件，10 万公里后可能需要更换。</div>
+        <div class="tip"><strong>建议：</strong>考虑长期使用成本，将离合器维护纳入预算。</div>
+      </div>
+
+      <div class="pitfall-card">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="t">紧凑型轿车保值率</div>
+        <div class="d">紧凑型轿车整体保值率受新车降价影响较大，Versa 二手车保值率中等水平。</div>
+        <div class="tip"><strong>建议：</strong>结合换车周期评估，3-5 年内换车建议关注官方回购政策。</div>
+      </div>
+    </div>
+
+    <div class="pitfall-summary">
+      <div class="title">一句话总结：Versa 适合你吗？</div>
+      <div class="d">如果你是<strong>首次购车</strong>，主要用于<strong>城市通勤与家庭日常出行</strong>，且看重<strong>空间实用性和低使用成本</strong>，Versa 是同价位中均衡实用的选择。但如果你追求动力性能、对内饰质感有较高要求，或经常高速满载出行，建议对比同级竞品后再决定。</div>
+    </div>
+
+    <div class="block-cta">
+      <div class="msg"><div class="title">对以上问题还有疑问？</div><div class="sub">联系销售，获取针对你具体情况的购车建议</div></div>
+      <a class="btn" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F" target="_blank" rel="noopener">咨询购车建议</a>
+    </div>
+  </div>
+</section>
+
+<!-- Bottom CTA -->
+<section class="section section-light" id="contacto">
+  <div class="container">
+    <h2 class="sec-title"><span class="sec-num">09</span> 想进一步了解？选择一种方式</h2>
+    <p class="sec-sub">无论是购车方案、试驾体验还是具体问题，我们都会继续协助你。</p>
+
+    <div class="so-what">
+      <span class="lbl">下一步</span>
+      <p>通过 <strong>WhatsApp</strong> 联系销售，获取实时报价、预约试驾或专属金融方案。报告数据有效期 <strong>7 天</strong>，价格可能变动。</p>
+    </div>
+
+    <div class="cta-grid">
+      <a class="cta" href="https://www.autocava.com.mx/finance/apply?sourceType=1&seriesId=356&brandId=49">
+        <div class="num">01</div>
+        <div class="t">获取购车方案</div>
+        <div class="s">了解适合你的价格与金融参考</div>
+        <div class="arrow">填写信息 →</div>
+      </a>
+      <a class="cta" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F" target="_blank" rel="noopener">
+        <div class="num">02</div>
+        <div class="t">WhatsApp 咨询</div>
+        <div class="s">直接联系购车顾问</div>
+        <div class="arrow">打开 WhatsApp →</div>
+      </a>
+      <a class="cta" href="https://www.autocava.com.mx/auto/series/356">
+        <div class="num">03</div>
+        <div class="t">查看车系详情</div>
+        <div class="s">浏览完整的版本与配置</div>
+        <div class="arrow">前往车系页 →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <div class="footer-brand" style="font-weight: 600; margin-bottom: var(--space-sm); color: var(--text-secondary);">AUTOCAVA 数据研究院</div>
+      <div>本报告信息参考 AutoCava 年型数据、Nissan México 官方资料及 Profeco 全国 Regular 汽油参考价。车型配置、价格、金融方案与能源费用可能变化，请以购车及实际使用时的信息为准。</div>
+      <div style="display: flex; gap: var(--space-xl); margin-top: var(--space-md);">
+        <a href="https://www.autocava.com.mx/auto/series/356">车型详情 ↗</a>
+        <a href="https://www.nissan.com.mx">Nissan 官网 ↗</a>
+        <a href="https://www.autocava.com.mx/service?seriesId=356">服务网点 ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp (H5) -->
+<a class="fab-wa" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F" target="_blank" rel="noopener">
+  <svg viewBox="0 0 32 32"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.413.711 4.659 1.937 6.553L4 29l7.646-1.901A11.945 11.945 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16.001 3z"/></svg>
+</a>
+
+<!-- Cavi 悬浮助手 -->
+<div class="cavi-fab">
+  <div class="cavi-popup" id="caviPopup" hidden>
+    <button class="cavi-close" type="button">×</button>
+    <div class="cavi-head"><strong>1,331</strong> 位用户也对比过</div>
+    <div class="cavi-list">
+      <a class="cavi-card" href="https://www.autocava.com.mx/series/toyota-yaris-sedan" target="_blank" rel="noopener">
+        <img class="cavi-card-img" src="https://cdn.autocava.com.mx/series/white/0042.png" alt="Toyota Yaris Sedán" loading="lazy">
+        <div class="cavi-card-info">
+          <div class="cavi-card-name">Toyota YARIS SEDÁN</div>
+          <div class="cavi-card-price">$339,900 – $415,900</div>
+        </div>
+      </a>
+      <a class="cavi-card" href="https://www.autocava.com.mx/series/hyundai-accent" target="_blank" rel="noopener">
+        <img class="cavi-card-img" src="https://cdn.autocava.com.mx/series/white/0058.png" alt="Hyundai Accent" loading="lazy">
+        <div class="cavi-card-info">
+          <div class="cavi-card-name">Hyundai ACCENT</div>
+          <div class="cavi-card-price">$324,900 – $398,900</div>
+        </div>
+      </a>
+    </div>
+    <a class="cavi-cta" href="https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F" target="_blank" rel="noopener">咨询销售对比 →</a>
+  </div>
+  <button class="cavi-btn" type="button"><span>CA</span></button>
+</div>
+
+<script>
+(function() {
+  var caviFab = document.querySelector('.cavi-fab');
+  var caviToggle = document.querySelector('.cavi-btn');
+  var caviPopup = document.getElementById('caviPopup');
+  var caviClose = document.querySelector('.cavi-close');
+
+  if (caviToggle && caviPopup) {
+    caviToggle.addEventListener('click', function() {
+      caviPopup.hidden = !caviPopup.hidden;
+    });
+    if (caviClose) caviClose.addEventListener('click', function(e) { e.stopPropagation(); caviPopup.hidden = true; });
+    document.addEventListener('click', function(e) { if (!caviFab.contains(e.target)) caviPopup.hidden = true; });
+    setTimeout(function() { caviPopup.hidden = false; setTimeout(function() { caviPopup.hidden = true; }, 3000); }, 3000);
+  }
+
+  var chart = echarts.init(document.getElementById('chartPriceTrend'));
+  chart.setOption({
+    backgroundColor: 'transparent',
+    grid: { left: 65, right: 30, top: 40, bottom: 50 },
+    tooltip: { trigger: 'axis' },
+    legend: { data: ['官方指导价', '促销价'], top: 5, textStyle: { fontSize: 11, color: '#4a5568' } },
+    xAxis: { type: 'category', data: ['2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08'], axisLabel: { fontSize: 11, color: '#4a5568' }, axisLine: { lineStyle: { color: '#e2e8f0' } } },
+    yAxis: { type: 'value', min: 280000, max: 400000, axisLabel: { formatter: function(v) { return '$' + (v / 1000) + 'k'; }, fontSize: 11, color: '#4a5568' }, splitLine: { lineStyle: { color: 'rgba(0,0,0,0.06)', type: 'dashed' } } },
+    series: [
+      { name: '官方指导价', type: 'line', data: [374900, 374900, 374900, 374900, 374900, 374900], lineStyle: { color: '#94a3b8', type: 'dashed', width: 2 }, itemStyle: { color: '#94a3b8' }, symbol: 'circle', symbolSize: 6 },
+      { name: '促销价', type: 'line', data: [329900, 329900, 319990, 319990, 309990, 309990], lineStyle: { color: '#d4a41a', width: 3 }, itemStyle: { color: '#d4a41a' }, symbol: 'circle', symbolSize: 8, smooth: true, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(255, 196, 34, 0.15)' }, { offset: 1, color: 'rgba(255, 196, 34, 0)' }]) } }
+    ]
+  });
+  window.addEventListener('resize', function() { chart.resize(); });
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        var offset = target.getBoundingClientRect().top + window.pageYOffset - 70;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

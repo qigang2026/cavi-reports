@@ -1,0 +1,365 @@
+{
+  "_schema_version": "1.1.0",
+  "_source": "https://www.autocava.com.mx/auto/series/356",
+  "_validated_at": "2026-08-31",
+  "_powertrainType": "ICE",
+
+  "report": {
+    "publishDate": "2026-08-30",
+    "expireDays": 7,
+    "dataFreshness": "warn",
+    "daysUntilExpire": 7,
+    "reportType": "标准报告",
+    "hero": {
+      "conclusion": "实用至上，城市通勤与家庭入门用车的均衡之选",
+      "tags": ["紧凑型Sedán", "墨西哥市场", "标准报告"],
+      "description": "Versa 是 Nissan 在墨西哥市场的入门级轿车，主打空间实用性、低使用成本与日常通勤便利性。购车时应结合家庭出行需求、用车频率与金融服务覆盖综合判断。",
+      "coreStats": {
+        "primary": { "key": "百公里油耗", "value": 5.32, "unit": "L/100km" },
+        "secondary": { "key": "最大功率", "value": 118, "unit": "hp" },
+        "tertiary": { "key": "装载空间", "value": 466, "unit": "L" }
+      }
+    }
+  },
+
+  "vehicle": {
+    "brand": "Nissan",
+    "series": "Versa",
+    "model": "SENSE BASE MT 2026",
+    "powertrainType": "ICE",
+    "powertrainLabel": "燃油",
+    "bodyType": "Sedán",
+    "bodyTypeEs": "Sedán compacto",
+    "segment": "Coche compacto",
+    "market": "墨西哥",
+    "yearModel": 2026,
+    "madeIn": "墨西哥",
+
+    "officialImages": {
+      "main": "https://cdn.autocava.com.mx/car/serial/wg/bf0245ac0cec45028c0028296c380987.jpg",
+      "hero": "https://cdn.autocava.com.mx/car/serial/wg/bf0245ac0cec45028c0028296c380987.jpg",
+      "scenario": "https://cdn.autocava.com.mx/car/serial/wg/cbdd078537684c7b9912ce6f93e31b57.jpg",
+      "seriesWhite": "https://cdn.autocava.com.mx/series/white/0250.png"
+    },
+
+    "links": {
+      "series": "https://www.autocava.com.mx/auto/series/356",
+      "model": "https://www.autocava.com.mx/auto/model/4886",
+      "specs": "https://www.autocava.com.mx/auto/parameter-series/356",
+      "finance": "https://www.autocava.com.mx/finance/draft?brandId=49&modelId=4886&seriesId=356&sourceType=1",
+      "lead": "https://www.autocava.com.mx/finance/apply?sourceType=1&seriesId=356&brandId=49",
+      "testDrive": null,
+      "whatsapp": "https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F",
+      "service": "https://www.autocava.com.mx/service?seriesId=356"
+    }
+  },
+
+  "cava": {
+    "score": 3.14,
+    "maxScore": 5,
+    "percentage": 63,
+    "reviewCount": 1331,
+    "summary": "整体是一台偏实用、适合日常通勤和家庭使用的紧凑型轿车，车主普遍认可空间和日常使用便利性，但对动力表现和内饰质感评价相对保守。",
+    "subScores": {
+      "safety": 3.5,
+      "maintenanceSatisfaction": 3.8
+    },
+    "strengths": ["空间", "日常使用", "实用性"],
+    "concerns": ["动力表现", "内饰质感"],
+    "dimensions": [
+      { "tag": "主要认可", "title": "空间宽敞，乘坐舒适", "text": "后排腿部空间与后备厢容积在同级别中具备优势，三口之家短途出行无压力。" },
+      { "tag": "更适合", "title": "城市通勤与家庭日常", "text": "作为第一台车或日常代步工具，使用成本低、维保便利。" },
+      { "tag": "需要关注", "title": "动力与高速表现", "text": "1.6L 自然吸气发动机在高速超车或满载爬坡时略显吃力。" }
+    ],
+    "comparisonCount": 487,
+    "rankingNote": "Ranking Sedán Jul: NO.1 (Fuente: INEGI)"
+  },
+
+  "price": {
+    "currency": "MXN",
+    "officialAmount": 374900,
+    "promotionalAmount": 309990,
+    "discountAmount": 64910,
+    "discountPercentage": 17.3,
+    "priceLevel": "促销优惠显著",
+    "historicalHigh": 470900,
+    "officialPriceRange": "$374,900 - $470,900",
+    "promoPriceRange": "$309,990 - $406,990",
+    "monthlyPaymentFrom": 5162,
+    "comparison": {
+      "vsHistoricalHigh": { "amount": 64910, "note": "较 $470,900 历史最高价" },
+      "vsOfficialPrice": { "amount": 64910, "note": "较官方指导价 $374,900 节省" }
+    }
+  },
+
+  "financePlans": [
+    {
+      "institution": "MStar",
+      "institutionCode": "M",
+      "institutionColor": "green",
+      "institutionLogo": null,
+      "productName": "Sin comprobantes flexible",
+      "productNameEs": "灵活审批方案",
+      "audience": "Todo tipo de perfil",
+      "audienceLabel": "适合各类申请人",
+      "monthlyPayment": 4588,
+      "downPaymentRatio": 30,
+      "downPaymentAmount": 92997,
+      "financingAmount": 216993,
+      "termMonths": 72,
+      "annualInterestRate": null,
+      "description": "无需收入证明的灵活金融方案，资料要求相对宽松。",
+      "ctaLink": "https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F"
+    },
+    {
+      "institution": "BBVA",
+      "institutionCode": "BB",
+      "institutionColor": "blue",
+      "institutionLogo": null,
+      "productName": "Tasa transparente competitiva",
+      "productNameEs": "透明利率方案",
+      "audience": "Empresarios y asalariados",
+      "audienceLabel": "适合企业主与受薪人士",
+      "monthlyPayment": 4242,
+      "downPaymentRatio": 30,
+      "downPaymentAmount": 92997,
+      "financingAmount": 216993,
+      "termMonths": 72,
+      "annualInterestRate": null,
+      "description": "面向企业主和受薪人士的金融方案，月供透明且具有竞争力。",
+      "ctaLink": "https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20Nissan%20Versa%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F"
+    }
+  ],
+
+  "priceTrend": {
+    "months": ["2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08"],
+    "officialPrices": [374900, 374900, 374900, 374900, 374900, 374900],
+    "promotionalPrices": [329900, 329900, 319990, 319990, 309990, 309990],
+    "currentPrice": 309990,
+    "source": "AutoCava 平台 price_history（mock · 2026-03 ~ 2026-08）"
+  },
+
+  "specs": {
+    "powertrain": {
+      "engineDisplacementMl": 1600,
+      "engineDisplacementLabel": "1.6L",
+      "engineModel": "HR16DE",
+      "powerHp": 118,
+      "powerLabel": "118 hp",
+      "torqueLbFt": 110,
+      "fuelType": "Gasolina",
+      "fuelTypeLabel": "汽油",
+      "aspiration": "Aspiración natural",
+      "aspirationLabel": "自然吸气",
+      "cylinderCount": 4,
+      "driveType": "2WD (FWD)",
+      "driveTypeLabel": "前驱",
+      "transmission": "Transmisión manual",
+      "transmissionLabel": "手动",
+      "transmissionGears": 5
+    },
+    "energy": {
+      "rangeKm": null,
+      "fuelConsumptionKmL": 18.81,
+      "fuelConsumptionL100Km": 5.32,
+      "fuelConsumptionNote": "综合工况油耗",
+      "batteryKwh": null,
+      "voltagePlatform": null,
+      "electricConsumptionKwh100Km": null,
+      "tankCapacityL": 41
+    },
+    "dimensions": {
+      "trunkLiters": 466,
+      "trunkLitersExpanded": null,
+      "seats": 5,
+      "doors": 4,
+      "isoFixCount": null,
+      "lengthMm": 4500,
+      "widthMm": 1740,
+      "heightMm": 1470,
+      "wheelbaseMm": 2620,
+      "curbWeightKg": 1110
+    }
+  },
+
+  "stats": [
+    { "code": "01", "key": "百公里油耗", "value": 5.32, "unit": "L/100km", "note": "综合工况，实际油耗受路况与驾驶习惯影响" },
+    { "code": "02", "key": "最大功率", "value": 118, "unit": "hp", "note": "1.6L 自然吸气发动机，城市通勤足够" },
+    { "code": "03", "key": "后排空间", "value": "充裕", "unit": "", "note": "后排腿部空间在紧凑型轿车中处于领先水平" },
+    { "code": "04", "key": "整车质保", "value": "3", "unit": "年 / 60,000 km", "note": "时间或里程以先到者为准" }
+  ],
+
+  "ownershipCost": {
+    "annualDistanceKm": 15000,
+    "energyType": "gasoline",
+    "energyTypeLabel": "燃油",
+    "calculationFormula": "年燃油费 + 年均保养 = 全年基础使用成本",
+
+    "electricity": null,
+
+    "fuel": {
+      "consumptionKmL": 18.81,
+      "consumptionL100Km": 5.32,
+      "gasolinePriceMxnLiter": 23.68,
+      "annualFuelCostMxn": 18884,
+      "formulaNote": "5.32 L/100 km · Regular 汽油按 $23.68 / L"
+    },
+
+    "maintenance": {
+      "annualAverageMaintenanceMxn": 6532,
+      "monthlyAverage": 544,
+      "first5YearAverage": 6642,
+      "first5YearTotal": 33210,
+      "first5YearBenefit": null,
+      "maintenanceSchedule": [
+        { "year": 1, "cost": 6200 },
+        { "year": 2, "cost": 7305 },
+        { "year": 3, "cost": 6200 },
+        { "year": 4, "cost": 6200 },
+        { "year": 5, "cost": 7305 },
+        { "year": 6, "cost": 6200 },
+        { "year": 7, "cost": 6200 },
+        { "year": 8, "cost": 7305 },
+        { "year": 9, "cost": 6200 },
+        { "year": 10, "cost": 6200 }
+      ],
+      "maintenanceSchedule10YearTotal": 65320
+    },
+
+    "annualOperatingCostMxn": 25416,
+    "monthlyOperatingCostMxn": 2118,
+    "annualEnergySavingMxn": null,
+    "annualFuelCostMxn": 18884,
+
+    "comparison": null,
+
+    "soWhat": "全年基础使用成本约 $25,416 MXN（$2,118/月）。Versa 5.32 L/100km 的低油耗让日常能源开支可控，10 年保养合计约 $65,320。",
+
+    "notIncludedItems": ["保险", "停车", "轮胎", "事故维修", "车辆折旧"]
+  },
+
+  "warranty": [
+    { "code": "A", "type": "整车质保", "value": "3 年 / 100,000 km", "note": "时间或里程以先到者为准" },
+    { "code": "B", "type": "动力总成", "value": "5 年 / 100,000 km", "note": "发动机与变速箱额外保障" },
+    { "code": "C", "type": "车身锈蚀", "value": "5 年 / 不限里程", "note": "以 Nissan México 官方质保政策为准" },
+    { "code": "D", "type": "道路救援", "value": "3 年 · 全国 · 24/7", "note": "Nissan ASSIST 道路救助" }
+  ],
+
+  "benefits": [
+    {
+      "code": "01",
+      "title": "限时促销优惠",
+      "amountMxn": 64910,
+      "description": "促销价相比官方指导价优惠 $64,910 MXN，约 17.3% 的折扣",
+      "condition": "限时活动"
+    },
+    {
+      "code": "02",
+      "title": "低使用成本",
+      "amountMxn": 25416,
+      "description": "按 15,000 km/年计算，年度平均使用成本约 $25,416 MXN",
+      "condition": "参考工况"
+    }
+  ],
+
+  "service": {
+    "dealerCount": 8,
+    "coveredCities": ["CDMX", "Estado de México", "Guadalajara", "Monterrey", "Puebla", "Querétaro", "León", "Cancún"],
+    "cityCount": 8,
+    "serviceNote": "Nissan 在墨西哥经销商网络覆盖广泛，全国主要城市均有服务点。",
+    "serviceLink": "https://www.autocava.com.mx/service?seriesId=356"
+  },
+
+  "scenarios": [
+    { "type": "neutral", "label": "适用场景", "title": "看你的日常用车模式", "description": null },
+    { "type": "strong", "label": "非常适合", "title": "城市通勤代步", "description": "1.6L + 手动挡在市区走走停停场景下油耗友好，维保成本低。" },
+    { "type": "strong", "label": "非常适合", "title": "家庭首台车", "description": "后排空间与后备厢容积在紧凑型轿车中具备优势，适合三口之家。" },
+    { "type": "conditional", "label": "视情况", "title": "长途高速出行", "description": "高速油耗略高于综合工况，且 1.6L 发动机在满载爬坡时略显吃力。" },
+    { "type": "weak", "label": "需考虑", "title": "追求动力性能", "description": "自然吸气 + 5MT 动力输出偏温和，对动力有要求的用户建议试驾后再决定。" }
+  ],
+
+  "competitors": [
+    {
+      "position": "本车系", "isTarget": true,
+      "brand": "Nissan", "model": "Versa",
+      "version": "SENSE BASE MT 2026",
+      "priceRange": "$309,990 – $406,990",
+      "monthlyPaymentFrom": 5162,
+      "image": "https://cdn.autocava.com.mx/series/white/0250.png",
+      "suitFor": "城市通勤与家庭首台车用户，看重空间实用性和使用成本的买家。",
+      "strengths": ["后排空间在紧凑型轿车中领先", "5.32 L/100km 低油耗，使用成本友好", "Nissan 全国经销商网络覆盖广"],
+      "cautions": ["1.6L 自然吸气动力偏温和", "内饰质感较为基础"],
+      "link": "https://www.autocava.com.mx/auto/series/356"
+    },
+    {
+      "position": "同级竞品", "isTarget": false,
+      "brand": "Toyota", "model": "Yaris Sedán",
+      "priceRange": "$339,900 – $415,900",
+      "monthlyPaymentFrom": 5600,
+      "image": "https://cdn.autocava.com.mx/series/white/0042.png",
+      "suitFor": "看重品牌可靠性和长期保值率的买家。",
+      "strengths": ["Toyota 品牌保值率与可靠性口碑", "1.5L 发动机油耗表现接近", "Toyota 经销商服务体系成熟"],
+      "cautions": ["价格区间略高于 Versa", "后排空间与 Versa 接近但内饰风格更简约"],
+      "link": "https://www.autocava.com.mx/series/toyota-yaris-sedan"
+    },
+    {
+      "position": "同级竞品", "isTarget": false,
+      "brand": "Hyundai", "model": "Accent",
+      "priceRange": "$324,900 – $398,900",
+      "monthlyPaymentFrom": 5400,
+      "image": "https://cdn.autocava.com.mx/series/white/0058.png",
+      "suitFor": "看重配置丰富度与舒适性的买家。",
+      "strengths": ["标配配置比 Versa 更丰富", "1.6L 发动机最大功率略高", "内饰设计更具现代感"],
+      "cautions": ["油耗略高于 Versa", "经销商密度略低于 Nissan"],
+      "link": "https://www.autocava.com.mx/series/hyundai-accent"
+    }
+  ],
+
+  "pitfalls": [
+    {
+      "icon": "fuel", "title": "高速油耗高于综合工况",
+      "description": "5.32 L/100km 是综合工况油耗。长途高速行驶时油耗会上升 1-1.5 L/100km，对油耗敏感的用户需注意。",
+      "tip": "结合日常通勤与长途比例估算真实用油成本。"
+    },
+    {
+      "icon": "engine", "title": "1.6L 动力在满载爬坡偏弱",
+      "description": "HR16DE 自然吸气发动机在满载爬坡或高速超车时动力输出偏温和，需要提前规划超车时机。",
+      "tip": "若经常满载出行或长途自驾，建议先试驾体验动力表现。"
+    },
+    {
+      "icon": "interior", "title": "内饰质感偏基础",
+      "description": "Versa SENSE BASE MT 定位入门，内饰用料与设计相对朴素，部分车主反馈内饰长时间使用后显旧。",
+      "tip": "对内饰质感有要求的用户，建议到店实际体验。"
+    },
+    {
+      "icon": "dollar", "title": "金融方案月供≠落地成本",
+      "description": "月供 $4,242 起不包含保险、手续费、税费等。首付 30% + 月供总额才是真实拥车成本。",
+      "tip": "要求销售提供 TCO（总拥车成本）测算，不只看月供数字。"
+    },
+    {
+      "icon": "wrench", "title": "手动挡维保成本",
+      "description": "MT 变速箱结构简单、维保频率低，但离合器片和压盘属于易损件，10 万公里后可能需要更换。",
+      "tip": "考虑长期使用成本，将离合器维护纳入预算。"
+    },
+    {
+      "icon": "chart", "title": "紧凑型轿车保值率",
+      "description": "紧凑型轿车整体保值率受新车降价影响较大，Versa 二手车保值率中等水平。",
+      "tip": "结合换车周期评估，3-5 年内换车建议关注官方回购政策。"
+    }
+  ],
+
+  "pitfallSummary": {
+    "title": "Versa 适合你吗？",
+    "content": "如果你是首次购车，主要用于城市通勤与家庭日常出行，且看重空间实用性和低使用成本，Versa 是同价位中均衡实用的选择。但如果你追求动力性能、对内饰质感有较高要求，或经常高速满载出行，建议对比同级竞品后再决定。"
+  },
+
+  "footer": {
+    "brand": "AUTOCAVA 数据研究院",
+    "disclaimer": "本报告信息参考 AutoCava 年型数据、Nissan México 官方资料及 Profeco 全国 Regular 汽油参考价。车型配置、价格、金融方案与能源费用可能变化，请以购车及实际使用时的信息为准。",
+    "links": [
+      { "text": "车型详情", "url": "https://www.autocava.com.mx/auto/series/356" },
+      { "text": "Nissan 官网", "url": "https://www.nissan.com.mx" },
+      { "text": "服务网点", "url": "https://www.autocava.com.mx/service?seriesId=356" }
+    ]
+  }
+}

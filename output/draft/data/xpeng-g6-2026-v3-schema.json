@@ -1,0 +1,312 @@
+{
+  "_schema_version": "1.1.0",
+  "_description": "CAVI 购车解读报告数据结构 v1.1 — 支持 EV/HEV/PHEV/ICE 四种动力类型",
+  "_powertrain_types": ["EV", "HEV", "PHEV", "ICE"],
+  "_compatible_report_versions": ["xpeng-g6-2026-v3-PM.html"],
+  "_validation_url": "https://www.autocava.com.mx/auto/series/356",
+
+  "report": {
+    "publishDate": "2026-08-30",
+    "expireDays": 7,
+    "dataFreshness": "warn",
+    "daysUntilExpire": 7,
+    "reportType": "标准报告",
+    "hero": {
+      "conclusion": "产品力均衡，家充用户的综合价值更突出",
+      "tags": ["纯电中型SUV", "墨西哥市场", "标准报告"],
+      "description": "G6 的价值来自续航、800 V 平台、空间和舒适配置的组合。购车时应把版本价格、当前金融方案、服务覆盖与充电环境一起判断。",
+      "coreStats": {
+        "primary": { "key": "续航里程", "value": 510, "unit": "km", "standard": "CLTC" },
+        "secondary": { "key": "高压平台", "value": 800, "unit": "V" },
+        "tertiary": { "key": "装载空间", "value": 571, "unit": "L" }
+      }
+    }
+  },
+
+  "vehicle": {
+    "brand": "XPENG",
+    "series": "G6",
+    "model": "Performance AWD 2026",
+    "powertrainType": "EV",
+    "powertrainLabel": "纯电",
+    "bodyType": "纯电中型SUV",
+    "bodyTypeEs": "SUV mediano eléctrico",
+    "segment": "中型SUV",
+    "market": "墨西哥",
+    "yearModel": 2026,
+
+    "officialImages": {
+      "main": "https://cdn.autocava.com.mx/car/serial/wg/bf0245ac0cec45028c0028296c380987.jpg",
+      "hero": "https://cdn.autocava.com.mx/img/car/serial/wg/9bb84140cc64449aaa4f860892bb0f4c.jpg",
+      "scenario": null,
+      "seriesWhite": "https://cdn.autocava.com.mx/car/series/6e4dbe1f72814b1c9fb35671fca8332f.png"
+    },
+
+    "links": {
+      "series": "https://www.autocava.com.mx/auto/series/677",
+      "lead": "https://www.autocava.com.mx/finance/apply?sourceType=1&seriesId=677&brandId=25",
+      "testDrive": "https://www.autocava.com.mx/test-drive?seriesId=677",
+      "whatsapp": "https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20XPENG%20G6%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F",
+      "service": "https://www.autocava.com.mx/service?seriesId=677"
+    }
+  },
+
+  "cava": {
+    "score": 4.05,
+    "maxScore": 5,
+    "percentage": 81,
+    "reviewCount": 301,
+    "summary": "产品力均衡，家充用户的综合价值更突出",
+    "subScores": {
+      "safety": 4.6,
+      "maintenanceSatisfaction": 4.0
+    },
+    "strengths": ["续航", "空间", "舒适配置"],
+    "concerns": ["服务网络", "充电条件"],
+    "dimensions": [
+      { "tag": "主要认可", "title": "续航、空间与舒适配置", "text": "作为家庭纯电 SUV，产品组合相对均衡。" },
+      { "tag": "更适合", "title": "具备稳定充电条件", "text": "能够充分发挥便利性与能源成本优势。" },
+      { "tag": "需要关注", "title": "服务半径与权益期限", "text": "购车前建议确认所在城市的网点和活动条件。" }
+    ],
+    "comparisonCount": 487
+  },
+
+  "price": {
+    "currency": "MXN",
+    "officialAmount": 869900,
+    "promotionalAmount": 869900,
+    "discountAmount": 60000,
+    "priceLevel": "近6个月较低位",
+    "historicalHigh": 929900,
+    "comparison": {
+      "vsHistoricalHigh": { "amount": 60000, "note": "较 $929,900 历史最高价" },
+      "vsMonthlyAvg": { "amount": 17820, "monthlyAvg": 887820, "note": "较 $887,820 月均价格" }
+    }
+  },
+
+  "financePlans": [
+    {
+      "institution": "MStar",
+      "institutionCode": "M",
+      "institutionColor": "green",
+      "institutionLogo": null,
+      "productName": "灵活审批方案",
+      "productCode": "Sin comprobantes flexible",
+      "audience": "适合各类申请人",
+      "monthlyPayment": 12873,
+      "downPaymentRatio": 30,
+      "downPaymentAmount": 260970,
+      "financingAmount": 608930,
+      "termMonths": 72,
+      "annualInterestRate": 14.99,
+      "description": "资料要求相对灵活，适合希望简化申请流程、保留现金流的用户。",
+      "ctaLink": "https://wa.me/525527419019?text=Hola%2C%20me%20interesa%3A%20XPENG%20G6%202026.%20%C2%BFMe%20ayudas%20con%20m%C3%A1s%20informaci%C3%B3n%3F"
+    },
+    {
+      "institution": "GRUPO FINANCIERO BANORTE",
+      "institutionCode": "B",
+      "institutionColor": "red",
+      "institutionLogo": null,
+      "productName": "高额度方案",
+      "productCode": "Alto monto crédito",
+      "audience": "适合企业主与受薪人士",
+      "monthlyPayment": 11432,
+      "downPaymentRatio": 30,
+      "downPaymentAmount": 260970,
+      "financingAmount": 608930,
+      "termMonths": 72,
+      "annualInterestRate": null,
+      "description": "月供参考更低，适合收入稳定并希望申请较高融资额度的用户。"
+    }
+  ],
+
+  "priceTrend": {
+    "months": ["2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08"],
+    "officialPrices": [899900, 899900, 929900, 929900, 929900, 929900],
+    "promotionalPrices": [879900, 879900, 909900, 909900, 849900, 869900],
+    "currentPrice": 869900,
+    "source": "AutoCava 平台 price_history（mock · 2026-03 ~ 2026-08）"
+  },
+
+  "specs": {
+    "powertrain": {
+      "engineDisplacementMl": null,
+      "engineModel": null,
+      "powerHp": 487,
+      "torqueLbFt": null,
+      "fuelType": "Electric",
+      "fuelTypeLabel": "纯电",
+      "aspiration": null,
+      "cylinderCount": null,
+      "driveType": "AWD",
+      "transmission": null,
+      "transmissionGears": null
+    },
+    "energy": {
+      "rangeKm": 510,
+      "rangeStandard": "CLTC",
+      "batteryKwh": 80.2,
+      "voltagePlatform": "800 V",
+      "electricConsumptionKwh100Km": 15.7,
+      "chargeTimeNote": "家充约 8 小时充满"
+    },
+    "dimensions": {
+      "trunkLiters": 571,
+      "trunkLitersExpanded": 1374,
+      "seats": 5,
+      "doors": 5,
+      "isoFixCount": 2
+    }
+  },
+
+  "stats": [
+    { "code": "01", "key": "纯电续航", "value": 510, "unit": "km", "note": "当前版本数据：真实续航受路况、气温和驾驶方式影响" },
+    { "code": "02", "key": "最大功率", "value": 487, "unit": "hp", "note": "动力参数不能直接代表日常能耗" },
+    { "code": "03", "key": "电池容量", "value": 80.2, "unit": "kWh", "note": "与补能时间、车辆效率共同影响使用体验" },
+    { "code": "04", "key": "高压平台", "value": 800, "unit": "V", "note": "补能效率是 G6 的重要产品优势" }
+  ],
+
+  "ownershipCost": {
+    "annualDistanceKm": 12000,
+    "energyType": "electricity",
+    "energyTypeLabel": "纯电",
+    "calculationFormula": "年充电费 + 年均保养 = 全年基础使用成本",
+
+    "electricity": {
+      "consumptionKwh100Km": 15.7,
+      "electricityPriceMxnKwh": 2,
+      "annualElectricityCostMxn": 3768,
+      "formulaNote": "15.7 kWh/100 km · 电价按 $2 / kWh"
+    },
+
+    "fuel": {
+      "referenceVehicle": "同级燃油 SUV",
+      "consumptionL100Km": 8,
+      "gasolinePriceMxnLiter": 24,
+      "gasolineType": "Regular",
+      "annualFuelCostMxn": 22733,
+      "formulaNote": "8 L/100 km · Regular 汽油按 $24 / L"
+    },
+
+    "maintenance": {
+      "annualAverageMaintenanceMxn": 3512,
+      "monthlyAverage": 293,
+      "first5YearAverage": 3016,
+      "first5YearTotal": 15080,
+      "first5YearBenefit": "包含",
+      "maintenanceSchedule": [
+        { "year": 1, "cost": 2465 },
+        { "year": 2, "cost": 3285 },
+        { "year": 3, "cost": 2465 },
+        { "year": 4, "cost": 4400 },
+        { "year": 5, "cost": 2465 },
+        { "year": 6, "cost": 7425 },
+        { "year": 7, "cost": 2465 },
+        { "year": 8, "cost": 3285 },
+        { "year": 9, "cost": 2465 },
+        { "year": 10, "cost": 4400 }
+      ],
+      "maintenanceSchedule10YearTotal": 36720
+    },
+
+    "annualOperatingCostMxn": 7280,
+    "monthlyOperatingCostMxn": 607,
+    "annualEnergySavingMxn": 18965,
+
+    "comparison": {
+      "fuelVehicleConsumptionL100Km": 8,
+      "gasolinePriceMxnLiter": 23.68,
+      "annualFuelCostMxn": 22733,
+      "annualEnergySavingMxn": 18965
+    },
+
+    "soWhat": "全年基础使用成本约 $7,280 MXN（$607/月），家充电价优势明显。5 年 TCO 相比同级燃油车节省约 $113,665。",
+
+    "notIncludedItems": ["保险", "停车", "轮胎", "事故维修", "车辆折旧"]
+  },
+
+  "warranty": [
+    { "code": "A", "type": "整车质保", "value": "5 年 / 120,000 km", "note": "时间或里程以先到者为准" },
+    { "code": "B", "type": "高压电池", "value": "8 年 / 160,000 km", "note": "时间或里程以先到者为准" },
+    { "code": "C", "type": "车身锈蚀", "value": "12 年 / 不限里程", "note": "以 XPENG México 官方质保政策适用范围为准" },
+    { "code": "D", "type": "道路救援", "value": "5 年 · 全国 · 24/7", "note": "XPENG XCARE 道路救助" }
+  ],
+
+  "benefits": [
+    { "code": "01", "title": "5 年 / 100,000 km 保养包含", "description": "限时权益 · 首批 100 位符合活动条件的客户", "condition": "满足首批活动条件时" },
+    { "code": "02", "title": "首年 XPENG SHIELD 保险", "description": "限时权益 · 指定金融机构及活动条款适用", "condition": null }
+  ],
+
+  "service": {
+    "dealerCount": 6,
+    "coveredCities": ["CDMX", "Estado de México", "Guadalajara", "Monterrey", "Morelia"],
+    "cityCount": 5,
+    "serviceNote": "覆盖范围持续扩展，建议购车前确认所在城市的网点与售后便利性。",
+    "serviceLink": "https://www.autocava.com.mx/service?seriesId=677"
+  },
+
+  "scenarios": [
+    { "type": "neutral", "label": "适用场景", "title": "先看你的日常，再看参数", "description": null },
+    { "type": "strong", "label": "非常适合", "title": "城市通勤 + 家充", "description": "日常补能方便，能更充分发挥纯电车型的成本与便利优势。" },
+    { "type": "strong", "label": "非常适合", "title": "家庭主力用车", "description": "五座空间、571 L 后备厢和舒适配置适合高频家庭出行。" },
+    { "type": "conditional", "label": "视情况", "title": "跨城与长途", "description": "车辆能力足够，建议权衡认领用路线的快充覆盖。" },
+    { "type": "weak", "label": "需考虑", "title": "没有固定充电条件", "description": "长依赖公共充电会削弱便利性和能源成本优势。" }
+  ],
+
+  "competitors": [
+    {
+      "position": "本车系", "isTarget": true,
+      "brand": "XPENG", "model": "G6",
+      "priceRange": "$869,900", "version": "Performance AWD 2026",
+      "image": "https://cdn.autocava.com.mx/car/series/6e4dbe1f72814b1c9fb35671fca8332f.png",
+      "suitFor": "重视 800 V 补能、配置组合和价格平衡的家庭用户。",
+      "strengths": ["510 km 续航、487 hp 与 800 V 平台组合均衡", "价格低于多数传统品牌高性能纯电 SUV"],
+      "cautions": ["品牌与服务网络仍在扩展", "没有稳定充电条件时优势会减弱"],
+      "link": null
+    },
+    {
+      "position": "同级竞品", "isTarget": false,
+      "brand": "Tesla", "model": "MODEL Y",
+      "priceRange": "$799,000 – $1,129,000", "monthlyPaymentFrom": 13303,
+      "image": "https://cdn.autocava.com.mx/series/white/0430.png",
+      "suitFor": "价格覆盖面最广，适合看重续航选择与成熟智能生态的用户。",
+      "strengths": ["四个 2026 版本可选，续航覆盖 492–575 km", "入门价格低于 G6，版本梯度更完整"],
+      "cautions": ["高配价格明显上探", "座舱与操作逻辑更强调极简，需要适应"],
+      "link": "https://www.autocava.com.mx/series/tesla-model-y"
+    },
+    {
+      "position": "同级竞品", "isTarget": false,
+      "brand": "Kia", "model": "EV6",
+      "priceRange": "$1,174,900 – $1,334,900", "monthlyPaymentFrom": 19562,
+      "image": "https://cdn.autocava.com.mx/series/white/0073.png",
+      "suitFor": "更强调运动设计与高性能版本，适合预算充足、在意驾驶感受的用户。",
+      "strengths": ["GT Line 与 GT 两个版本，动力上限更高", "506 km 续航版本兼顾长途与性能"],
+      "cautions": ["价格与月供明显高于 G6", "当前对比车型为 2024 年款，产品年份较早"],
+      "link": "https://www.autocava.com.mx/series/kia-ev6"
+    }
+  ],
+
+  "pitfalls": [
+    { "icon": "home", "title": "没有固定充电条件？慎选纯电", "description": "依赖公共充电会显著增加时间成本，削弱纯电车型本有的便利性优势。长途出行时尤为明显。", "tip": "确认家充可行性，或评估住所/工作地周边公共快充覆盖密度。" },
+    { "icon": "battery", "title": "续航虚标？别只看 CLTC 数据", "description": "CLTC 510 km 是实验室工况，实际续航受气温、路况、驾驶习惯影响，冬季可能打 7-8 折。", "tip": "参考真实车主能耗反馈，结合通勤距离估算实际可用续航。" },
+    { "icon": "wrench", "title": "服务网点覆盖有限", "description": "XPENG 在墨西哥服务网络仍在扩展，部分城市可能需要跨城送修，影响维保便利性。", "tip": "确认所在城市是否有授权服务点，或了解最近服务距离。" },
+    { "icon": "dollar", "title": "金融方案月供≠落地成本", "description": "低月供可能伴随更长贷款周期，总利息支出更高。首付比例也影响月供数字。", "tip": "要求销售提供 TCO（总拥车成本）测算，不只看月供数字。" },
+    { "icon": "chart", "title": "纯电车型保值率不确定性", "description": "新能源车技术迭代快，电池衰减和车型更新都会影响二手残值，当前缺乏长期保值率数据支撑。", "tip": "结合换车周期综合评估，不建议以\"投资\"逻辑购买。" },
+    { "icon": "bolt", "title": "800V 快充需配合指定充电桩", "description": "800V 高压快充能力需搭配相应功率充电桩才能实现，家用慢充无法发挥这一优势。", "tip": "了解常驻区域快充网络覆盖，XPENG 自建桩或第三方快充站密度。" }
+  ],
+
+  "pitfallSummary": {
+    "title": "G6 适合你吗？",
+    "content": "如果你有固定充电条件，主要用于城市通勤和家庭出行，且预算在 $85-90 万 MXN 区间，G6 是同价位中性价比突出的选择。但如果充电条件不稳定，或对服务网络有强依赖，建议慎重考虑。"
+  },
+
+  "footer": {
+    "brand": "AUTOCAVA 数据研究院",
+    "disclaimer": "本报告信息参考 AutoCava 年型数据、XPENG México 官方资料、CFE 家庭电价场景及 Profeco 全国 Regular 汽油参考价。车型配置、价格、金融方案与能源费用可能变化，请以购车及实际使用时的信息为准。",
+    "links": [
+      { "text": "车型详情", "url": "https://www.autocava.com.mx/series/xpeng-g6-2026" },
+      { "text": "品牌官网", "url": "https://www.xpeng.com" },
+      { "text": "服务网点", "url": "https://www.autocava.com.mx/service?seriesId=677" }
+    ]
+  }
+}
