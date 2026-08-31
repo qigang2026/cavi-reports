@@ -131,7 +131,11 @@ AI 必须根据输入 JSON 中 `powertrainType` 字段判断车型动力类型�
   - **EV**：续航 / 功率 / 电池 / 高压平台
   - **ICE**：排量 / 功率 / 油耗 / 油箱容量
   - **HEV/PHEV**：纯电续航 / 综合功率 / 电池 + 综合油耗
-- 生活方式分割（图文并茂）
+- 生活方式分割（图文并茂）：
+  - **图片源：必须从 `https://cdn.autocava.com.mx/car/serial/wg/` 或 `https://cdn.autocava.com.mx/car/series/` 取车型实拍图（透明背景白底图优先）**
+  - ❌ **严禁使用 Unsplash / Pexels / Picsum / 任何第三方图库**
+  - ❌ **严禁编造图 URL**（如 `https://example.com/car.jpg`）
+  - ✅ 图缺失时**留白 + 标注 `[图片来源：需 PM 补充该车型实拍图]`**
 
 ### 板块 5：避坑指南（#block4，橙色主题）
 - 6 个避坑卡片（按动力类型动态选择）：
@@ -173,6 +177,10 @@ AI 必须根据输入 JSON 中 `powertrainType` 字段判断车型动力类型�
 5. **不使用**：花哨渐变、卡通图标、互联网模板化设计。
 6. **金融机构 Logo**：白底区域展示，保持原始比例，不拉伸。
 7. **车型图片**：透明背景车系图优先（`https://cdn.autocava.com.mx/car/series/*.png`）。
+   - Hero 大图用 `https://cdn.autocava.com.mx/car/serial/wg/{hash}.jpg`
+   - lifestyle-split 图文用 `https://cdn.autocava.com.mx/car/series/{hash}.png` 或 hero 图
+   - ❌ **严禁 Unsplash / Pexels / Picsum 等任何第三方图库**（违反数据真实性 P0 规则）
+   - ✅ 图缺失时留白标注 `[图片来源：需 PM 补充]`
 8. **响应式**：H5（max-width: 768px）所有多列卡片自动变单列。
 9. **图片 alt**：所有图片必须包含 alt 属性。
 10. **外链**：外部链接使用 `target="_blank" rel="noopener"`。
