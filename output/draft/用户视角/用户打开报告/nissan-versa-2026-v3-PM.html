@@ -418,6 +418,23 @@
       .header-title-h5 { display: block; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0; font-size: 15px; font-weight: 700; color: #3a2c1a; letter-spacing: 0.04em; white-space: nowrap; pointer-events: none; }
       .share-btn { width: 36px; height: 36px; padding: 0; justify-content: center; }
       .share-btn span { display: none; }
+
+      /* H5: freshness 压缩为小红点，hover/tap 展开 tooltip */
+      .site-header .freshness { position: relative; padding: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--amber-soft); border-color: var(--border-amber); }
+      .site-header .freshness .txt { display: none; }
+      .site-header .freshness .dot { width: 8px; height: 8px; }
+      .site-header .freshness::after {
+        content: "数据将在 7 天后过期";
+        position: absolute; top: calc(100% + 8px); right: 0;
+        background: #1f2937; color: #fff; font-size: 12px; line-height: 1.4;
+        padding: 8px 10px; border-radius: 6px; white-space: nowrap;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        opacity: 0; pointer-events: none; transition: opacity 0.15s ease;
+        z-index: 110;
+      }
+      .site-header .freshness:hover::after,
+      .site-header .freshness:focus::after,
+      .site-header .freshness.show-tooltip::after { opacity: 1; pointer-events: auto; }
       .hero { padding: var(--space-xl) 0 var(--space-2xl); }
       .hero-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
       .hero h1 { font-size: var(--text-3xl); }
@@ -1226,6 +1243,18 @@
       }
     });
   });
+
+  // H5 freshness tap-tooltip + 点击外部关闭
+  var freshnessEl = document.getElementById('freshness');
+  if (freshnessEl && window.matchMedia('(max-width: 768px)').matches) {
+    freshnessEl.addEventListener('click', function(e) {
+      e.preventDefault();
+      freshnessEl.classList.toggle('show-tooltip');
+    });
+    document.addEventListener('click', function(e) {
+      if (!freshnessEl.contains(e.target)) freshnessEl.classList.remove('show-tooltip');
+    });
+  }
 })();
 </script>
 </body>
