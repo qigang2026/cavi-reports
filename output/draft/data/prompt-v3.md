@@ -209,7 +209,7 @@ AI 必须根据输入 JSON 中 `powertrainType` 字段判断车型动力类型�
 
 ## 六、数据输入格式
 
-请按以下 JSON 结构提供数据（参见 `xpeng-g6-2026-v3-schema.json`）：
+请按以下 JSON 结构提供数据（参见 `schema-v3.json`）：
 
 ```json
 {

@@ -1,0 +1,134 @@
+{
+  "brand": "XPENG",
+  "series": "G6",
+  "model": "Performance AWD 2026",
+  "powertrainType": "EV",
+  "bodyType": "纯电中型SUV",
+  "segment": "中型SUV",
+  "market": "墨西哥",
+
+  "officialImages": {
+    "vehicle": "https://cdn.autocava.com.mx/car/serial/wg/bf0245ac0cec45028c0028296c380987.jpg",
+    "scenario": null
+  },
+
+  "cava": {
+    "score": 4.05,
+    "maxScore": 5,
+    "reviewCount": 301,
+    "summary": "车主整体评价较好，主要认可续航、空间和舒适配置；主要关注服务网络和充电条件。",
+    "strengths": [
+      "续航",
+      "空间",
+      "舒适配置"
+    ],
+    "concerns": [
+      "服务网络",
+      "充电条件"
+    ]
+  },
+
+  "price": {
+    "currency": "MXN",
+    "officialAmount": 869900,
+    "promotionalAmount": null,
+    "discountAmount": null
+  },
+
+  "financePlans": [
+    {
+      "institution": "MStar",
+      "institutionLogo": null,
+      "productName": "Sin comprobantes flexible",
+      "audience": "适合各类申请人",
+      "monthlyPayment": 12873,
+      "downPaymentRatio": 30,
+      "downPaymentAmount": 260970,
+      "financingAmount": 608930,
+      "termMonths": 72,
+      "annualInterestRate": 14.99,
+      "description": "灵活的金融方案"
+    },
+    {
+      "institution": "Banorte",
+      "institutionLogo": null,
+      "productName": "Alto monto crédito",
+      "audience": "适合企业主与受薪人士",
+      "monthlyPayment": 11432,
+      "downPaymentRatio": 30,
+      "downPaymentAmount": 260970,
+      "financingAmount": 608930,
+      "termMonths": 72,
+      "annualInterestRate": null,
+      "description": "高额度汽车贷款方案"
+    }
+  ],
+
+  "specs": {
+    "engineDisplacementMl": null,
+    "engineModel": null,
+    "powerHp": 487,
+    "torqueLbFt": null,
+    "fuelType": "Electric",
+    "aspiration": null,
+    "cylinderCount": null,
+
+    "driveType": "AWD",
+    "transmission": null,
+    "transmissionGears": null,
+
+    "fuelConsumptionKmL": null,
+    "fuelConsumptionL100Km": null,
+
+    "rangeKm": 510,
+    "batteryKwh": 80.2,
+    "voltagePlatform": "800 V",
+    "electricConsumptionKwh100Km": 15.7,
+
+    "trunkLiters": 571,
+    "seats": 5,
+    "doors": 5
+  },
+
+  "ownershipCost": {
+    "annualDistanceKm": 12000,
+
+    "energyType": "electricity",
+
+    "electricity": {
+      "consumptionKwh100Km": 15.7,
+      "electricityPriceMxnKwh": 2,
+      "annualElectricityCostMxn": 3768
+    },
+
+    "fuel": null,
+
+    "maintenance": {
+      "annualAverageMaintenanceMxn": 3512
+    },
+
+    "annualOperatingCostMxn": 7280,
+
+    "comparison": {
+      "fuelVehicleConsumptionL100Km": 8,
+      "gasolinePriceMxnLiter": 23.68,
+      "annualFuelCostMxn": 22733,
+      "annualEnergySavingMxn": 18965
+    }
+  },
+
+  "warranty": [],
+
+  "benefits": [],
+
+  "dealers": {},
+
+  "competitors": [],
+
+  "links": {
+    "series": "https://www.autocava.com.mx/auto/series/677",
+    "lead": null,
+    "testDrive": null,
+    "whatsapp": null
+  }
+}

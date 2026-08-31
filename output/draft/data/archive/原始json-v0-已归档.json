@@ -1,0 +1,75 @@
+{
+    "brand": "XPENG",
+    "series": "G6",
+    "model": "Performance AWD 2026",
+    "bodyType": "纯电中型SUV",
+    "market": "墨西哥",
+    "officialImages": {
+      "vehicle": "车型透明图URL",
+      "scenario": "官方场景图URL"
+    },
+    "cava": {
+      "score": 4.05,
+      "maxScore": 5,
+      "reviewCount": 301,
+      "summary": "车主口碑总结",
+      "strengths": ["续航", "空间", "舒适配置"],
+      "concerns": ["服务网络", "充电条件"]
+    },
+    "price": {
+      "currency": "MXN",
+      "amount": 869900
+    },
+    "financePlans": [
+      {
+        "institution": "MStar",
+        "institutionLogo": "Logo URL",
+        "productName": "Sin comprobantes flexible",
+        "audience": "适合各类申请人",
+        "monthlyPayment": 12873,
+        "downPaymentRatio": 30,
+        "downPaymentAmount": 260970,
+        "termMonths": 72,
+        "annualInterestRate": 14.99,
+        "description": "产品特点"
+      },
+      {
+        "institution": "Banorte",
+        "institutionLogo": "Logo URL",
+        "productName": "Alto monto crédito",
+        "audience": "适合企业主与受薪人士",
+        "monthlyPayment": 11432,
+        "downPaymentRatio": 30,
+        "downPaymentAmount": 260970,
+        "termMonths": 72,
+        "annualInterestRate": null,
+        "description": "产品特点"
+      }
+    ],
+    "specs": {
+      "rangeKm": 510,
+      "powerHp": 487,
+      "batteryKwh": 80.2,
+      "voltagePlatform": "800 V",
+      "trunkLiters": 571
+    },
+    "ownershipCost": {
+      "annualDistanceKm": 12000,
+      "electricConsumptionKwh100Km": 15.7,
+      "electricityPriceMxnKwh": 2,
+      "annualElectricityCostMxn": 3768,
+      "fuelComparisonLiters100Km": 8,
+      "gasolinePriceMxnLiter": 23.68,
+      "annualFuelCostMxn": 22733,
+      "annualAverageMaintenanceMxn": 3512
+    },
+    "warranty": [],
+    "benefits": [],
+    "dealers": {},
+    "competitors": [],
+    "links": {
+      "lead": "留资链接",
+      "testDrive": "试驾链接",
+      "whatsapp": "WhatsApp链接"
+    }
+  }

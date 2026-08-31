@@ -1,0 +1,162 @@
+{
+    "brand": "Nissan",
+    "series": "Versa",
+    "model": "SENSE BASE MT 2026",
+    "powertrainType": "ICE",
+    "bodyType": "Sedán",
+    "segment": "Coche compacto",
+    "market": "墨西哥",
+  
+    "officialImages": {
+      "vehicle": "https://cdn.autocava.com.mx/car/serial/wg/bf0245ac0cec45028c0028296c380987.jpg",
+      "scenario": null
+    },
+  
+    "cava": {
+      "score": 3.14,
+      "maxScore": 5,
+      "reviewCount": 1331,
+      "summary": "整体是一台偏实用、适合日常通勤和家庭使用的紧凑型轿车，车主普遍认可空间和日常使用便利性，但对动力表现和内饰质感评价相对保守。",
+      "strengths": [
+        "空间",
+        "日常使用",
+        "实用性"
+      ],
+      "concerns": [
+        "动力表现",
+        "内饰质感"
+      ]
+    },
+  
+    "price": {
+      "currency": "MXN",
+      "officialAmount": 374900,
+      "promotionalAmount": 309990,
+      "discountAmount": 64910
+    },
+  
+    "financePlans": [
+      {
+        "institution": "MStar",
+        "institutionLogo": null,
+        "productName": "Sin comprobantes flexible",
+        "audience": "Todo tipo de perfil",
+        "monthlyPayment": 4588,
+        "downPaymentRatio": 30,
+        "downPaymentAmount": 92997,
+        "financingAmount": 216993,
+        "termMonths": 72,
+        "annualInterestRate": null,
+        "description": "无需收入证明的灵活金融方案"
+      },
+      {
+        "institution": "BBVA",
+        "institutionLogo": null,
+        "productName": "Tasa transparente competitiva",
+        "audience": "Empresarios y asalariados",
+        "monthlyPayment": 4242,
+        "downPaymentRatio": 30,
+        "downPaymentAmount": 92997,
+        "financingAmount": 216993,
+        "termMonths": 72,
+        "annualInterestRate": null,
+        "description": "面向企业主和受薪人士的金融方案"
+      }
+    ],
+  
+    "specs": {
+      "engineDisplacementMl": 1600,
+      "engineModel": "HR16DE",
+      "powerHp": 118,
+      "torqueLbFt": 110,
+      "fuelType": "Gasolina",
+      "aspiration": "Aspiración natural",
+      "cylinderCount": 4,
+      "driveType": "2WD (FWD)",
+      "transmission": "Transmisión manual",
+      "transmissionGears": 5,
+  
+      "fuelConsumptionKmL": 18.81,
+      "fuelConsumptionL100Km": 5.32,
+  
+      "rangeKm": null,
+      "batteryKwh": null,
+      "voltagePlatform": null,
+      "electricConsumptionKwh100Km": null,
+  
+      "trunkLiters": 466,
+      "seats": 5,
+      "doors": 4,
+  
+      "dimensions": {
+        "lengthMm": 4500,
+        "widthMm": 1740,
+        "heightMm": 1470,
+        "wheelbaseMm": 2620,
+        "curbWeightKg": 1110
+      }
+    },
+  
+    "ownershipCost": {
+      "annualDistanceKm": 15000,
+  
+      "energyType": "gasoline",
+  
+      "fuel": {
+        "consumptionKmL": 18.81,
+        "consumptionL100Km": 5.32,
+        "gasolinePriceMxnLiter": 23.68,
+        "annualFuelCostMxn": 18884
+      },
+  
+      "electricity": null,
+  
+      "maintenance": {
+        "annualAverageMaintenanceMxn": 6532,
+        "year1Mxn": 6200,
+        "year2Mxn": 7305,
+        "year3Mxn": 6200,
+        "year4Mxn": 6200,
+        "year5Mxn": 7305,
+        "year6Mxn": 6200,
+        "year7Mxn": 6200,
+        "year8Mxn": 7305,
+        "year9Mxn": 6200,
+        "year10Mxn": 6200
+      },
+  
+      "annualOperatingCostMxn": 25416
+    },
+  
+    "warranty": {
+      "durationYears": 3,
+      "distanceKm": 60000,
+      "description": "3 años o 60,000 km"
+    },
+  
+    "benefits": [
+      {
+        "type": "promotion",
+        "label": "当前促销优惠",
+        "amountMxn": 64910,
+        "description": "促销价相比官方价低 $64,910"
+      },
+      {
+        "type": "lowOperatingCost",
+        "label": "低使用成本",
+        "amountMxn": 25416,
+        "description": "按 15,000 km/年计算，年度平均使用成本约 $25,416"
+      }
+    ],
+  
+    "dealers": {},
+  
+    "links": {
+      "series": "https://www.autocava.com.mx/auto/series/356",
+      "model": "https://www.autocava.com.mx/auto/model/4886",
+      "specs": "https://www.autocava.com.mx/auto/parameter-series/356",
+      "finance": "https://www.autocava.com.mx/finance/draft?brandId=49&modelId=4886&seriesId=356&sourceType=1",
+      "testDrive": null,
+      "whatsapp": "https://wa.me/525527419019"
+    }
+  }

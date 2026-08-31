@@ -2,7 +2,12 @@
   "_schema_version": "1.1.0",
   "_description": "CAVI 购车解读报告数据结构 v1.1 — 支持 EV/HEV/PHEV/ICE 四种动力类型",
   "_powertrain_types": ["EV", "HEV", "PHEV", "ICE"],
-  "_compatible_report_versions": ["xpeng-g6-2026-v3-PM.html"],
+  "_compatible_prompt": "prompt-v3.md",
+  "_compatible_report_examples": [
+    "xpeng-g6-2026-v3-PM.html",
+    "nissan-versa-2026-v3-PM.html"
+  ],
+  "_sample_data": "examples/xpeng-g6-2026.json",
   "_validation_url": "https://www.autocava.com.mx/auto/series/356",
 
   "report": {
