@@ -2,377 +2,182 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1929">
+  <meta name="description" content="XPENG G6 2026 数据已过期，建议联系销售获取最新报告与当前可申请方案。">
   <title>本报告已过期 · XPENG G6 2026 · AUTOCAVA</title>
-  <meta name="description" content="XPENG G6 2026 数据已过期,建议联系销售获取最新报告与当前可申请方案。">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ============================================================
-       Autocava · 过期报告引导页
-       浅色暖背景 + 琥珀品牌色 + 居中卡片 + 强转化 CTA
+       报告过期页 · 响应式 (PC + H5)
+       iframe 引用 xpeng-g6-2026-v1.html（响应式主报告）
+       蒙层卡片居中, PC 端放大, H5 端紧凑
        ============================================================ */
-    :root {
-      --navy: #0a1929;
-      --navy-2: #11233a;
-      --amber: #ffc422;
-      --amber-deep: #b59317;
-      --amber-soft: #fde9a8;
-      --warm-bg: #fff8e6;
-      --warm-bg-2: #ffe9a8;
-      --green-wa: #25D366;
-      --red-stale: #ff6b6b;
-      --red-soft: #ffe5e5;
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-      color: var(--navy);
-      background: linear-gradient(160deg, #fff8e6 0%, #ffe9a8 50%, #fff5d4 100%);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%; width: 100%;
+      overflow: hidden;
     }
 
-    /* ---------- Header (跟主报告一致) ---------- */
-    .site-header { background: var(--amber); border-bottom: 1px solid #e6b020; position: sticky; top: 0; z-index: 50; }
-    .site-header .container {
-      max-width: 1200px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 56px; padding: 0 24px; position: relative;
+    /* ============ 背景: 主报告 iframe (灰化 + 半透明) ============ */
+    .report-frame {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      border: none;
+      filter: grayscale(0.75) opacity(0.4);
+      z-index: 0;
     }
-    .site-header .logo img { height: 24px; }
-    .header-title {
-      position: absolute; left: 50%; top: 50%;
-      transform: translate(-50%, -50%);
-      margin: 0; font-size: 15px; font-weight: 700;
-      color: #3a2c1a; letter-spacing: 0.04em;
-      white-space: nowrap; pointer-events: none;
-    }
-    .site-header .right { display: flex; align-items: center; gap: 8px; }
-    .share-btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 32px; height: 32px;
-      background: #ffffff; border: 1px solid #ffffff; border-radius: 6px;
-      color: #0a1929; cursor: pointer; font-family: inherit;
-      box-shadow: 0 1px 3px rgba(10, 25, 41, 0.1);
-    }
-    .share-btn:active { background: #fff5d4; }
-    .share-btn svg { display: block; }
 
-    /* ---------- Main ---------- */
-    main { padding: 48px 20px 32px; display: flex; justify-content: center; align-items: flex-start; }
-    .card {
-      width: 100%; max-width: 520px;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 24px 60px rgba(10, 25, 41, 0.12), 0 4px 12px rgba(10, 25, 41, 0.06);
-      padding: 44px 36px 32px;
-      text-align: center;
+    /* ============ 全屏蒙层 ============ */
+    .expired-overlay {
+      position: fixed; inset: 0; z-index: 1100;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(10, 25, 41, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 16px;
+      animation: expiredFade 0.3s ease;
+    }
+    @keyframes expiredFade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ============ 过期卡片 ============ */
+    .expired-card {
       position: relative;
+      width: 100%;
+      max-width: 420px;          /* H5 紧凑 */
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 22px 22px;
+      color: #0a1929;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+      animation: expiredScale 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: center;
+      max-height: calc(100vh - 32px);
+      overflow-y: auto;
     }
-    .card::before {
-      content: ""; position: absolute;
-      top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, var(--amber) 0%, var(--amber-deep) 50%, var(--amber) 100%);
-      border-top-left-radius: 20px; border-top-right-radius: 20px;
+    @keyframes expiredScale {
+      from { transform: scale(0.92); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
     }
-
-    .icon {
-      width: 84px; height: 84px;
-      margin: 0 auto 22px;
-      background: var(--red-soft);
+    .expired-icon {
+      width: 56px; height: 56px;
+      margin: 0 auto 14px;
+      background: rgba(255, 107, 107, 0.12);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      position: relative;
+      color: #ff6b6b;
     }
-    .icon::after {
-      content: ""; position: absolute; inset: -6px;
-      border: 2px dashed var(--red-stale);
-      border-radius: 50%;
-      opacity: 0.3;
-      animation: spinSlow 12s linear infinite;
-    }
-    @keyframes spinSlow { to { transform: rotate(360deg); } }
-    .icon svg { color: var(--red-stale); }
-
-    h1 {
-      font-size: 26px; font-weight: 800;
-      margin: 0 0 10px;
-      letter-spacing: -0.01em;
-      color: var(--navy);
-    }
-    .subtitle {
-      font-size: 14px;
-      color: rgba(10, 25, 41, 0.6);
-      margin: 0 0 28px;
-      line-height: 1.6;
-    }
-    .subtitle .pub { color: var(--amber-deep); font-weight: 700; }
-    .subtitle .overdue {
+    .expired-title { font-size: 19px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.01em; }
+    .expired-subtitle { font-size: 12px; color: rgba(10, 25, 41, 0.55); margin: 0 0 16px; line-height: 1.5; }
+    .expired-subtitle .pub-date { color: #ffc422; font-weight: 600; }
+    .expired-subtitle .days-over {
       display: inline-block;
-      background: var(--red-stale);
+      background: #ff6b6b;
       color: #fff;
-      padding: 1px 8px;
-      border-radius: 4px;
+      padding: 1px 6px;
+      border-radius: 3px;
       font-weight: 700;
-      margin-left: 4px;
+      margin: 0 2px;
     }
-
-    .reasons {
-      display: flex; flex-direction: column; gap: 10px;
+    .expired-reasons {
+      display: flex; flex-direction: column; gap: 6px;
       background: #f7f8fa;
-      border-radius: 12px;
-      padding: 18px 20px;
-      margin: 0 0 22px;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
       text-align: left;
     }
-    .reasons-title {
-      font-size: 11px; font-weight: 700;
-      color: rgba(10, 25, 41, 0.5);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .reason {
-      display: flex; align-items: center; gap: 12px;
-      font-size: 14px; color: rgba(10, 25, 41, 0.78);
-      line-height: 1.4;
-    }
-    .reason .ri { font-size: 18px; line-height: 1; width: 22px; text-align: center; }
+    .reason { display: flex; align-items: center; gap: 10px; font-size: 12px; color: rgba(10, 25, 41, 0.78); }
 
-    .desc {
-      font-size: 14px;
-      color: rgba(10, 25, 41, 0.7);
-      line-height: 1.7;
-      margin: 0 0 24px;
+    /* reason 编号色块 (替代 emoji) */
+    .reason .ri {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px;
+      font-family: "Chakra Petch", "Inter", sans-serif;
+      font-size: 10px; font-weight: 700;
+      line-height: 1;
+      color: #d63d3d;
+      background: rgba(214, 61, 61, 0.12);
+      border-radius: 50%;
+      flex-shrink: 0;
     }
 
+    .expired-desc { font-size: 12px; color: rgba(10, 25, 41, 0.62); line-height: 1.6; margin: 0 0 18px; }
+    .expired-actions { display: flex; flex-direction: column; gap: 6px; }
     .btn-wa {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      padding: 16px 24px;
-      background: var(--green-wa);
-      color: #fff;
-      border: none; border-radius: 12px;
-      font-size: 16px; font-weight: 700;
-      cursor: pointer; text-decoration: none;
-      transition: all 0.2s;
-      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
-    }
-    .btn-wa:hover { background: #1ebe57; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4); }
-    .btn-wa svg { width: 20px; height: 20px; }
-
-    .meta {
-      margin: 18px 0 0;
-      font-size: 12px;
-      color: rgba(10, 25, 41, 0.5);
-      line-height: 1.5;
-    }
-    .meta strong { color: var(--amber-deep); }
-
-    .link-old {
-      display: inline-block;
-      margin-top: 22px;
-      padding-top: 22px;
-      border-top: 1px dashed rgba(10, 25, 41, 0.12);
-      width: 100%;
-      font-size: 12px;
-      color: rgba(10, 25, 41, 0.45);
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 20px;
+      background: #25D366; color: #fff;
+      border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 700;
+      cursor: pointer;
       text-decoration: none;
-      transition: color 0.15s;
+      transition: all 0.2s;
+      font-family: inherit;
     }
-    .link-old:hover { color: var(--navy); }
-    .link-old .arr { margin-left: 4px; }
-
-    /* ---------- Footer ---------- */
-    .site-footer {
-      padding: 24px 20px 32px;
-      text-align: center;
-      color: rgba(10, 25, 41, 0.45);
-      font-size: 12px;
+    .btn-wa:hover { background: #1ebe57; }
+    .btn-wa:active { background: #1ebe57; transform: scale(0.98); }
+    .expired-foot {
+      margin: 16px 0 0;
+      font-size: 10px;
+      color: rgba(10, 25, 41, 0.4);
+      border-top: 1px solid rgba(10, 25, 41, 0.08);
+      padding-top: 12px;
     }
-    .site-footer .brand { color: rgba(10, 25, 41, 0.6); font-weight: 600; }
 
-    /* ---------- Share sheet (复用主报告的 4 渠道) ---------- */
-    .share-sheet { position: fixed; inset: 0; z-index: 200; display: flex; align-items: flex-end; justify-content: center; background: rgba(10, 25, 41, 0.55); backdrop-filter: blur(8px); padding: 16px; }
-    .share-sheet[hidden] { display: none; }
-    .share-content { width: 100%; max-width: 520px; background: #fff; border-top-left-radius: 18px; border-top-right-radius: 18px; padding: 10px 22px 32px; color: var(--navy); box-shadow: 0 -16px 50px rgba(0, 0, 0, 0.25); animation: sheetSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    @keyframes sheetSlide { from { transform: translateY(100%); } to { transform: translateY(0); } }
-    .share-handle { width: 40px; height: 4px; background: rgba(10, 25, 41, 0.15); border-radius: 2px; margin: 0 auto 16px; }
-    .share-close { position: absolute; top: 14px; right: 14px; width: 28px; height: 28px; background: transparent; border: none; color: rgba(10, 25, 41, 0.5); cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .share-title { font-size: 18px; font-weight: 700; margin: 0 0 6px; text-align: center; }
-    .share-desc { font-size: 13px; color: rgba(10, 25, 41, 0.6); text-align: center; margin: 0 0 22px; line-height: 1.6; }
-    .share-channels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-    .share-channel { background: transparent; border: none; padding: 8px 4px 6px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; border-radius: 10px; font-family: inherit; }
-    .share-channel:active { background: #f3f5f8; }
-    .share-channel .icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; margin: 0; background: transparent; }
-    .share-channel .icon::after { display: none; }
-    .share-channel .icon svg { color: #fff; }
-    .share-channel .name { font-size: 12px; font-weight: 600; color: var(--navy); }
-    .share-channel .hint { font-size: 10px; color: rgba(10, 25, 41, 0.55); line-height: 1.3; min-height: 13px; }
-    .share-channel.copied .hint { color: #1a8a3a; font-weight: 600; }
-    .icon-wa { background: #25D366; }
-    .icon-fb { background: #1877F2; }
-    .icon-ms { background: #0084FF; }
-    .icon-cp { background: #5a6470; }
-
-    /* ---------- Responsive (H5) ---------- */
-    @media (max-width: 600px) {
-      .site-header { height: 48px; }
-      .site-header .container { height: 48px; padding: 0 14px; }
-      .site-header .logo img { height: 22px; }
-      .header-title { font-size: 14px; }
-      main { padding: 24px 14px 20px; }
-      .card { padding: 32px 22px 24px; border-radius: 16px; }
-      .icon { width: 64px; height: 64px; margin-bottom: 16px; }
-      .icon svg { width: 32px; height: 32px; }
-      h1 { font-size: 20px; }
-      .subtitle { font-size: 12px; margin-bottom: 20px; }
-      .reasons { padding: 14px 16px; gap: 8px; margin-bottom: 18px; }
-      .reason { font-size: 12px; }
-      .reason .ri { font-size: 15px; width: 20px; }
-      .desc { font-size: 12px; margin-bottom: 20px; }
-      .btn-wa { padding: 14px 20px; font-size: 14px; border-radius: 10px; }
-      .meta { font-size: 11px; }
-      .link-old { margin-top: 18px; padding-top: 18px; font-size: 11px; }
-      .site-footer { font-size: 11px; padding: 20px 14px 28px; }
+    /* ============================================================
+       PC 端适配 (>= 769px)
+       - 卡片放大到 520px,文字尺寸+1
+       - 蒙层 padding 加大,留出桌面空间感
+       ============================================================ */
+    @media (min-width: 769px) {
+      .expired-overlay { padding: 40px; }
+      .expired-card {
+        max-width: 520px;
+        padding: 40px 36px 32px;
+        max-height: calc(100vh - 80px);
+      }
+      .expired-icon { width: 64px; height: 64px; margin: 0 auto 18px; }
+      .expired-icon svg { width: 32px; height: 32px; }
+      .expired-title { font-size: 24px; margin: 0 0 10px; }
+      .expired-subtitle { font-size: 13px; margin: 0 0 22px; }
+      .expired-reasons { padding: 16px 18px; gap: 10px; margin-bottom: 22px; }
+      .reason { font-size: 13px; gap: 12px; }
+      .reason .ri { width: 24px; height: 24px; font-size: 11px; }
+      .expired-desc { font-size: 13px; margin: 0 0 24px; line-height: 1.7; }
+      .btn-wa { padding: 16px 24px; font-size: 15px; }
+      .expired-foot { font-size: 11px; margin: 20px 0 0; padding-top: 16px; }
     }
   </style>
 </head>
 <body>
-  <!-- ============ Header ============ -->
-  <header class="site-header">
-    <div class="container">
-      <a class="logo" href="https://www.autocava.com.mx">
-        <img src="https://cdn.autocava.com.mx/_nuxt/asset/logo.v3.mLItLIXo.svg" alt="AUTOCAVA">
-      </a>
-      <h1 class="header-title">车型解读报告</h1>
-      <div class="right">
-        <button class="share-btn" id="shareBtn" type="button" aria-label="分享">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-        </button>
-      </div>
-    </div>
-  </header>
+  <!-- 主报告作为背景（灰化 + 半透明）—— 引用响应式 v1 版本 -->
+  <iframe class="report-frame" src="xpeng-g6-2026-v1.html" title="本报告"></iframe>
 
-  <!-- ============ Main ============ -->
-  <main>
-    <div class="card">
-      <div class="icon">
-        <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
-        </svg>
+  <!-- 过期全屏蒙层 + 中央卡片 -->
+  <div class="expired-overlay" id="expiredOverlay" role="dialog" aria-labelledby="expiredTitle" aria-modal="true">
+    <div class="expired-card">
+      <div class="expired-icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
-      <h1>本报告已过期</h1>
-      <p class="subtitle">
-        数据采集于 <span class="pub">2026-08-24</span> · 已过期
-        <span class="overdue">2</span> 天
-      </p>
+      <h2 class="expired-title" id="expiredTitle">本报告已过期</h2>
+      <p class="expired-subtitle">数据采集于 <span class="pub-date">2026-08-24</span> · 已过期 <span class="days-over">2</span> 天</p>
 
-      <div class="reasons">
-        <div class="reasons-title">可能已变化的信息</div>
-        <div class="reason"><span class="ri">📈</span><span>价格可能已调整</span></div>
-        <div class="reason"><span class="ri">💰</span><span>金融政策与月供可能已更新</span></div>
+      <div class="expired-reasons">
+        <div class="reason"><span class="ri">01</span><span>价格可能已调整</span></div>
+        <div class="reason"><span class="ri">02</span><span>金融政策与月供可能已更新</span></div>
       </div>
 
-      <p class="desc">为避免基于过期信息做决策，建议联系销售获取最新报告与当前可申请方案。</p>
+      <p class="expired-desc">为避免基于过期信息做决策，建议联系销售获取最新报告与当前可申请方案。</p>
 
-      <a class="btn-wa" id="waCta" href="https://wa.me/525527419019?text=Hola%2C%20mi%20informe%20del%20XPENG%20G6%202026%20est%C3%A1%20vencido%20(recolectado%202026-08-24).%20%C2%BFMe%20puedes%20compartir%20la%20versi%C3%B3n%20m%C3%A1s%20reciente%3F" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M17.6 6.3A7.85 7.85 0 0 0 12 4a7.9 7.9 0 0 0-6.74 12.04L4 20l4.07-1.21A7.9 7.9 0 0 0 12 19.9a7.9 7.9 0 0 0 7.9-7.9 7.85 7.85 0 0 0-2.3-5.7zM12 18.55a6.55 6.55 0 0 1-3.34-.91l-.24-.14-2.42.72.73-2.36-.16-.25A6.56 6.56 0 1 1 18.55 12 6.57 6.57 0 0 1 12 18.55zm3.6-4.92c-.2-.1-1.16-.57-1.34-.64s-.31-.1-.45.1-.5.64-.62.77-.23.15-.43.05a5.4 5.4 0 0 1-1.59-.98 5.96 5.96 0 0 1-1.1-1.37c-.12-.2 0-.31.09-.41s.2-.23.3-.34a1.27 1.27 0 0 0 .2-.34.36.36 0 0 0 0-.34c0-.1-.45-1.09-.62-1.49s-.33-.34-.45-.34h-.38a.74.74 0 0 0-.54.25 2.25 2.25 0 0 0-.7 1.67 3.9 3.9 0 0 0 .82 2.08 8.97 8.97 0 0 0 3.44 3.04c.48.21.86.34 1.15.43a2.78 2.78 0 0 0 1.27.08 2.07 2.07 0 0 0 1.36-.96 1.7 1.7 0 0 0 .12-.96c-.05-.09-.18-.14-.38-.24z"/></svg>
-        通过 WhatsApp 联系销售
-      </a>
-
-      <p class="meta">本报告由 <strong>AUTOCAVA 数据研究院</strong> 出品</p>
-
-      <a class="link-old" href="xpeng-g6-2026-pc.html">
-        继续查看此版本（数据已过期，参考价值有限）<span class="arr">→</span>
-      </a>
-    </div>
-  </main>
-
-  <!-- ============ Footer ============ -->
-  <footer class="site-footer">
-    AUTOCAVA · 数据研究院 · 2026
-  </footer>
-
-  <!-- ============ 分享弹层 ============ -->
-  <div class="share-sheet" id="shareSheet" hidden>
-    <div class="share-content" role="dialog" aria-labelledby="shareTitle">
-      <div class="share-handle"></div>
-      <button class="share-close" id="shareClose" type="button" aria-label="关闭">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-      </button>
-      <h3 class="share-title" id="shareTitle">分享这份过期提示</h3>
-      <p class="share-desc">让销售知道你想看最新版本的报告。</p>
-      <div class="share-channels">
-        <button class="share-channel" type="button" data-channel="whatsapp">
-          <div class="icon icon-wa"><svg viewBox="0 0 24 24" width="28" height="28" fill="#fff"><path d="M17.6 6.3A7.85 7.85 0 0 0 12 4a7.9 7.9 0 0 0-6.74 12.04L4 20l4.07-1.21A7.9 7.9 0 0 0 12 19.9a7.9 7.9 0 0 0 7.9-7.9 7.85 7.85 0 0 0-2.3-5.7zM12 18.55a6.55 6.55 0 0 1-3.34-.91l-.24-.14-2.42.72.73-2.36-.16-.25A6.56 6.56 0 1 1 18.55 12 6.57 6.57 0 0 1 12 18.55zm3.6-4.92c-.2-.1-1.16-.57-1.34-.64s-.31-.1-.45.1-.5.64-.62.77-.23.15-.43.05a5.4 5.4 0 0 1-1.59-.98 5.96 5.96 0 0 1-1.1-1.37c-.12-.2 0-.31.09-.41s.2-.23.3-.34a1.27 1.27 0 0 0 .2-.34.36.36 0 0 0 0-.34c0-.1-.45-1.09-.62-1.49s-.33-.34-.45-.34h-.38a.74.74 0 0 0-.54.25 2.25 2.25 0 0 0-.7 1.67 3.9 3.9 0 0 0 .82 2.08 8.97 8.97 0 0 0 3.44 3.04c.48.21.86.34 1.15.43a2.78 2.78 0 0 0 1.27.08 2.07 2.07 0 0 0 1.36-.96 1.7 1.7 0 0 0 .12-.96c-.05-.09-.18-.14-.38-.24z"/></svg></div>
-          <div class="name">WhatsApp</div>
-          <div class="hint">发送给销售</div>
-        </button>
-        <button class="share-channel" type="button" data-channel="copy">
-          <div class="icon icon-cp"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
-          <div class="name">复制链接</div>
-          <div class="hint">发给销售</div>
-        </button>
+      <div class="expired-actions">
+        <a class="btn-wa" id="expiredCta" href="https://wa.me/525527419019?text=Hola%2C%20mi%20informe%20del%20XPENG%20G6%202026%20(Reporte%20V5)%20est%C3%A1%20vencido%20(recolectado%202026-08-24).%20%C2%BFMe%20puedes%20compartir%20la%20versi%C3%B3n%20m%C3%A1s%20reciente%3F" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M17.6 6.3A7.85 7.85 0 0 0 12 4a7.9 7.9 0 0 0-6.74 12.04L4 20l4.07-1.21A7.9 7.9 0 0 0 12 19.9a7.9 7.9 0 0 0 7.9-7.9 7.85 7.85 0 0 0-2.3-5.7zM12 18.55a6.55 6.55 0 0 1-3.34-.91l-.24-.14-2.42.72.73-2.36-.16-.25A6.56 6.56 0 1 1 18.55 12 6.57 6.57 0 0 1 12 18.55zm3.6-4.92c-.2-.1-1.16-.57-1.34-.64s-.31-.1-.45.1-.5.64-.62.77-.23.15-.43.05a5.4 5.4 0 0 1-1.59-.98 5.96 5.96 0 0 1-1.1-1.37c-.12-.2 0-.31.09-.41s.2-.23.3-.34a1.27 1.27 0 0 0 .2-.34.36.36 0 0 0 0-.34c0-.1-.45-1.09-.62-1.49s-.33-.34-.45-.34h-.38a.74.74 0 0 0-.54.25 2.25 2.25 0 0 0-.7 1.67 3.9 3.9 0 0 0 .82 2.08 8.97 8.97 0 0 0 3.44 3.04c.48.21.86.34 1.15.43a2.78 2.78 0 0 0 1.27.08 2.07 2.07 0 0 0 1.36-.96 1.7 1.7 0 0 0 .12-.96c-.05-.09-.18-.14-.38-.24z"/></svg>
+          通过 WhatsApp 联系销售
+        </a>
       </div>
+
+      <p class="expired-foot">本报告由 <strong>AUTOCAVA 数据研究院</strong> 出品</p>
     </div>
   </div>
-
-  <script>
-    // 原型图：所有日期、跳转、链接均为静态展示，无任何运行时计算或自动重定向
-
-    /* ---------------- Share sheet ---------------- */
-    (function() {
-      var btn = document.getElementById('shareBtn');
-      var sheet = document.getElementById('shareSheet');
-      var closeBtn = document.getElementById('shareClose');
-      if (!btn || !sheet) return;
-
-      function open()  { sheet.hidden = false; document.body.style.overflow = 'hidden'; }
-      function close() { sheet.hidden = true;  document.body.style.overflow = ''; }
-
-      function getText() {
-        return 'XPENG G6 2026 · CAVA 报告已过期 · 我想看最新版本 | ' + window.location.href;
-      }
-      function showCopied(btn) {
-        var hint = btn.querySelector('.hint');
-        var old = hint.textContent;
-        hint.textContent = '已复制';
-        btn.classList.add('copied');
-        setTimeout(function() { hint.textContent = old; btn.classList.remove('copied'); }, 1800);
-      }
-      function fallbackCopy(t) {
-        var ta = document.createElement('textarea');
-        ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
-        document.body.appendChild(ta); ta.select();
-        try { document.execCommand('copy'); } catch(e) {}
-        document.body.removeChild(ta);
-      }
-
-      btn.addEventListener('click', open);
-      closeBtn.addEventListener('click', close);
-      document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close(); });
-      sheet.querySelectorAll('.share-channel').forEach(function(ch) {
-        ch.addEventListener('click', function() {
-          var url = encodeURIComponent(window.location.href);
-          var text = encodeURIComponent(getText());
-          var ch = ch.dataset.channel;
-          if (ch === 'whatsapp') {
-            window.open('https://wa.me/525527419019?text=' + text, '_blank', 'noopener');
-          } else if (ch === 'copy') {
-            var raw = window.location.href;
-            if (navigator.clipboard && window.isSecureContext) {
-              navigator.clipboard.writeText(raw).then(function() { showCopied(ch); });
-            } else {
-              fallbackCopy(raw); showCopied(ch);
-            }
-          }
-        });
-      });
-    })();
-  </script>
 </body>
 </html>
